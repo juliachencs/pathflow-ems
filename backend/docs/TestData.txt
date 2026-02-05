@@ -1,0 +1,9 @@
+
+HR account:
+useranme: pathflowhr
+password: ABC@abc@123
+hash: $2b$10$UB6z.bt204oEaFAIx82mpOWkAR5.ygHT2dZm/v8DsfeliFIX9at0O
+
+EMPLOYEE account:
+username: pathflowboss
+password: ABC@abc@123

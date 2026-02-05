@@ -1,12 +1,13 @@
 # TODO
 
 ## Phase1
-- [ ] setup vsc-project
+- [x] setup vsc-project
 - [ ] API document
-- [ ] registration
-- [ ] login
-- [ ] logout
-- [ ] generate token and send email
+- [x] registration
+- [x] login
+- [x] logout
+- [x] generate token
+- [x] send email
 
 ## phase2
 

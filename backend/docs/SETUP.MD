@@ -16,10 +16,10 @@
 
    ```bash
    # dependencies 
-   npm install express cors dotenv mongoose nodemailer
+   npm install express cors dotenv mongoose nodemailer bcrypt
 
    # development dependencies 
-   npm install -D tsx typescript @types/cors @types/nodemailer @types/mongoose @types/node @types/express
+   npm install -D tsx typescript @types/cors @types/nodemailer @types/mongoose @types/node @types/express @types/bcrypt
 
    ```
 
