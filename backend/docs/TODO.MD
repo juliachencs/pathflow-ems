@@ -2,7 +2,6 @@
 
 ## Phase1
 - [x] setup vsc-project
-- [ ] API document
 - [x] registration
 - [x] login
 - [x] logout
@@ -11,4 +10,17 @@
 
 ## phase2
 
+- [ ] Auth verification middleware
+- [ ] Role verification middleware
+- [ ] Models (database)
+- [ ] endpoints: registration
+- [ ] endpoints: profile
+- [ ] 已完成endpoints API documents
+
 ## phase3
+- [ ] endpoints: boarding
+- [ ] endpoints: visa
+- [ ] 已完成endpoints API documents
+
+## Phase4 
+ 
