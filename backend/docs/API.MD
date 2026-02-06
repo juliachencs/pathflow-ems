@@ -145,6 +145,7 @@ visa
 ### Employee profile summary <a name="IProfileSummary">
 
 <details> 
+
 ```typescript
 // IProfileSummary
 {
@@ -162,6 +163,7 @@ visa
   email: string;
 }
 ```
+
 </details>
 
 ## AUTH (open to both HR and employees)
