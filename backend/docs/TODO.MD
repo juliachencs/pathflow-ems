@@ -9,18 +9,18 @@
 - [x] send email
 
 ## phase2
-
 - [ ] Auth verification middleware
 - [ ] Role verification middleware
 - [ ] Models (database)
+- [ ] endpoints: auth
 - [ ] endpoints: registration
 - [ ] endpoints: profile
-- [ ] 已完成endpoints API documents
+- [x] API documents - happy pass
 
 ## phase3
 - [ ] endpoints: boarding
 - [ ] endpoints: visa
-- [ ] 已完成endpoints API documents
+- [ ] API documents - error handling 
 
 ## Phase4 
  
