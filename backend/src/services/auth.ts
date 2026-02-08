@@ -1,7 +1,7 @@
 import sendInvitation from "@/configs/email";
 import transporter from "@/configs/email";
-import { Registration } from "@/models/registration.model";
-import { User } from "@/models/user.model";
+import { Registration } from "@/models/registrations";
+import { User } from "@/models/acounts";
 import { EamilError } from "@/types/email.errors";
 import {
   HttpBadRequestError,
@@ -11,7 +11,7 @@ import {
 import type { IRegistration } from "@/types/registration.interface";
 import type { IAuthRespond } from "@/types/response.interface";
 import type { IUser } from "@/types/user.interface";
-import { generateToken } from "@/utils/jwt.utils";
+import { generateToken } from "@/utils/jwt";
 import bcrypt from "bcrypt";
 import type { HydratedDocument } from "mongoose";
 

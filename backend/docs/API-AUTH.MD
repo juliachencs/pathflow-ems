@@ -21,6 +21,7 @@ Response body:
 ```typescript
 {
   success: true;
+  message: "Congratulations! Your account has been successfully created!";
   data: {
     username: string;
     profileImage: DEFAULT_PROFILE_IMAGE_URL; //"https://api.dicebear.com/9.x/bottts/png" 
@@ -52,6 +53,7 @@ Response body:
 ```typescript
 {
   success: true;
+  message: "Successfully logged in!";
   data: {
     username: string;
     profileImage: URL | DEFAULT_PROFILE_IMAGE_URL; 

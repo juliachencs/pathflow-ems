@@ -1,0 +1,20 @@
+export const ErrorMessages = {
+  // LOGIN ERROR
+  LOGIN_BAD_REQUEST: "Please provide your username and password to login.",
+  LOGIN_UNMATCH: "The username and password do not match.",
+  LOGIN_NOT_FOUND: "The username does not exist.",
+
+  // REGISTER ERROR
+  REGISTER_BAD_REQUEST:
+    "Please provide your username, password and email to login.",
+  REGISTER_CONFLICT: "The username has been occupied!",
+
+  //INVITATION ERROR
+  INVITE_BAD_REQUEST:
+    "Please provide the name and email to invite someone to register.",
+
+  // DB ERROR
+  // DB_INVALID_URI: "Sorry, the database uri is invalid!",
+} as const;
+
+export type ErrorCode = keyof typeof ErrorMessages;

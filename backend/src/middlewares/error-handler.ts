@@ -1,28 +1,44 @@
+import { EamilError } from "@/types/email.errors";
 import { HttpError } from "@/types/http.errors";
 import type { Request, Response, NextFunction } from "express";
 
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  console.error(err);
+
   if (err instanceof HttpError) {
     res.status(err.statusCode).json({
       success: false,
       message: err.statusMessage,
-      error: err.error,
+      error: {
+        code: err.code,
+        description: {},
+      },
+    });
+  } else if (err instanceof EamilError) {
+    res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+      error: {
+        code: err.code,
+        description: err.description,
+        details: err.details,
+      },
     });
   } else {
-    console.error(err);
-
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
       error: {
         code: "SERVER_ERROR_UNKOWN",
-        message: err.message,
+        description: err.message,
       },
     });
   }
 };
+
+export default errorHandler;

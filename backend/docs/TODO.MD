@@ -12,10 +12,10 @@
 ## Stage2
 - [x] setup the routers
 - [x] API documents - happy pass
-- [ ] endpoints: auth
 
 ## Stage3
 - [ ] Models (database)
+- [ ] endpoints: auth
 
 ## Stage4
 - [ ] endpoints: profile/me

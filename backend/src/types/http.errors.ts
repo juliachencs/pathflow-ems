@@ -1,51 +1,56 @@
-import { ErrorMessages, type IErrorData } from "@/types/common";
+import type { ErrorCode } from "@/types/errors";
 
-type Params<D> = Omit<IErrorData<D>, "message">;
-
-export class HttpError<D> extends Error {
+export class HttpError extends Error {
   public readonly statusCode: number;
   public readonly statusMessage: string;
-  public readonly error: IErrorData<D>;
+  public readonly code: ErrorCode;
+  public readonly details: unknown;
 
-  constructor(pramas: Params<D>, statusCode: number, statusMessage: string) {
+  constructor(
+    statusCode: number,
+    statusMessage: string,
+    code: ErrorCode,
+    details?: unknown,
+  ) {
     super();
     this.statusMessage = statusMessage;
     this.statusCode = statusCode;
-    this.error = { message: ErrorMessages[pramas.code], ...pramas };
+    this.code = code;
+    this.details = details;
   }
 }
 
-export class HttpBadRequestError<D> extends HttpError<D> {
-  constructor(pramas: Params<D>) {
-    super(pramas, 400, "Bad Request");
+export class HttpBadRequestError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(400, "Bad Request", code, details);
   }
 }
 
-export class HttpUnauthorizedError<D> extends HttpError<D> {
-  constructor(pramas: Params<D>) {
-    super(pramas, 401, "Unauthorized");
+export class HttpUnauthorizedError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(401, "Unauthorized", code, details);
   }
 }
 
-export class HttpForbiddenError<D> extends HttpError<D> {
-  constructor(params: Params<D>) {
-    super(params, 403, "Forbidden");
+export class HttpForbiddenError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(403, "Forbidden", code, details);
   }
 }
 
-export class HttpNotFoundError<D> extends HttpError<D> {
-  constructor(pramas: Params<D>) {
-    super(pramas, 404, "Not found");
+export class HttpNotFoundError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(404, "Not found", code, details);
   }
 }
 
-export class HttpConfilctError<D> extends HttpError<D> {
-  constructor(pramas: Params<D>) {
-    super(pramas, 409, "Conflict");
+export class HttpConfilctError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(409, "Conflict", code, details);
   }
 }
-export class HttpServerError<D> extends HttpError<D> {
-  constructor(params: Params<D>) {
-    super(params, 500, "Internal Server Error");
+export class HttpServerError extends HttpError {
+  constructor(code: ErrorCode, details?: unknown) {
+    super(500, "Internal Server Error", code, details);
   }
 }

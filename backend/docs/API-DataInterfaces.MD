@@ -185,6 +185,7 @@ After an empolyee register, his visa state will be "NA". Because we still have n
 interface IVisaStatus {
   _id: string; // employeeID
   state: IVisaState;
+  curState: number;
   documents: [
     {OPT: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
     {EAD: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
