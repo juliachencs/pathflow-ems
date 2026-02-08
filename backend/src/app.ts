@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 // the api router
 app.use("/api", apiRouter);
 
-/// handle a 404 response:
+// handle a 404 response:
 app.use((req, res, next) => {
   res.status(404).send(`Sorry can't find: ${req.originalUrl}.`);
 });
