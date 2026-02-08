@@ -1,6 +1,6 @@
 # TODO
 
-## Phase1
+## Stage1
 - [x] setup vsc-project
 - [x] registration
 - [x] login
@@ -8,7 +8,8 @@
 - [x] generate token
 - [x] send email
 
-## phase2
+## Stage2
+- [x] setup the routers
 - [ ] Auth verification middleware
 - [ ] Role verification middleware
 - [ ] Models (database)
@@ -17,7 +18,7 @@
 - [ ] endpoints: profile
 - [x] API documents - happy pass
 
-## phase3
+## Stage3
 - [ ] endpoints: boarding
 - [ ] endpoints: visa
 - [ ] API documents - error handling 

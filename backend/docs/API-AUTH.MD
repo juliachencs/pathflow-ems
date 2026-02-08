@@ -23,7 +23,7 @@ Response body:
   success: true;
   data: {
     username: string;
-    profile: DEFAULT_PROFILE_URL; //"https://api.dicebear.com/9.x/bottts/png" 
+    profileImage: DEFAULT_PROFILE_IMAGE_URL; //"https://api.dicebear.com/9.x/bottts/png" 
     employeeId: string;
     accessToken: string;
     role: "USER" | "AMDIN";
@@ -54,7 +54,7 @@ Response body:
   success: true;
   data: {
     username: string;
-    profile: URL | DEFAULT_PROFILE_URL; 
+    profileImage: URL | DEFAULT_PROFILE_IMAGE_URL; 
     employeeId: string;
     accessToken: string;
     role: "USER" | "AMDIN";

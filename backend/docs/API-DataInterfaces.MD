@@ -17,7 +17,7 @@ interface IProfileFull {
     preferredName: string;
   };
 
-  profile: URL; // link to a picture
+  profileImage: URL; // link to a picture
 
   address: {
     street: string;
@@ -63,7 +63,7 @@ interface IProfileFull {
     };
     relationship: string}];
   
-  documents: {
+  visaDocuments: {
     OPT: URL;
     EAD: URL;
     I983: URL;
@@ -151,7 +151,8 @@ If the application is rejected by a HR, it will have a `feedback` field.
 
 ```typescript
 // IBoardingReviewAction
-interface IBoardingReviewAction{ 
+interface IBoardingReviewAction{
+  _id: string; // employeeID
   actionType: "APPROVE" | "REJECT";
   payload: {
     feedback?: string;
@@ -164,13 +165,13 @@ If the HR "REJECT" the employee's boarding application, there will be a `feedbac
 
 ## VISA
 
-An employee with OPT work authorization should submit 4 documents step by step. His VISA Status be in `PROGRESS`, `FINISHED`, `null`, `NA` state. 
+An employee with OPT work authorization should submit 4 documents step by step. His VISA Status be in `PROGRESS`, `FINISHED`, `NR`(not required), `NA` state. 
 
 ```typescript
-type IVisaState = "PROGRESS" | "FINISHED" | null | "NA"
+type IVisaState = "PROGRESS" | "FINISHED" | "NR" | "NA"
 ```  
 
-After an empolyee register, his visa state will be "NA". Because we still have no idea about if the work authorization this employee holds is OPT or not. After he submit his boarding application, if he holds OPT work authorization, the visa status will tranform to "PROGRESS", otherwise "null". The visa status will change to "FINISHED" until he gets all required documents approved. 
+After an empolyee register, his visa state will be "NA". Because we still have no idea about if the work authorization this employee holds is OPT or not. After he submit his boarding application, if he holds OPT work authorization, the visa status will tranform to "PROGRESS", otherwise "NR". The visa status will change to "FINISHED" until he gets all required documents approved. 
 
 </details>
 
@@ -182,7 +183,7 @@ After an empolyee register, his visa state will be "NA". Because we still have n
 ```typescript
 // IVisaStatus 
 interface IVisaStatus {
-  _id: string;
+  _id: string; // employeeID
   state: IVisaState;
   documents: [
     {OPT: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};

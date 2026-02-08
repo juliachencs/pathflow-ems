@@ -30,6 +30,7 @@ The server will be available at: http://localhost:5200
 ## Tech Stack
 - Framework: Express.js
 - Language: TypeScript
+- Database: Mongoose
 - Mail: Nodemailer
 - Auth: JWT (JsonWebToken)
 
