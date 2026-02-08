@@ -1,5 +1,5 @@
 import { Card, message } from "antd";
-import AuthForm, { type FieldConfig } from "../../components/auth/AuthForm";
+import AuthForm, { type FieldConfig } from "../../components/auth/authForm";
 import {
   loginSchema,
   type LoginFormValues,

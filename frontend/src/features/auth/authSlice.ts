@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
 import { login, signup } from "../../apis/auth";
-import type { KnownError } from "../../app/types";
+import type { BoardingStatus, KnownError, UserRole, VisaStatus } from "../../app/types";
 
 interface UserInfo {
     id: string;
     name: string;
     avatar: string | null;
-    role: "USER" | "ADMIN";
-    boarding: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-    visa: "PROGRESS" | "FINISHED" | null | "NA";
+    role: UserRole;
+    boarding: BoardingStatus;
+    visa: VisaStatus;
 }
 interface AuthState {
     isAuthenticated: boolean;
@@ -25,9 +25,9 @@ export interface AuthResponse {
         profileImage: string | null;
         employeeId: string;
         accessToken: string;
-        role: "USER" | "ADMIN";
-        boarding: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-        visa: "PROGRESS" | "FINISHED" | null | "NA";
+        role: UserRole;
+        boarding: BoardingStatus;
+        visa: VisaStatus;
     }
 }
 
