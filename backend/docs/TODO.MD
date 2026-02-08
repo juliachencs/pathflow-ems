@@ -1,4 +1,5 @@
 # TODO
+# Phase1
 
 ## Stage1
 - [x] setup vsc-project
@@ -10,18 +11,29 @@
 
 ## Stage2
 - [x] setup the routers
-- [ ] Auth verification middleware
-- [ ] Role verification middleware
-- [ ] Models (database)
-- [ ] endpoints: auth
-- [ ] endpoints: registration
-- [ ] endpoints: profile
 - [x] API documents - happy pass
+- [ ] endpoints: auth
 
 ## Stage3
+- [ ] Models (database)
+
+## Stage4
+- [ ] endpoints: profile/me
+- [ ] endpoints: boarding/me
+- [ ] endpoints: visa/me
+
+## Stage5
+- [ ] endpoints: registration
+- [ ] endpoints: profile
+
+## Stage6
 - [ ] endpoints: boarding
 - [ ] endpoints: visa
-- [ ] API documents - error handling 
+  
+## Stage7
+- [ ] Auth verification middleware
+- [ ] Role verification middleware
 
-## Phase4 
- 
+# Phase2 
+- [ ] Test with frontend
+- [ ] Error handling 
