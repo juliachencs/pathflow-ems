@@ -1,19 +1,28 @@
-import { Card } from "antd";
+import { Card, message } from "antd";
 import AuthForm, { type FieldConfig } from "../../components/auth/AuthForm";
 import {
   registerSchema,
   type RegisterFormValues,
 } from "../../features/auth/authSchema";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
+import { registerUser } from "../../features/auth/authSlice";
 
 const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const registerToken = searchParams.get("registerToken");
+  const registerToken = searchParams.get("registerToken")?? '';
+  const dispatch = useDispatch<AppDispatch>();
 
   const onFinish = async (data: RegisterFormValues) => {
-    console.log({...data, token: registerToken});
+    try {
+      await dispatch(registerUser({ ...data, registerToken: registerToken })).unwrap();
+      message.success("You have successfully logged in!", 3);
+    } catch (error) {
+      console.log(error);
+      // TODO: handle error
+    }
   };
-
   const fields: FieldConfig<RegisterFormValues>[] = [
     {
       name: "username",

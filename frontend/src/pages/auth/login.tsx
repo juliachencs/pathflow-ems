@@ -1,25 +1,38 @@
-import { Card } from "antd";
+import { Card, message } from "antd";
 import AuthForm, { type FieldConfig } from "../../components/auth/AuthForm";
-import { loginSchema, type LoginFormValues } from "../../features/auth/authSchema";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "../../features/auth/authSchema";
+import { loginUser } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const onFinish = async (data: LoginFormValues) => {
-    console.log(data);
+    try {
+      await dispatch(loginUser(data)).unwrap();
+      message.success("You have successfully logged in!", 3);
+    } catch (error) {
+        console.log(error);
+        // TODO: handle error
+    }
   };
 
   const fields: FieldConfig<LoginFormValues>[] = [
-        {
-          name: "username",
-          label: "Username",
-          placeholder: "Enter your username",
-        },
-        {
-          name: "password",
-          label: "password",
-          placeholder: "Enter your password",
-          type: "password",
-        },
-      ]
+    {
+      name: "username",
+      label: "Username",
+      placeholder: "Enter your username",
+    },
+    {
+      name: "password",
+      label: "password",
+      placeholder: "Enter your password",
+      type: "password",
+    },
+  ];
 
   return (
     <Card
