@@ -1,4 +1,3 @@
-
 # The API of PathFlowEMS Backend (Employee)
 
 The following endpoints only open to employee users.

@@ -1,3 +1,7 @@
+import {
+  getRegistrationsService,
+  sendInvitationService,
+} from "@/services/hr/registrations";
 import type { Request, Response, NextFunction } from "express";
 
 export async function controller_fn(
@@ -8,28 +12,38 @@ export async function controller_fn(
   console.log("Get Request:", req.originalUrl);
 }
 
-export async function invite(
+export async function sendInvitation(
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
+  console.log("Get Request to send invitation:", req.body);
   try {
-    console.log("request to invite:", req.body);
-
-    // request validation
-    const isValid = hasAllRequiredFields<{ name: string; email: string }>(
-      req.body,
-      ["name", "email"],
-    );
-    if (!isValid) {
-      throw new HttpBadRequestError<void>({
-        code: "INVITE_BAD_REQUEST",
-      });
-    }
-
     const { name, email } = req.body;
-    await inviteService(name, email);
-    res.status(204).send();
+    const result = await sendInvitationService(name, email);
+    res.status(200).json({
+      success: true,
+      message: "An invitation has been sent to :" + email,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getRegistrations(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  console.log("Get request for registration history.");
+  try {
+    const result = await getRegistrationsService();
+    res.status(200).json({
+      success: true,
+      message: "You have got all invitations",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
@@ -39,8 +53,8 @@ const HRController = {
   getProfile: controller_fn,
   getProfiles: controller_fn,
 
-  getRegistrations: controller_fn,
-  sendInvitation: controller_fn,
+  getRegistrations: getRegistrations,
+  sendInvitation: sendInvitation,
 
   getBoardings: controller_fn,
   getBoarding: controller_fn,

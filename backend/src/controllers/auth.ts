@@ -1,8 +1,4 @@
 import { loginService, registerService } from "@/services/auth";
-import { type ISuccessResponse } from "@/types/common";
-import { HttpBadRequestError } from "@/types/http.errors";
-import type { IAuthRespond } from "@/types/response.interface";
-import { hasKeys } from "@/utils/utils";
 import type { Request, Response, NextFunction } from "express";
 
 export async function login(
@@ -11,11 +7,6 @@ export async function login(
   next: NextFunction,
 ): Promise<void> {
   try {
-    // validate the request
-    if (!hasKeys(req.body, ["username", "password"])) {
-      throw new HttpBadRequestError("LOGIN_BAD_REQUEST");
-    }
-
     const { username, password } = req.body;
 
     const result = await loginService(username, password);
@@ -37,13 +28,10 @@ export async function signout(
 ): Promise<void> {
   try {
     console.log("Request to sign out");
-    // TODO? add refresh token related logic here
-    const result: ISuccessResponse<void> = {
+    res.status(200).json({
       success: true,
       message: "You have signed out!",
-    };
-
-    res.status(200).json(result);
+    });
   } catch (error) {
     next(error);
   }
@@ -56,17 +44,25 @@ export async function register(
 ): Promise<void> {
   try {
     console.log("request to register:", req.body);
+    const { username, password, email, registerToken } = req.body;
 
-    const { username, password, registerToken } = req.body;
-
-    const result: IAuthRespond = await registerService(
+    const result = await registerService(
       username,
       password,
+      email,
       registerToken,
     );
 
-    res.status(200).json(result);
+    res.status(200).json({
+      success: true,
+      message: "You have sucessful created an account!",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
 }
+
+const AuthController = { login, signout, register };
+
+export default AuthController;

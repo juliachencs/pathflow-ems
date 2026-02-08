@@ -1,100 +1,102 @@
-import sendInvitation from "@/configs/email";
-import transporter from "@/configs/email";
-import { Registration } from "@/models/registrations";
-import { User } from "@/models/acounts";
-import { EamilError } from "@/types/email.errors";
+import { Registration } from "@/models/registration";
+import { Account } from "@/models/account";
+import { Employee } from "@/models/employee";
 import {
   HttpBadRequestError,
   HttpConfilctError,
   HttpNotFoundError,
+  HttpServerError,
 } from "@/types/http.errors";
-import type { IRegistration } from "@/types/registration.interface";
-import type { IAuthRespond } from "@/types/response.interface";
-import type { IUser } from "@/types/user.interface";
-import { generateToken } from "@/utils/jwt";
 import bcrypt from "bcrypt";
-import type { HydratedDocument } from "mongoose";
+import { generateToken, hashPassWord } from "@/utils/utils";
 
-export async function loginService(
-  username: string,
-  password: string,
-): Promise<IAuthRespond> {
-  const user: HydratedDocument<IUser> | null = await User.findOne({ username });
-
-  if (!user) {
-    throw new HttpNotFoundError({ code: "LOGIN_NOT_FOUND" });
+export async function loginService(username: string, password: string) {
+  // find the account
+  const account = await Account.findOne({ username: username }).exec();
+  if (!account) {
+    throw new HttpNotFoundError("LOGIN_NOT_FOUND");
   }
 
-  const passwordMatch: boolean = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatch) {
-    throw new HttpBadRequestError<void>({
-      code: "LOGIN_UNMATCH",
-    });
+  //  check password
+  const isMatch = await bcrypt.compare(password, account.password);
+  if (!isMatch) {
+    throw new HttpBadRequestError("LOGIN_UNMATCH");
   }
 
-  const token = generateToken(user);
+  // find the employee
+  const profile = await Employee.findById(account.employeeId, "info").exec();
+  if (!profile) {
+    throw new HttpServerError("LOGIN_NOT_FOUND_EMPLOYEE");
+  }
+
+  const payload = {
+    role: account.role,
+    accountId: account._id,
+    empolyeeId: account.employeeId,
+  };
+
+  const token = generateToken(payload);
 
   return {
-    role: user.role,
-    token: token,
+    username: username,
+    role: account.role,
+    accessToken: token,
+    ...profile,
   };
-}
-
-export async function inviteService(
-  name: string,
-  email: string,
-): Promise<void> {
-  const hasEmail: IRegistration | null = await Registration.findOne({ email });
-
-  if (hasEmail) {
-    // throw error
-  }
-
-  const uniqueToken = crypto.randomUUID();
-  // TODO: await the email send
-  try {
-    await sendInvitation(email, name, uniqueToken);
-  } catch (error) {
-    //https://nodemailer.com/errors
-
-    throw new EamilError<typeof error>(error);
-  }
-
-  const registration = new Registration({
-    name,
-    email,
-    token: uniqueToken,
-  });
-
-  await registration.save();
 }
 
 export async function registerService(
   username: string,
   password: string,
-  register_token: string,
-): Promise<IAuthRespond> {
-  // check if username exists
-  const hasUser: IUser | null = await User.findOne({ username });
-  if (hasUser) {
-    throw new HttpConfilctError({ code: "REGISTER_USERNAME_CONFLICT" });
-  }
-  // TODO: check the token is valid
+  email: string,
+  registerToken: string,
+) {
+  // validate register Token
+  const registration = await Registration.findOne({
+    registerToken: registerToken,
+  }).exec();
 
-  // create and save user
-  const saltRounds = 10;
-  const hash = bcrypt.hashSync(password, saltRounds);
-  const user = new User({
+  if (!registration) {
+    throw new HttpBadRequestError("REGISTER_TOKEN_NOT_FOUND");
+  }
+
+  if (registration.isExpired) {
+    throw new HttpBadRequestError("REGISTER_TOKEN_EXPIRED");
+  }
+
+  // validate the username
+  const isExist = await Account.findOne({ username: username }).exec();
+  if (isExist) {
+    throw new HttpConfilctError("REGISTER_CONFLICT");
+  }
+
+  // create an empty employee
+  const employee = new Employee({ profile: { email: registration.email } });
+  await employee.save();
+
+  // create an account
+  const hashPW = await hashPassWord(password);
+  const account = new Account({
     username: username,
-    password: hash,
+    password: hashPW,
+    email: email,
+    employeeId: employee._id,
   });
 
-  await user.save();
-  const jwtToken = generateToken(user);
+  await account.save();
+
+  const payload = {
+    role: account.role,
+    accountId: account._id,
+    empolyeeId: account.employeeId,
+  };
+
+  const token = generateToken(payload);
 
   return {
-    role: user.role,
-    token: jwtToken,
+    username: username,
+    role: account.role,
+    accessToken: token,
+    ...employee.info,
   };
 }

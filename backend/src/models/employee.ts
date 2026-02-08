@@ -52,7 +52,7 @@ const workAuthorizationSchema = new Schema(
 const profileSchema = new Schema(
   {
     name: nameSchema,
-    profile: String, // URL
+    profileImage: String, // URL
     address: addressSchema,
     cellPhone: { type: String, required: true },
     workPhone: String,
@@ -187,8 +187,19 @@ const employeeSchema = new Schema(
           };
         },
       },
+
+      info: {
+        get() {
+          return {
+            _id: this._id,
+            profileImage: this.profile?.profileImage,
+            boarding: this.boarding?.state,
+            visa: this.visa?.state,
+          };
+        },
+      },
     }, // vitruals
   },
 );
 
-export const Employees = model("employees", employeeSchema, "employees");
+export const Employee = model("employee", employeeSchema, "employees");

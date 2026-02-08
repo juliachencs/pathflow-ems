@@ -14,8 +14,8 @@
 - [x] API documents - happy pass
 
 ## Stage3
-- [ ] Models (database)
-- [ ] endpoints: auth
+- [x] Models (database)
+- [x] endpoints: auth
 
 ## Stage4
 - [ ] endpoints: profile/me
@@ -23,7 +23,7 @@
 - [ ] endpoints: visa/me
 
 ## Stage5
-- [ ] endpoints: registration
+- [x] endpoints: registration
 - [ ] endpoints: profile
 
 ## Stage6

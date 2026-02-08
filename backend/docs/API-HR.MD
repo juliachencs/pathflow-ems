@@ -75,7 +75,6 @@ Response: The updated registration history
       email: string;
       registerToken: string;
       createAt: string;
-      expireAt: string;
   }]
 }
 ```

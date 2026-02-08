@@ -25,3 +25,28 @@
 | GET    | BOARDING     | USER  | /api/boarding/me           | 获取员工的boarding application                                                        |
 | GET    | VISA         | USER  | /api/visa/me               | 获取员工的visa信息                                                                    |
 | PATCH  | VISA         | USER  | /api/visa/me               | 提交OPT/EAD/I983/I20文件链接                                                          |
+
+
+### Request 
+
+Request to register
+
+```typescript
+{
+  password: string;
+  email: string;
+  registerToken: string;
+}
+```
+
+Request to login
+```typescript
+{
+  username: string;
+  password: string;
+}
+```
+
+
+Requestion 
+IProfileFull

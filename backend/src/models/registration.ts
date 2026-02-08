@@ -4,15 +4,22 @@ const registrationSchema = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
-    token: { type: String, required: true },
+    registerToken: { type: String, required: true, index: true },
     createAt: { type: Date, required: true, default: Date.now },
   },
   {
     virtuals: {
       isExpired: {
         get() {
-          const expirationTimeInMs = 3 * 60 * 1000; // e.g., 3 hours
+          const expirationTimeInMs = 3 * 60 * 60 * 1000; // e.g., 3 hours
           return Date.now() - this.createAt.getTime() > expirationTimeInMs;
+        },
+      },
+      expireAt: {
+        get() {
+          const hoursToAddInMs = 3 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
+          const newTime = this.createAt.getTime() + hoursToAddInMs;
+          return new Date(newTime);
         },
       },
     },
@@ -20,7 +27,7 @@ const registrationSchema = new Schema(
 );
 
 export const Registration = model(
-  "registrations", // model name
+  "registration", // model name
   registrationSchema, // schema
   "registrations", // collection name
 );

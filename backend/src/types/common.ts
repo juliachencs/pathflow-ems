@@ -1,4 +1,6 @@
-export const Roles = ["ADMIN", "USERS"] as const;
+import type { Types } from "mongoose";
+
+export const Roles = ["ADMIN", "USER"] as const;
 export type Role = (typeof Roles)[number];
 
 // work authorization type
@@ -32,6 +34,6 @@ export type VisaState = (typeof VisaStates)[number];
 
 export interface JWTTokenPayload {
   role: Role;
-  accountID: string;
-  empolyeeID?: string;
+  accountId: Types.ObjectId;
+  empolyeeId: Types.ObjectId;
 }
