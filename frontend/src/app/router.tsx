@@ -16,16 +16,15 @@ import AdminGuard from "../components/guard/RoleGuard";
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route path="/onboarding" element={<Boarding />}></Route>
     <Route element={<GuestLayout />}>
       <Route element={<GuestGuard />}>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Register />}></Route>
       </Route>
     </Route>
-    <Route element={<AuthGuard />}>
+    {/* <Route element={<AuthGuard />}> */}
       <Route element={<DefaultLayout />}>
-        {/* <Route path="/onboarding" element={<Boarding />}></Route> */}
+        <Route path="/onboarding" element={<Boarding />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route element={<AdminGuard />}>
           <Route path="/hr/profiles" element={<Dashboard />}></Route>
@@ -37,7 +36,7 @@ const routes = createRoutesFromElements(
           <Route path="/visa/me" element={<Dashboard />}></Route>
         </Route>
       </Route>
-    </Route>
+    {/* </Route> */}
   </Route>,
 );
 

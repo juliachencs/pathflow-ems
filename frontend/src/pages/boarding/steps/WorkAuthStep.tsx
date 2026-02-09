@@ -18,6 +18,7 @@ export default function AuthorizationStep() {
       <RHFRadioGroup
         name="isUSCitizen"
         label="Permanent resident or citizen of the U.S.?"
+        required
         control={control}
         options={[
           {
@@ -34,6 +35,7 @@ export default function AuthorizationStep() {
         <RHFRadioGroup
           name="greenCardOrCitizen"
           label="You are Green Card Holder or Citizen?"
+          required
           control={control}
           options={[
             {
@@ -52,6 +54,7 @@ export default function AuthorizationStep() {
         <RHFRadioGroup
           name="workAuthorization"
           label="What is your work authorization?"
+          required
           control={control}
           options={[
             //"L2", "F1", "H4", "Other"
@@ -81,8 +84,8 @@ export default function AuthorizationStep() {
 
       {visaType && (
         <>
-          <RHFDatePicker name="visaStartDate" control={control} />
-          <RHFDatePicker name="visaEndDate" control={control} />
+          <RHFDatePicker name="visaStartDate" label="Start Date" required control={control} />
+          <RHFDatePicker name="visaEndDate" label="End Date" required control={control} />
         </>
       )}
 
@@ -91,6 +94,7 @@ export default function AuthorizationStep() {
           name="optReceiptUrl"
           control={control}
           label="Upload your OPT Receipt"
+          required
           placeholder="Provide URL"
         />
       )}
@@ -100,7 +104,9 @@ export default function AuthorizationStep() {
           name="otherVisaTitle"
           control={control}
           label="Specify your Visa Title"
+          required
           placeholder="Visa Title"
+          style={{maxWidth: "30%"}}
         />
       )}
     </>

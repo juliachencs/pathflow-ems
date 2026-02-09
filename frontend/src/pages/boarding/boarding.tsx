@@ -9,7 +9,7 @@ import {
 import { FormProvider, useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Title from "antd/es/typography/Title";
-import { Button, Divider, Steps } from "antd";
+import { Button, Divider, Form, Steps, Typography } from "antd";
 import ContactStep from "./steps/ContactStep";
 import AuthorizationStep from "./steps/WorkAuthStep";
 import ReferenceStep from "./steps/ReferenceStep";
@@ -102,7 +102,7 @@ const Boarding: React.FC = () => {
   ];
 
   const onChange = (value: number) => {
-    console.log("onChange:", value);
+    if (value >= step) return;
     setStep(value);
   };
 
@@ -119,18 +119,53 @@ const Boarding: React.FC = () => {
   };
   return (
     <>
-      <Title level={3} style={{ textAlign: "center", paddingBottom: "30px" }}>
-        Onboarding Process
-      </Title>
-      <Steps current={step} onChange={onChange} items={steps} />
-      <Divider />
-      <FormProvider {...methods}>
-        <CurrComponent />
-      </FormProvider>
+      <div
+        style={{
+          background: "#fff",
+          padding: 30,
+          borderRadius: 8,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+          marginBottom: 30,
+        }}
+      >
+        <Title
+          level={2}
+          style={{
+            textAlign: "center",
+            fontWeight: 600,
+          }}
+        >
+          Onboarding Process
+        </Title>
+        <Typography.Text
+          type="secondary"
+          style={{
+            display: "block",
+            textAlign: "center",
+            fontSize: 14,
+            marginBottom: 50,
+          }}
+        >
+          Before continiue, please complete your information step by step
+        </Typography.Text>
+        <Steps current={step} onChange={onChange} items={steps} />
+        <Divider style={{ marginBottom: 60 }} />
+        <Form layout="vertical">
+          <FormProvider {...methods}>
+            <CurrComponent />
+          </FormProvider>
+        </Form>
 
-      <Button type="primary" onClick={onNextStep}>
-        {buttonText}
-      </Button>
+        <div>
+          <Button
+            type="primary"
+            onClick={onNextStep}
+            style={{ padding: "6px 24px", fontWeight: 500 }}
+          >
+            {buttonText}
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

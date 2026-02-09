@@ -20,7 +20,7 @@ const DefaultLayout: React.FC = () => {
     >
       <DefaultNav />
 
-      <Content style={{ padding: "0 48px" }}>
+      <Content style={{ maxWidth: 900, margin: "0 auto", padding: "40px 20px" }}>
         <Outlet />
       </Content>
 

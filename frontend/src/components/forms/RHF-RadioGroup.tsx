@@ -12,6 +12,7 @@ type RHFRadioGroupProps<T extends FieldValues> = {
   options: RadioOption[];
   label?: string;
   disabled?: boolean;
+  required?: boolean;
 };
 
 export default function RHFRadioGroup<T extends FieldValues>({
@@ -20,6 +21,7 @@ export default function RHFRadioGroup<T extends FieldValues>({
   options,
   label,
   disabled = false,
+  required = false,
 }: RHFRadioGroupProps<T>) {
   return (
     <Controller
@@ -30,6 +32,7 @@ export default function RHFRadioGroup<T extends FieldValues>({
           label={label}
           validateStatus={fieldState.error ? "error" : ""}
           help={fieldState.error?.message}
+          required={required}
         >
           <Radio.Group
             {...field}

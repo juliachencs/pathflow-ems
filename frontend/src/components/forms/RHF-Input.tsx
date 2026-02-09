@@ -8,6 +8,8 @@ type RHFInputProps<T extends FieldValues> = {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
+  required?: boolean;
+  style?: React.CSSProperties
 };
 
 export default function RHFInput<T extends FieldValues>({
@@ -15,7 +17,9 @@ export default function RHFInput<T extends FieldValues>({
   control,
   label,
   placeholder,
-  disabled,
+  disabled = false,
+  required = false,
+  style,
 }: RHFInputProps<T>) {
   return (
     <Controller
@@ -26,6 +30,8 @@ export default function RHFInput<T extends FieldValues>({
           label={label}
           validateStatus={fieldState.error ? "error" : ""}
           help={fieldState.error?.message}
+          required={required}
+          style={style}
         >
           <Input {...field} placeholder={placeholder} disabled={disabled} />
         </Form.Item>

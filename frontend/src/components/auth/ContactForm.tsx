@@ -12,24 +12,24 @@ export default function ContactForm({ namePrefix }: ContactFieldsProps) {
     <>
       <RHFInput
         name={`${namePrefix}.firstName`}
-        label="First Name"
+        placeholder="First Name"
         control={control}
       />
       <RHFInput
         name={`${namePrefix}.lastName`}
-        label="Lastname"
+        placeholder="Lastname"
         control={control}
       />
       <RHFInput
         name={`${namePrefix}.middleName`}
-        label="Middlename"
+        placeholder="Middlename"
         control={control}
       />
-      <RHFInput name={`${namePrefix}.phone`} label="Phone" control={control} />
-      <RHFInput name={`${namePrefix}.email`} label="Email" control={control} />
+      <RHFInput name={`${namePrefix}.phone`} placeholder="Phone" control={control} />
+      <RHFInput name={`${namePrefix}.email`} placeholder="Email" control={control} />
       <RHFInput
         name={`${namePrefix}.relationship`}
-        label="Relationship"
+        placeholder="Relationship"
         control={control}
       />
     </>

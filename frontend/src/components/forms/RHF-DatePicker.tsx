@@ -6,12 +6,14 @@ type RHFDatePickerProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   label?: string;
+  required?: boolean;
 };
 
 export default function RHFDatePicker<T extends FieldValues>({
   name,
   control,
   label,
+  required = false,
 }: RHFDatePickerProps<T>) {
   return (
     <Controller
@@ -22,6 +24,7 @@ export default function RHFDatePicker<T extends FieldValues>({
           label={label}
           validateStatus={fieldState.error ? "error" : ""}
           help={fieldState.error?.message}
+          required={required}
         >
           <DatePicker
             {...field}
