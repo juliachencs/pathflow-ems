@@ -8,7 +8,6 @@ export default function SummaryStep() {
   const { getValues } = useFormContext<BoardingFormValues>();
   const values: BoardingFormValues = getValues();
   const mapped: IProfileFull = boardingProfileMapper(values);
-  console.log(values);
   return (
     <>
     <ProfileLayout values={mapped} bordered/>

@@ -28,7 +28,6 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
           <EmergencyContact values={values} bordered={bordered} />
         )}
 
-        {/* TODO: Files */}
         <UploadedDocs values={values} bordered={bordered} />
       </div>
     </>

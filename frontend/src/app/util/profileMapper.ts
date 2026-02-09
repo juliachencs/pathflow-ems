@@ -24,10 +24,10 @@ export const boardingProfileMapper = (values: BoardingFormValues): IProfileFull 
             endDate: values.visaEndDate,
             url: values.optReceiptUrl,
         },
-        reference: {
+        reference: values.reference.firstName ? {
             person: { ...values.reference },
             relationship: values.reference.relationship
-        },
+        } : undefined,
         emergencyContacts:
             values.emergencyContacts?.map((ec): ContactInfo => {
                 return {

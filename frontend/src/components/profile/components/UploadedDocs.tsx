@@ -1,42 +1,50 @@
-import { Button, Card, Descriptions, Space } from "antd";
+import { Card, Descriptions } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
+import DocItems from "./DocItems";
+
+const uploadedDocsConfig: UploadedDocConfig<ProfileLayoutProps["values"]>[] = [
+  {
+    label: "Profile Picture",
+    getUrl: (v) => v.profileImage,
+  },
+  {
+    label: "OPT Receipt",
+    getUrl: (v) => v.visaDocuments?.OPT,
+  },
+  {
+    label: "EAD Card",
+    getUrl: (v) => v.visaDocuments?.EAD,
+  },
+  {
+    label: "I-983 Form",
+    getUrl: (v) => v.visaDocuments?.I983,
+  },
+  {
+    label: "I-20 Form",
+    getUrl: (v) => v.visaDocuments?.I20,
+  },
+];
+
+type UploadedDocConfig<T> = {
+  label: string;
+  getUrl: (values: T) => string | undefined;
+};
 
 const UploadedDocs: React.FC<ProfileLayoutProps> = ({ values }) => {
-  //TODO Make it fully reusable
   return (
     <Card title="Uploaded Documents">
       <Descriptions column={1} size="small" bordered>
-        {values.profileImage && (
-          <Descriptions.Item label="Profile Picture">
-            <Space size="middle">
-              <Button
-                type="link"
-                onClick={() => window.open(values.profileImage, "_blank")}
-              >
-                Preview
-              </Button>
-              <Button type="link" href={values.profileImage}>
-                Download
-              </Button>
-            </Space>
-          </Descriptions.Item>
-        )}
-
-        {values.visaDocuments?.OPT && (
-          <Descriptions.Item label="OPT Receipt">
-            <Space>
-              <Button
-                type="link"
-                onClick={() => window.open(values.visaDocuments?.OPT, "_blank")}
-              >
-                Preview
-              </Button>
-              <Button type="link" href={values.visaDocuments?.OPT}>
-                Download
-              </Button>
-            </Space>
-          </Descriptions.Item>
-        )}
+        {uploadedDocsConfig.map((doc, index) => {
+          return (
+            (doc.getUrl(values)) && (
+              <DocItems
+                key={index}
+                label={doc.label}
+                url={doc.getUrl(values)}
+              />
+            )
+          );
+        })}
       </Descriptions>
     </Card>
   );

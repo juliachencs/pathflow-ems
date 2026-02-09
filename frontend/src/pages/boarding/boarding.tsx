@@ -113,8 +113,7 @@ const Boarding: React.FC = () => {
     if (step < 4) {
       setStep((prev) => prev + 1);
     } else {
-      console.log("done");
-      console.log(methods.getValues());
+      console.log("done", methods.getValues());
     }
   };
   return (
