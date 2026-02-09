@@ -1,9 +1,9 @@
 import { Card, message } from "antd";
-import AuthForm, { type FieldConfig } from "../../components/auth/authForm";
+import AuthForm, { type FieldConfig } from "../../components/auth/AuthForm";
 import {
   loginSchema,
   type LoginFormValues,
-} from "../../features/auth/authSchema";
+} from "../../app/schema/authSchema";
 import { loginUser } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";

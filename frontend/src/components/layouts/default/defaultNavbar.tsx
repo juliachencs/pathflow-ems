@@ -59,6 +59,7 @@ const DefaultNav: React.FC = () => {
     key: "user",
     label: currentUser?.name ?? "User",
     icon: <UserOutlined />,
+    // TODO?: Shall I use dropdown insted?
     children: [
       {
         key: "profile",

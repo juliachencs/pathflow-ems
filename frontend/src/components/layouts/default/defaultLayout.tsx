@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import backgroundImage from "@/assets/background.jpg";
 import { Footer } from "antd/es/layout/layout";
-import DefaultNav from "./defaultNavbar";
+import DefaultNav from "./DefaultNavbar";
 
 const { Content } = Layout;
 

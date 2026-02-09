@@ -4,34 +4,32 @@ import type { Control, FieldValues, Path } from "react-hook-form";
 
 type RHFInputProps<T extends FieldValues> = {
   name: Path<T>;
-  control: Control<T>;
-  label: string;
+  control?: Control<T>;
+  label?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 
-const RHFInput = <T extends FieldValues>({
+export default function RHFInput<T extends FieldValues>({
   name,
   control,
   label,
   placeholder,
-}: RHFInputProps<T>) => {
+  disabled,
+}: RHFInputProps<T>) {
   return (
-    <>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field, fieldState }) => (
-          <Form.Item
-            label={label}
-            validateStatus={fieldState.error ? "error" : ""}
-            help={fieldState.error?.message}
-          >
-            <Input {...field} placeholder={placeholder} />
-          </Form.Item>
-        )}
-      />
-    </>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState }) => (
+        <Form.Item
+          label={label}
+          validateStatus={fieldState.error ? "error" : ""}
+          help={fieldState.error?.message}
+        >
+          <Input {...field} placeholder={placeholder} disabled={disabled} />
+        </Form.Item>
+      )}
+    />
   );
 }
-
-export default RHFInput;

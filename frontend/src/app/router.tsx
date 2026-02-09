@@ -3,18 +3,20 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import GuestLayout from "../components/layouts/guestLayout";
-import Login from "../pages/auth/login";
-import Register from "../pages/auth/register";
-import GuestGuard from "../components/guard/guestGuard";
-import DefaultLayout from "../components/layouts/default/defaultLayout";
-import Boarding from "../pages/boarding/boarding";
-import OnboardGuard from "../components/guard/onboardGuard";
-import Dashboard from "../pages/dashBoard";
-import AuthGuard from "../components/guard/authGuard";
+import GuestLayout from "../components/layouts/GuestLayout";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import GuestGuard from "../components/guard/GuestGuard";
+import DefaultLayout from "../components/layouts/default/DefaultLayout";
+import Boarding from "../pages/boarding/Boarding";
+import OnboardGuard from "../components/guard/OnboardGuard";
+import Dashboard from "../pages/DashBoard";
+import AuthGuard from "../components/guard/AuthGuard";
+import AdminGuard from "../components/guard/RoleGuard";
 
 const routes = createRoutesFromElements(
   <Route>
+    <Route path="/onboarding" element={<Boarding />}></Route>
     <Route element={<GuestLayout />}>
       <Route element={<GuestGuard />}>
         <Route path="/login" element={<Login />}></Route>
@@ -23,10 +25,16 @@ const routes = createRoutesFromElements(
     </Route>
     <Route element={<AuthGuard />}>
       <Route element={<DefaultLayout />}>
-        <Route path="/onboarding" element={<Boarding />}></Route>
+        {/* <Route path="/onboarding" element={<Boarding />}></Route> */}
         <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route element={<AdminGuard />}>
+          <Route path="/hr/profiles" element={<Dashboard />}></Route>
+          <Route path="/hr/visas" element={<Dashboard />}></Route>
+          <Route path="/hr/hiring" element={<Dashboard />}></Route>
+        </Route>
         <Route element={<OnboardGuard />}>
-          <Route></Route>
+          <Route path="/profile/me" element={<Dashboard />}></Route>
+          <Route path="/visa/me" element={<Dashboard />}></Route>
         </Route>
       </Route>
     </Route>
