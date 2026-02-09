@@ -31,7 +31,7 @@ interface IProfileFull {
   workPhone: string;
   email: string;
   SSN: string;
-  dob: string; // date of birth
+  dob: Date; // date of birth
   gender: string;
 
   workAuthorization:{
