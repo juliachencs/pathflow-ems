@@ -53,7 +53,7 @@ export async function register(
       registerToken,
     );
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "You have sucessful created an account!",
       data: result,

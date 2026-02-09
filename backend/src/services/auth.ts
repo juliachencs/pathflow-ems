@@ -24,10 +24,13 @@ export async function loginService(username: string, password: string) {
   }
 
   // find the employee
-  const profile = await Employee.findById(account.employeeId, "info").exec();
+  const profile = await Employee.findById(account.employeeId).exec();
   if (!profile) {
     throw new HttpServerError("LOGIN_NOT_FOUND_EMPLOYEE");
   }
+
+  const info = profile.info;
+  console.log(info);
 
   const payload = {
     role: account.role,
@@ -41,7 +44,7 @@ export async function loginService(username: string, password: string) {
     username: username,
     role: account.role,
     accessToken: token,
-    ...profile,
+    ...info,
   };
 }
 
@@ -60,7 +63,8 @@ export async function registerService(
     throw new HttpBadRequestError("REGISTER_TOKEN_NOT_FOUND");
   }
 
-  if (registration.isExpired) {
+  const threeHoursInMs = 3 * 60 * 60 * 1000;
+  if (registration.updatedAt.getTime() < Date.now() - threeHoursInMs) {
     throw new HttpBadRequestError("REGISTER_TOKEN_EXPIRED");
   }
 
@@ -70,7 +74,7 @@ export async function registerService(
     throw new HttpConfilctError("REGISTER_CONFLICT");
   }
 
-  // create an empty employee
+  // create an employee with the email
   const employee = new Employee({ profile: { email: registration.email } });
   await employee.save();
 
@@ -82,15 +86,18 @@ export async function registerService(
     email: email,
     employeeId: employee._id,
   });
-
   await account.save();
 
+  // update the registeration information
+  registration.employeeId = employee._id;
+  registration.save();
+
+  // generate jwt token
   const payload = {
     role: account.role,
     accountId: account._id,
     empolyeeId: account.employeeId,
   };
-
   const token = generateToken(payload);
 
   return {

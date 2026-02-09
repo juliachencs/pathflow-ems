@@ -1,7 +1,7 @@
 import {
   getRegistrationsService,
   sendInvitationService,
-} from "@/services/hr/registrations";
+} from "@/services/admin/registrations";
 import type { Request, Response, NextFunction } from "express";
 
 export async function controller_fn(
@@ -20,11 +20,15 @@ export async function sendInvitation(
   console.log("Get Request to send invitation:", req.body);
   try {
     const { name, email } = req.body;
-    const result = await sendInvitationService(name, email);
+    const { history, isResent } = await sendInvitationService(name, email);
+    const messages = {
+      resent: "We have sent an invitation to :" + email + ".",
+      sent: "We have re-sent an invitation to :" + email + ".",
+    };
     res.status(200).json({
       success: true,
-      message: "An invitation has been sent to :" + email,
-      data: result,
+      message: isResent ? messages["resent"] : messages["sent"],
+      data: history,
     });
   } catch (error) {
     next(error);
@@ -49,12 +53,12 @@ export async function getRegistrations(
   }
 }
 
-const HRController = {
+const adminController = {
   getProfile: controller_fn,
   getProfiles: controller_fn,
 
   getRegistrations: getRegistrations,
-  sendInvitation: sendInvitation,
+  invitate: sendInvitation,
 
   getBoardings: controller_fn,
   getBoarding: controller_fn,
@@ -64,4 +68,4 @@ const HRController = {
   getVisa: controller_fn,
   patchVisa: controller_fn,
 };
-export default HRController;
+export default adminController;

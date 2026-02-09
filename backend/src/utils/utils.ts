@@ -33,3 +33,9 @@ export function hasKeys<T>(
 
   return true;
 }
+
+export const registerLink = (token: string) => {
+  const base_url = process.env.FORNTEND_BASE_URL || "http://localhost:5520";
+  const link = base_url + `/register?registerToken=${token}`;
+  return link;
+};

@@ -1,3 +1,4 @@
+import { registerLink } from "@/utils/utils";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -14,9 +15,7 @@ export const sendInvitation = async (
   name: string,
   registerToken: string,
 ) => {
-  const frontend_base_url =
-    process.env.FORNTEND_BASE_URL || "http://localhost:5520";
-  const link = frontend_base_url + `/register?registerToken=${registerToken}`;
+  const link = registerLink(registerToken);
   const text_email = `
 Dear ${name},
 We are so excited to have you join us at PathFlowEMS!

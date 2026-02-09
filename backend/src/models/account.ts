@@ -9,4 +9,4 @@ const accountSchema = new Schema({
   employeeId: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
 });
 
-export const Account = model("account", accountSchema, "accounts");
+export const Account = model("Account", accountSchema, "accounts");

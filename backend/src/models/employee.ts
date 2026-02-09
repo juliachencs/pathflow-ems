@@ -62,7 +62,7 @@ const profileSchema = new Schema(
       description: "the email received registration token",
     },
     SSN: { type: String, requried: true },
-    dob: { type: String, description: "Date of Birth", required: true },
+    dob: { type: Date, description: "Date of Birth", required: true },
     gender: { type: String, description: "male" },
     workAuthorization: workAuthorizationSchema,
     reference: {
@@ -105,7 +105,7 @@ const employeeSchema = new Schema(
         enum: ApplyStates,
         required: true,
         default: "UNSUBMIT",
-        index: true,
+        index: true, // for fast query all employees upto its visa states
       },
       feedback: String,
     },
@@ -128,66 +128,6 @@ const employeeSchema = new Schema(
   },
   {
     virtuals: {
-      fullName: {
-        get() {
-          return (
-            this.profile?.name?.firstName + " " + this.profile?.name?.lastName
-          );
-        },
-      },
-
-      profileFull: {
-        get() {
-          return { _id: this._id, ...this.profile };
-        },
-      },
-
-      profileSummary: {
-        get() {
-          return {
-            _id: this._id,
-            name: this.profile?.name,
-            SSN: this.profile?.SSN,
-            workAuthorization: this.profile?.workAuthorization,
-            cellPhone: this.profile?.cellPhone,
-            email: this.profile?.email,
-          };
-        },
-      },
-
-      profileCore: {
-        get() {
-          return {
-            _id: this._id,
-            fullName:
-              this.profile?.name?.firstName +
-              " " +
-              this.profile?.name?.lastName,
-            email: this.profile?.email,
-          };
-        },
-      }, // end profileCore
-
-      boardingApp: {
-        get() {
-          return {
-            _id: this._id,
-            state: this.boarding?.state,
-            profile: this.profile,
-            feedback: this.boarding?.feedback,
-          };
-        },
-      },
-
-      visaStatus: {
-        get() {
-          return {
-            _id: this._id,
-            ...this.visa,
-          };
-        },
-      },
-
       info: {
         get() {
           return {
@@ -198,8 +138,8 @@ const employeeSchema = new Schema(
           };
         },
       },
-    }, // vitruals
+    }, // end virtuals
   },
 );
 
-export const Employee = model("employee", employeeSchema, "employees");
+export const Employee = model("Employee", employeeSchema, "employees");

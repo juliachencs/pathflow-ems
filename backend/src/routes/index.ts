@@ -1,22 +1,20 @@
 import { Router } from "express";
-import HRController from "@/controllers/hr";
+import adminController from "@/controllers/admin";
+import userController from "@/controllers/user";
 import authRouter from "@/routes/auth";
-import employeeRouter from "@/routes/employee";
+
 //import hrRouter from "@/routes/hr";
 
 const apiRouter = Router();
 
 apiRouter.use("/auth", authRouter);
 
-// match all URLs that ends with me
-apiRouter.use(["/profile/me", "/visa/me", "/boarding/me"], employeeRouter);
+// api open to employees, i.e. regular users
+apiRouter.get("/profile/me", userController.getProfile);
+apiRouter.put("/profile/me", userController.putProfile);
 
-// match url has patterns: boardings | visas | profiles | registrations
-// apiRouter.use(
-//   ["/registrations", "/boardings", "/profiles", "registrations"],
-//   hrRouter,
-// );
-apiRouter.post("/registrations/invite", HRController.sendInvitation);
-apiRouter.get("/registrations/history", HRController.getRegistrations);
+// api open to hr, i.e. admin users
+apiRouter.post("/registrations/invite", adminController.invitate);
+apiRouter.get("/registrations/history", adminController.getRegistrations);
 
 export default apiRouter;

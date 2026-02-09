@@ -16,7 +16,7 @@ export const ErrorMessages = {
   //INVITATION ERROR
   INVITE_BAD_REQUEST:
     "Please provide the name and email to invite someone to register.",
-
+  INVITE_CONFICT: "This email has been registered.",
   // DB ERROR
   // DB_INVALID_URI: "Sorry, the database uri is invalid!",
 } as const;
