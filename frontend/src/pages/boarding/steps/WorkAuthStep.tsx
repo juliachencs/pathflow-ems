@@ -11,7 +11,17 @@ export default function AuthorizationStep() {
 
   useEffect(() => {
     unregister("workAuthorization");
+    unregister("optReceiptUrl");
+    unregister("otherVisaTitle");
+    unregister("visaStartDate");
+    unregister("visaEndDate");
   }, [isCitizen, unregister]);
+
+  useEffect(() => {
+    unregister("optReceiptUrl");
+    unregister("otherVisaTitle");
+    unregister("greenCardOrCitizen");
+  }, [visaType, unregister]);
 
   return (
     <>
@@ -84,8 +94,18 @@ export default function AuthorizationStep() {
 
       {visaType && (
         <>
-          <RHFDatePicker name="visaStartDate" label="Start Date" required control={control} />
-          <RHFDatePicker name="visaEndDate" label="End Date" required control={control} />
+          <RHFDatePicker
+            name="visaStartDate"
+            label="Start Date"
+            required
+            control={control}
+          />
+          <RHFDatePicker
+            name="visaEndDate"
+            label="End Date"
+            required
+            control={control}
+          />
         </>
       )}
 
@@ -106,7 +126,7 @@ export default function AuthorizationStep() {
           label="Specify your Visa Title"
           required
           placeholder="Visa Title"
-          style={{maxWidth: "30%"}}
+          style={{ maxWidth: "30%" }}
         />
       )}
     </>

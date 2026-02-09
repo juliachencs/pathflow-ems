@@ -85,7 +85,7 @@ const Boarding: React.FC = () => {
     },
     {
       title: "Step 2",
-      content: "Personal & Legal Info",
+      content: "Personal Detail",
     },
     {
       title: "Step 3",
@@ -97,7 +97,7 @@ const Boarding: React.FC = () => {
     },
     {
       title: "Step 5",
-      content: "Review Your Submission",
+      content: "Review",
     },
   ];
 
@@ -143,20 +143,26 @@ const Boarding: React.FC = () => {
             display: "block",
             textAlign: "center",
             fontSize: 14,
-            marginBottom: 50,
+            marginBottom: 30,
           }}
         >
           Before continiue, please complete your information step by step
         </Typography.Text>
-        <Steps current={step} onChange={onChange} items={steps} />
-        <Divider style={{ marginBottom: 60 }} />
+        {/* TODO More dynamic Step handling & further dismantle of Boarding page */}
+        <Steps
+          current={step}
+          onChange={onChange}
+          items={steps}
+          style={{ margin: "30px 30px" }}
+        />
+        <Divider style={{ marginBottom: 40 }} />
         <Form layout="vertical">
           <FormProvider {...methods}>
             <CurrComponent />
           </FormProvider>
         </Form>
 
-        <div>
+        <div style={{ marginTop: 50 }}>
           <Button
             type="primary"
             onClick={onNextStep}

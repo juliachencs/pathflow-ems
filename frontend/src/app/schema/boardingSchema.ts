@@ -47,7 +47,7 @@ export const workAuthSchema = z
     visaEndDate: z.date().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.isUSCitizen && !data.greenCardOrCitizen) {
+    if (data.isUSCitizen === 'yes' && !data.greenCardOrCitizen) {
       console.log(data.greenCardOrCitizen)
       ctx.addIssue({
         code: "custom",
@@ -146,9 +146,7 @@ export const referenceSchema = z.object({
   };
 });
 
-export const onboardingSchema = z.object({
-  identity: identitySchema,
-  contact: contactSchema,
-  workAuth: workAuthSchema,
-  reference: referenceSchema,
-});
+export const onboardingSchema = identitySchema.merge(identitySchema).merge(contactSchema).merge(workAuthSchema).merge(referenceSchema);
+
+
+export type BoardingFormValues = z.infer<typeof onboardingSchema>;
