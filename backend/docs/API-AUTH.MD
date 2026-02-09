@@ -27,7 +27,7 @@ Response body:
     profileImage: DEFAULT_PROFILE_IMAGE_URL; //"https://api.dicebear.com/9.x/bottts/png" 
     employeeId: string;
     accessToken: string;
-    role: "USER" | "AMDIN";
+    role: "USER" | "ADMIN";
     boarding:  "UNSUBMIT";
     visa: "NA"
   }
