@@ -1,4 +1,4 @@
-import { ApplyStates, VisaStates, WorkAuthTypes } from "@/types/common";
+import { ApplyStates, VisaStates, WorkAuthTypes } from "@/types/employee";
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
@@ -136,6 +136,12 @@ const employeeSchema = new Schema(
             boarding: this.boarding?.state,
             visa: this.visa?.state,
           };
+        },
+      },
+
+      profileFull: {
+        get() {
+          return { _id: this._id, ...this.profile };
         },
       },
     }, // end virtuals

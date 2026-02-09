@@ -18,16 +18,20 @@ Response:
 ### PUT /api/profile/me	
 功能：更新员工的信息
 
-Request body: `IProfileFull`
+Request body: `IProfileFull` | `Omit<IProfileFull, "_id">`
 
 Response: updated profile
 
 ```Javascript
 {
   success: true;
-  data: IProfileFull;
+  message: string;
+  data: IProfileFull; // the update profile 
 }
 ```
+
+The server will use the employee ID decoded from the request header by default.
+
 
 ## Boarding
 ### POST /api/boarding/me	

@@ -31,9 +31,10 @@
 - [ ] endpoints: visa
   
 ## Stage7
-- [ ] Auth verification middleware
-- [ ] Role verification middleware
+- [x] Auth verification middleware
+- [x] Role verification middleware
 
 # Phase2 
 - [ ] Test with frontend
 - [ ] Error handling 
+- [ ] Typescript

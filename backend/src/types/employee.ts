@@ -1,5 +1,3 @@
-import type { Types } from "mongoose";
-
 export const Roles = ["ADMIN", "USER"] as const;
 export type Role = (typeof Roles)[number];
 
@@ -12,6 +10,7 @@ export const WorkAuthTypes = [
   "H1-B",
   "L2",
   "H4",
+  "Other",
 ] as const;
 export type WorkAuthType = (typeof WorkAuthTypes)[number];
 
@@ -31,9 +30,3 @@ export type ApplyState = (typeof ApplyStates)[number];
 // State of visa documents
 export const VisaStates = ["PROGRESS", "FINISHED", "NA", "NR"];
 export type VisaState = (typeof VisaStates)[number];
-
-export interface JWTTokenPayload {
-  role: Role;
-  accountId: Types.ObjectId;
-  empolyeeId: Types.ObjectId;
-}

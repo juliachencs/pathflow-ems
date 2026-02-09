@@ -8,7 +8,8 @@ import {
   HttpServerError,
 } from "@/types/http.errors";
 import bcrypt from "bcrypt";
-import { generateToken, hashPassWord } from "@/utils/utils";
+import { generateAccessToken, hashPassWord } from "@/utils/utils";
+import type { AuthPayload } from "@/types/auth-request.interface";
 
 export async function loginService(username: string, password: string) {
   // find the account
@@ -32,18 +33,18 @@ export async function loginService(username: string, password: string) {
   const info = profile.info;
   console.log(info);
 
-  const payload = {
+  const payload: AuthPayload = {
     role: account.role,
     accountId: account._id,
     empolyeeId: account.employeeId,
   };
 
-  const token = generateToken(payload);
+  const accessToken = generateAccessToken(payload);
 
   return {
     username: username,
     role: account.role,
-    accessToken: token,
+    accessToken: accessToken,
     ...info,
   };
 }

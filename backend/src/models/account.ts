@@ -1,4 +1,4 @@
-import { Roles } from "@/types/common";
+import { Roles } from "@/types/employee";
 import { model, Schema } from "mongoose";
 
 const accountSchema = new Schema({

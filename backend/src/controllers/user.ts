@@ -1,8 +1,9 @@
 import { Employee } from "@/models/employee";
-import type { Request, Response, NextFunction } from "express";
+import type { AuthRequest } from "@/types/auth-request.interface";
+import type { Response, NextFunction } from "express";
 
 export async function controller_fn(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
@@ -19,15 +20,13 @@ export async function controller_fn(
 
 //功能获取员工的完整信息
 export async function getProfile(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
-): Promise<void> {
-  //await Employee.findById(id).exec();
-}
+): Promise<void> {}
 
 export async function putProfile(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> {}

@@ -1,10 +1,18 @@
-import jwt from "jsonwebtoken";
-import type { JWTTokenPayload } from "@/types/common.js";
+import jwt, { type SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
-const JWTSecretKey = process.env.JWT_SECRET || "somethingsupersecret";
-export function generateToken(payload: JWTTokenPayload): string {
-  return jwt.sign(payload, JWTSecretKey, { expiresIn: "1h" });
+import type { AuthPayload } from "@/types/auth-request.interface";
+import type { StringValue } from "ms";
+//
+export function generateAccessToken(payload: AuthPayload): string {
+  // the access token
+  const accessSecret: string =
+    process.env.JWT_ACCESS_SECRET || "somethingsupersecret";
+  const accessExpire: string = process.env.JWT_ACCESS_EXPIRE || "1h";
+  const accessOption: SignOptions = {
+    expiresIn: accessExpire as StringValue,
+  };
+  const accessToken = jwt.sign(payload, accessSecret, accessOption);
+  return accessToken;
 }
 
 export async function hashPassWord(password: string) {
