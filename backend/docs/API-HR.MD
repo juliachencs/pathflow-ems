@@ -45,7 +45,6 @@ Response body:
       name: string;
       email: string;
       registrationLink: string;
-      createAt: string;
       hasRegistered:boolean; // indicate if this link has been used to register an account
       hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
   
@@ -77,7 +76,6 @@ Response: The updated registration history
       name: string;
       email: string;
       registrationLink: string;
-      createAt: string; 
       hasRegistered:boolean; // indicate if this link has been used to register an account
       hasApplied: boolean; // indicate if this email has been submitted in an onboarding application.
   }]

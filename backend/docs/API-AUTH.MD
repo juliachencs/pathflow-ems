@@ -10,6 +10,7 @@ Request body:
 
 ```typescript
 {
+  username: string;
   password: string;
   email: string;
   registerToken: string;
