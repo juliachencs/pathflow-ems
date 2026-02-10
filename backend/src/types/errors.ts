@@ -35,6 +35,12 @@ export const ErrorMessages = {
     "We can not find the profile of this employee. Please check the employee id is correct.",
   PUT_PROFILE_NOT_FOUND:
     "We can not find the profile of this employee to update. Please check the employee id is correct.",
+
+  // EMPLOYEE submit or resubmit boarding application
+  SUBMIT_BOARDING_NOT_FOUND:
+    "We can not find this employee. Please check the employee id is correct.",
+  GET_BOARDING_NOT_FOUND:
+    "We cannot find the boarding application of the employee.",
 } as const;
 
 export type ErrorCode = keyof typeof ErrorMessages;

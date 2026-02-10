@@ -99,7 +99,7 @@ export async function registerService(
     accountId: account._id,
     empolyeeId: account.employeeId,
   };
-  const token = generateToken(payload);
+  const token = generateAccessToken(payload);
 
   return {
     username: username,

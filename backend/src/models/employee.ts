@@ -1,4 +1,7 @@
-import { ApplyStates, VisaStates, WorkAuthTypes } from "@/types/employee";
+import type { IBoardingApplication } from "@/types/boarding.interface";
+import { ApplyStates, VisaStates, WorkAuthTypes } from "@/types/common";
+import { EamilError } from "@/types/email.errors";
+import type { IProfile, IProfileFull } from "@/types/profile.interface";
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
@@ -38,7 +41,7 @@ const personSchema = new Schema(
 const workAuthorizationSchema = new Schema(
   {
     title: {
-      type: String,
+      type: { type: String },
       enum: WorkAuthTypes,
       required: true,
     },
@@ -49,7 +52,7 @@ const workAuthorizationSchema = new Schema(
   { _id: false }, // <-- disable `_id`
 );
 
-const profileSchema = new Schema(
+const profileSchema = new Schema<IProfile>(
   {
     name: nameSchema,
     profileImage: String, // URL
@@ -63,7 +66,7 @@ const profileSchema = new Schema(
     },
     SSN: { type: String, requried: true },
     dob: { type: Date, description: "Date of Birth", required: true },
-    gender: { type: String, description: "male" },
+    gender: { type: String, description: "male|female|na", required: true },
     workAuthorization: workAuthorizationSchema,
     reference: {
       person: personSchema,
@@ -72,7 +75,8 @@ const profileSchema = new Schema(
     emergencyContacts: [
       { person: personSchema, relationship: { type: String, required: true } },
     ],
-    documents: {
+
+    visaDocuments: {
       OPT: String,
       EAD: String,
       I983: String,
@@ -142,6 +146,22 @@ const employeeSchema = new Schema(
       profileFull: {
         get() {
           return { _id: this._id, ...this.profile };
+        },
+      },
+
+      boardingApplication: {
+        get(): IBoardingApplication {
+          const boarding = {
+            state: "UNSUMBIT",
+            feedback: null,
+            ...this.boarding,
+          };
+
+          return {
+            ...boarding,
+            _id: this._id,
+            profile: this.profile as IProfile,
+          };
         },
       },
     }, // end virtuals

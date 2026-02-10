@@ -30,3 +30,20 @@ export type ApplyState = (typeof ApplyStates)[number];
 // State of visa documents
 export const VisaStates = ["PROGRESS", "FINISHED", "NA", "NR"];
 export type VisaState = (typeof VisaStates)[number];
+
+export const ActionTypes = [
+  "SUBMIT",
+  "RESUBMIT",
+  "APPROVE",
+  "REJECT",
+  "SEND_NOTIFICATION",
+] as const;
+export type ActionType = (typeof ActionTypes)[number];
+
+export interface Action {
+  actionType: ActionType;
+  payload: {
+    [key: string]: any;
+    feedback?: string;
+  };
+}

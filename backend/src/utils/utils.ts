@@ -2,6 +2,7 @@ import jwt, { type SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import type { AuthPayload } from "@/types/auth-request.interface";
 import type { StringValue } from "ms";
+import type { ApplyState } from "@/types/common";
 //
 export function generateAccessToken(payload: AuthPayload): string {
   // the access token

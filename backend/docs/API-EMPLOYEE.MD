@@ -18,7 +18,7 @@ Response:
 ### PUT /api/profile/me	
 功能：更新员工的信息
 
-Request body: `IProfileFull` | `Omit<IProfileFull, "_id">`
+Request body: `IProfile` | `Omit<IProfileFull, "_id">`
 
 Response: updated profile
 
@@ -37,7 +37,7 @@ The server will use the employee ID decoded from the request header by default.
 ### POST /api/boarding/me	
 功能： submit the boarding application
 
-Request body: `IProfileFull`
+Request body: `IProfile`
 
 Response body:
 
@@ -51,7 +51,7 @@ Response body:
 ### PUT	/api/boarding/me	
 功能：re-submit updated boarding application
 
-Request body: `IProfileFull`
+Request body: `IProfile`
 
 Response body:
 

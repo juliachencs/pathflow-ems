@@ -1,5 +1,5 @@
 import { Employee } from "@/models/employee";
-import type { IProfileFull } from "@/types/profile";
+import type { IProfile } from "@/types/profile.interface";
 import { HttpNotFoundError } from "@/types/http.errors";
 
 export async function getProfileService(employeeId: string) {
@@ -13,13 +13,14 @@ export async function getProfileService(employeeId: string) {
   };
 }
 
-export async function putProfileService(
-  employeeId: string,
-  profile: IProfileFull,
-) {
-  const employee = await Employee.findByIdAndUpdate(employeeId, profile, {
-    new: true,
-  }).exec();
+export async function putProfileService(employeeId: string, profile: IProfile) {
+  const employee = await Employee.findByIdAndUpdate(
+    employeeId,
+    { profile: profile },
+    {
+      new: true,
+    },
+  ).exec();
 
   if (!employee) {
     throw new HttpNotFoundError("PUT_PROFILE_NOT_FOUND");

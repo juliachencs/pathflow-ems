@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from "express";
 import { HttpUnauthorizedError } from "@/types/http.errors";
 import type { AuthRequest } from "@/types/auth-request.interface";
-import type { Role } from "@/types/employee";
+import type { Role } from "@/types/common";
 
 export const authorize = (allowedRoles: Role[]) => {
   return async (req: AuthRequest, _: Response, next: NextFunction) => {

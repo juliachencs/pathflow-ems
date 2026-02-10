@@ -18,9 +18,9 @@
 - [x] endpoints: auth
 
 ## Stage4
-- [ ] endpoints: profile/me
-- [ ] endpoints: boarding/me
-- [ ] endpoints: visa/me
+- [x] endpoints: profile/me
+- [x] endpoints: boarding/me
+- [x] endpoints: visa/me
 
 ## Stage5
 - [x] endpoints: registration

@@ -1,6 +1,4 @@
-export interface IProfileFull {
-  _id: string;
-
+export interface IProfile {
   name: {
     firstName: string;
     lastName: string;
@@ -8,7 +6,7 @@ export interface IProfileFull {
     preferredName?: string;
   };
 
-  profileImage: URL; // link to a picture
+  profileImage: string; // link to a picture
 
   address: {
     street: string;
@@ -63,4 +61,34 @@ export interface IProfileFull {
     I983?: URL;
     I20?: URL;
   };
+}
+
+export interface IProfileFull extends IProfile {
+  _id: string;
+}
+
+export interface IProfileSummary {
+  _id: string;
+  name: {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    preferredName?: string;
+  };
+  cellPhone: string;
+  email: string;
+  SSN: string;
+  workAuthorization: {
+    type: string; // | "Green Card" |  "Citizen";
+    title?: string;
+    startDate?: Date;
+    endDate?: Date;
+    url?: string;
+  };
+}
+
+export interface IProfileCore {
+  _id: string;
+  fullName: string;
+  email: string;
 }
