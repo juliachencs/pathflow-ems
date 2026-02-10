@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
 import { login, signup } from "../../apis/auth";
 import type { BoardingStatus, KnownError, UserRole, VisaStatus } from "../../app/types";
@@ -108,10 +108,16 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: loadState(),
     reducers: {
-        // setAuth: (state, action: PayloadAction<AuthResponse>) => {
-        //     state.isAuthenticated = !!action.payload;
-        //     state.currentUser = mapResponseToUser(action.payload);
-        // },
+        setBoarding: (state, action: PayloadAction<BoardingStatus>) => {
+            if (state.currentUser) {
+                state.currentUser.boarding = action.payload;
+            }
+        },
+        setVisa: (state, action: PayloadAction<VisaStatus>) => {
+            if (state.currentUser) {
+                state.currentUser.visa = action.payload;
+            }
+        },
         clearAuth: (state) => {
             localStorage.removeItem('auth');
             state.isAuthenticated = false;
@@ -150,5 +156,5 @@ const authSlice = createSlice({
     }
 });
 
-export const { clearAuth } = authSlice.actions;
+export const { setBoarding, setVisa, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

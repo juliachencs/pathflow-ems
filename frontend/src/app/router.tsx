@@ -13,6 +13,7 @@ import OnboardGuard from "../components/guard/OnboardGuard";
 import Dashboard from "../pages/DashBoard";
 import AuthGuard from "../components/guard/AuthGuard";
 import AdminGuard from "../components/guard/RoleGuard";
+import Profile from "../pages/profile/Profile";
 
 const routes = createRoutesFromElements(
   <Route>
@@ -31,10 +32,10 @@ const routes = createRoutesFromElements(
           <Route path="/hr/visas" element={<Dashboard />}></Route>
           <Route path="/hr/hiring" element={<Dashboard />}></Route>
         </Route>
-        <Route element={<OnboardGuard />}>
-          <Route path="/profile/me" element={<Dashboard />}></Route>
+        {/* <Route element={<OnboardGuard />}> */}
+          <Route path="/profile/me" element={<Profile />}></Route>
           <Route path="/visa/me" element={<Dashboard />}></Route>
-        </Route>
+        {/* </Route> */}
       </Route>
     {/* </Route> */}
   </Route>,

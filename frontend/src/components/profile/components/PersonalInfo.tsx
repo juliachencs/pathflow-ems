@@ -1,11 +1,15 @@
 import { Avatar, Card, Descriptions } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
 import { UserOutlined } from "@ant-design/icons";
+import RHFInput from "../../forms/RHF-Input";
+import { useFormContext } from "react-hook-form";
 
 const PersonalInfo: React.FC<ProfileLayoutProps> = ({
   values,
   bordered = false,
+  editMode,
 }) => {
+  const { control } = useFormContext();
   return (
     <>
       <Card title="Personal Information">
@@ -15,6 +19,7 @@ const PersonalInfo: React.FC<ProfileLayoutProps> = ({
           style={{ marginBottom: "20px" }}
           icon={<UserOutlined />}
         />
+        {editMode && (<RHFInput name="profileImgUrl" label="Profile Image link" placeholder="ImgURL"/>)}
         <Descriptions column={2} bordered={bordered} size="small">
           <Descriptions.Item label="First Name">
             {values.name.firstName}
@@ -26,7 +31,11 @@ const PersonalInfo: React.FC<ProfileLayoutProps> = ({
             {values.name.lastName}
           </Descriptions.Item>
           <Descriptions.Item label="Preferred Name">
-            {values.name.preferredName || "-"}
+            {editMode ? (
+              <RHFInput name="preferedName" control={control} />
+            ) : (
+              values.name.preferredName || "-"
+            )}
           </Descriptions.Item>
         </Descriptions>
       </Card>

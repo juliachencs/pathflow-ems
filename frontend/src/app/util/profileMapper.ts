@@ -44,3 +44,38 @@ export const boardingProfileMapper = (values: BoardingFormValues): IProfileFull 
 
     }
 };
+
+export const profileBoardingMapper = (values: IProfileFull): BoardingFormValues => {
+    const { name, address, workAuthorization, reference } = values;
+    return {
+        firstName: name.firstName,
+        lastName: name.lastName,
+        middleName: name.middleName,
+        preferedName: name.preferredName,
+        profileImgUrl: values.profileImage,
+        address: {
+            ...address,
+            unit: address.secondary
+        },
+        cellPhoneNumber: values.cellPhone,
+        workPhoneNumber: values.workPhone,
+        email: values.email,
+        ssn: values.SSN,
+        dob: values.dob,
+        gender: values.gender,
+        isUSCitizen: workAuthorization.type === 'Citizen' ? 'yes' : 'no',
+        greenCardOrCitizen: workAuthorization.type === 'Citizen' ? "Citizen" : workAuthorization.type === 'GreenCard' ? 'GreenCard' : undefined,
+        workAuthorization: workAuthorization.type === 'Citizen' ? undefined : workAuthorization.type === 'GreenCard' ? undefined : workAuthorization.type,
+        otherVisaTitle: workAuthorization.title,
+        visaStartDate: workAuthorization.startDate,
+        visaEndDate: workAuthorization.endDate,
+        optReceiptUrl: values.visaDocuments?.OPT,
+        reference: {
+            ...reference,
+            relationship: reference?.relationship
+        },
+        // emergencyContacts: emergencyContacts?.map((ele) => {
+        //     return {...ele, relationship: ele.relationship}
+        // })
+    }
+};

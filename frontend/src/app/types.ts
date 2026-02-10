@@ -4,10 +4,18 @@ export interface KnownError {
   code: number;
 }
 
+export interface IBoardingApplication { 
+  _id: string; // employee id
+  state:  BoardingStatus;
+  profile: IProfileFull;
+  feedback?: string;
+}
+
 export type UserRole = "USER" | "ADMIN";
 export type BoardingStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
 export type VisaStatus = "PROGRESS" | "FINISHED" | null | "NA";
 export type VisaType = "Citizen" | "GreenCard" |"H1-B" | "L2" | "H4" | "Other" | "F1"
+export type Gender = "male" | "female" | "other"
 
 export interface ContactInfo {
   person: {
@@ -44,7 +52,7 @@ export interface IProfileFull {
   email: string;
   SSN: string;
   dob: Date;
-  gender: string;
+  gender: Gender;
 
   workAuthorization: {
     type: VisaType;
