@@ -15,24 +15,31 @@ export interface IOPTWorkAuthorization extends IWorkAuthorization {
   url: string;
 }
 
+export interface IName {
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  preferredName?: string;
+}
+
+export interface IAddress {
+  street: string;
+  state: string;
+  city: string;
+  zip: string;
+  secondary: string;
+}
+export interface IPerson {
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  phone?: string;
+  email?: string;
+}
 export interface IBoardingData {
-  name: {
-    firstName: string;
-    lastName: string;
-    middleName?: string;
-    preferredName?: string;
-  };
-
+  name: IName;
   profileImage: string; // link to a picture
-
-  address: {
-    street: string;
-    state: string;
-    city: string;
-    zip: string;
-    secondary: string;
-  };
-
+  address: IAddress;
   cellPhone: string;
   workPhone?: string;
   email: string;
@@ -43,25 +50,13 @@ export interface IBoardingData {
   workAuthorization: IWorkAuthorization;
 
   reference: {
-    person: {
-      firstName: string;
-      lastName: string;
-      middleName?: string;
-      phone?: string;
-      email?: string;
-    };
+    person: IPerson;
     relationship: string;
   };
 
   emergencyContacts: [
     {
-      person: {
-        firstName: string;
-        lastName: string;
-        middleName?: string;
-        phone?: string;
-        email?: string;
-      };
+      person: IPerson;
       relationship: string;
     },
   ];

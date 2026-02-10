@@ -4,8 +4,14 @@ import {
   type IBoardingStatus,
   type IWorkAuthorization,
 } from "@/types/boarding.interface";
-import { ApplyStates, WorkAuthTypes } from "@/types/common";
+import {
+  ApplyStates,
+  VisaDocumentTypes,
+  WorkAuthTypes,
+  type VisaDocumentType,
+} from "@/types/common";
 import type { IEmployee } from "@/types/employee.interface";
+import type { IProfileFull } from "@/types/profile.interface";
 import {
   VisaStates,
   type IDocumentState,
@@ -104,6 +110,7 @@ const boardingSchema = new Schema<IBoardingStatus>(
 
 const stateSchema = new Schema<IDocumentState>(
   {
+    documentType: { type: String, enum: VisaDocumentTypes, required: true },
     state: {
       type: String,
       enum: ApplyStates,
@@ -125,15 +132,8 @@ const visaSchema = new Schema<IVisaStatus>(
       default: "NA",
       index: true,
     }, // for fast query all employees upto its visa states
-    curStage: { type: Number, enum: [0, 1, 2, 3, 4], default: 0 },
-    documents: {
-      type: [
-        { OPT: stateSchema },
-        { EAD: stateSchema },
-        { I983: stateSchema },
-        { I20: stateSchema },
-      ],
-    },
+    curStage: { type: Number, enum: [0, 1, 2, 3, 4, 5], default: 0 },
+    documents: { type: [stateSchema] },
   },
   { _id: false }, // <-- disable `_id`
 );
@@ -147,18 +147,13 @@ const employeeSchema = new Schema(
     boarding: {
       type: boardingSchema,
       required: true,
-      default: () => ({
-        state: "UNSUBMIT",
-      }),
     },
     visa: {
       type: visaSchema,
       required: true,
-      default: () => ({
-        state: "NA",
-      }),
     },
   },
+
   {
     virtuals: {
       info: {
@@ -169,6 +164,28 @@ const employeeSchema = new Schema(
             visa: this.visa.state,
             profileImage: this.data.profileImage,
           };
+        },
+      },
+
+      profileFull: {
+        get() {
+          const full: IProfileFull = {
+            _id: this._id.toString(),
+            ...this.data,
+          };
+
+          if (
+            this.visa &&
+            (this.visa.state === "PROGRESS" || this.visa.state === "FINISHED")
+          ) {
+            const visaDocuments = {};
+            const documents = this.visa.documents;
+            documents
+              ?.slice(0, this.visa.curStage)
+              .forEach((x) => (visaDocuments[x.documentType] = x.url));
+            full.visaDocuments = visaDocuments;
+          }
+          return full;
         },
       },
     }, // end virtuals

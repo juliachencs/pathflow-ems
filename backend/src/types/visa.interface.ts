@@ -6,6 +6,7 @@ export type VisaState = (typeof VisaStates)[number];
 
 export interface IDocumentState {
   state: ApplyState;
+  documentType: VisaDocumentType;
   feedback?: string;
   url?: string;
 }
@@ -39,7 +40,6 @@ export interface ISendNotificationAction {
   actionType: "SEND_NOTIFICATION";
   payload: {
     documentType: VisaDocumentType;
-    url: string;
   };
 }
 
@@ -49,31 +49,51 @@ export type IDocumentAction =
   | IAcceptDocumentAction
   | ISendNotificationAction;
 
+export type IReviewDocumentAction =
+  | IRejectDocumentAction
+  | IAcceptDocumentAction
+  | ISendNotificationAction;
+
 export interface IVisaStatus {
   state: VisaState;
   curStage?: number;
-  documents?: [
-    { OPT: IDocumentState },
-    { EAD: IDocumentState },
-    { I983: IDocumentState },
-    { I20: IDocumentState },
-  ];
+  documents?: IDocumentState[];
 }
 
-function nextVisaStep(cur: IVisaStatus) {}
-
-function nextVisaState(cur: IVisaStatus, action: IDocumentAction) {
-
-  // no change
-  if (action.actionType === "SEND_NOTIFICATION") {
-    return cur;
-  }
-  
-  // submit
-  if 
-
-  const result = {};
-  return result;
+export interface IVisaReviewAction {
+  employeeId: string;
+  actionType: "APPROVE" | "ACCEPT" | "SEND_NOTIFICATION";
+  payload: {
+    documentType: VisaDocumentType;
+    url?: string;
+    feedback?: string;
+  };
+}
+export interface IVisaFiles {
+  OPT?: string;
+  EAD?: string;
+  I983?: string;
+  I20?: string;
 }
 
-function nextDocState(state: IDocumentState, actionType:) {}
+export interface IManagedVisaStatus {
+  employeeId: string;
+  fullName: string;
+  workAuthorization: {
+    title: string;
+    startDate: Date;
+    endDate: Date;
+  };
+  nextStep: string;
+  action:
+    | {
+        actionType: "REVIEW" | "SEND_NOTIFICATION";
+        payload: {
+          documentType: VisaDocumentType;
+          url?: string;
+        };
+      }
+    | {};
+
+  files: IVisaFiles;
+}

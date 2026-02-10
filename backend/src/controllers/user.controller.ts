@@ -1,17 +1,8 @@
-import {
-  getBoardingService,
-  updateBoardingService,
-} from "@/services/user/boarding.service";
-import {
-  getProfileService,
-  updateProfileService,
-} from "@/services/user/profile.service";
-import {
-  getVisaService,
-  submitVisaDocumentService,
-} from "@/services/user/visa.service";
-
 import type { IAuthRequest } from "@/types/auth-request.interface";
+import type {
+  ISubmitDocumentAction,
+  IVisaStatus,
+} from "@/types/visa.interface";
 import type { Response, NextFunction } from "express";
 
 type QueryFunc<T> = (id: string) => Promise<{ message: string; data: T }>;
@@ -43,7 +34,7 @@ function mutationController<T = unknown, U = unknown>(
   return async (req: IAuthRequest, res: Response, next: NextFunction) => {
     try {
       const employeeId = req.auth.empolyeeId;
-      const payload = req.body;
+      const payload = req.body as T;
       const { message, data } = await mutation_fn(employeeId, payload);
 
       res.status(200).json({
@@ -64,7 +55,9 @@ const userController = {
 
   updateProfile: mutationController(updateProfileService),
   updateBoarding: mutationController(updateBoardingService),
-  submitVisaDocument: mutationController(submitVisaDocumentService),
+  submitVisaDocument: mutationController<ISubmitDocumentAction, IVisaStatus>(
+    submitVisaDocumentService,
+  ),
 };
 
 export default userController;
