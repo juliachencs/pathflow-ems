@@ -67,7 +67,7 @@ export async function submitVisaDocumentService(
   };
 }
 
-export async function ReviewVisa(action: IVisaReviewAction) {
+export async function reviewVisaService(action: IVisaReviewAction) {
   const employee = await Employee.findById(action.employeeId).exec();
 
   if (!employee) {

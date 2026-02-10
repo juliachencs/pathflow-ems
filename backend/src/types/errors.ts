@@ -26,6 +26,8 @@ export const ErrorMessages = {
   // NOT FOUND EMPLOYEE
   NOT_FOUND_EMPLOYEE:
     "We can not find this employee in our database. Please check the employee id is correct.",
+  INVALID_EMPLOYEE_ID: "Invalid employee id",
+  EMPTY_REQUEST_BODY: "Please provide data in the request body",
 
   // EMPLOYEE QUERY(GET) ENDPOITNS:
   GET_BOARDING_NOT_FOUND: "There is no boarding application for this employee.",

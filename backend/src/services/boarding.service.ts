@@ -58,7 +58,18 @@ export async function listBoardingService(state: "PENDING" | "REJECTED" | "APPRO
     message: `You've got all employees whoes boarding application is ${state}`,
     data: result,
   };
+}
 
+
+export async function listAllBoardingService() {
+  const { data: pending } = await listBoardingService("PENDING");
+  const { data: rejected } = await listBoardingService("REJECTED");
+  const { data: approved } = await listBoardingService("APPROVED");
+
+  return {
+    message: "You've got all boarding applications",
+    data: {pending, rejected, approved}
+  }
 }
 export interface IReviewBoardingAction {
   employeeId: string;

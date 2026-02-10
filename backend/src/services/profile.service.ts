@@ -32,7 +32,7 @@ export async function updateProfileService(
   };
 }
 
-export async function ListProfiles() {
+export async function listProfilesService() {
   const fields = [
     "_id",
     "data.name.firstName",
