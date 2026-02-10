@@ -1,21 +1,24 @@
+export type UserRole = "USER" | "ADMIN";
+export type BoardingStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+export type FileStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+export type VisaStatus = "PROGRESS" | "FINISHED" | "NR" | "NA";
+export type VisaType = "Citizen" | "GreenCard" | "H1-B" | "L2" | "H4" | "Other" | "F1"
+export type Gender = "male" | "female" | "other"
+export type DocType = "OPT" | "EAD" | "I983" | "I20"
+export type ActionType =  "APPROVE" | "REJECT" | "SEND_NOTIFICATION" | "SUBMIT"
+
 export interface KnownError {
   message: string;
   description: string;
   code: number;
 }
 
-export interface IBoardingApplication { 
+export interface IBoardingApplication {
   _id: string; // employee id
-  state:  BoardingStatus;
+  state: BoardingStatus;
   profile: IProfileFull;
   feedback?: string;
 }
-
-export type UserRole = "USER" | "ADMIN";
-export type BoardingStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-export type VisaStatus = "PROGRESS" | "FINISHED" | null | "NA";
-export type VisaType = "Citizen" | "GreenCard" |"H1-B" | "L2" | "H4" | "Other" | "F1"
-export type Gender = "male" | "female" | "other"
 
 export interface ContactInfo {
   person: {
@@ -72,4 +75,16 @@ export interface IProfileFull {
     I983: string | undefined;
     I20: string | undefined;
   }
+}
+
+export interface IVisaStatus {
+  _id: string; // employeeID
+  state: VisaStatus;
+  curState: number;
+  documents: [
+    { OPT: { state: FileStatus, feedback?: string, url?: URL } },
+    { EAD: { state: FileStatus, feedback?: string, url?: URL } },
+    { I983: { state: FileStatus, feedback?: string, url?: URL } },
+    { I20: { state: FileStatus, feedback?: string, url?: URL } },
+  ]
 }
