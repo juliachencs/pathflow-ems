@@ -1,6 +1,6 @@
-import { Registration } from "@/models/registration";
-import { Account } from "@/models/account";
-import { Employee } from "@/models/employee";
+import { Registration } from "@/models/registration.model";
+import { Account } from "@/models/account.model";
+import { Employee } from "@/models/employee.model";
 import {
   HttpBadRequestError,
   HttpConfilctError,

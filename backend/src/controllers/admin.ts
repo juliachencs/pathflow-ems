@@ -1,7 +1,7 @@
 import {
   getRegistrationsService,
   sendInvitationService,
-} from "@/services/admin/registrations";
+} from "@/services/registrations.service";
 import type { Request, Response, NextFunction } from "express";
 
 export async function controller_fn(

@@ -1,4 +1,4 @@
-import { Employee } from "@/models/employee";
+import { Employee } from "@/models/employee.model";
 import { onBoarding } from "@/services/boarding.utils";
 import { HttpNotFoundError } from "@/types/http.errors";
 

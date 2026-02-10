@@ -8,7 +8,12 @@ const userRouter = Router();
 const middlewares = [jwtAuthenticate, authorize(["USER"])];
 
 // profile
-userRouter.get("/profile/me", middlewares, userController.getProfile);
+userRouter.get(
+  "/profile/me",
+  jwtAuthenticate,
+  authorize(["USER"]),
+  userController.getProfile,
+);
 userRouter.put("/profile/me", middlewares, userController.updateProfile);
 
 //boarding

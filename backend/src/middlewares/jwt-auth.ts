@@ -1,16 +1,13 @@
 import jwt from "jsonwebtoken";
-import type { Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { HttpUnauthorizedError } from "@/types/http.errors";
-import type {
-  IAuthPayload,
-  IAuthRequest,
-} from "@/types/auth-request.interface";
+import type { IAuthPayload } from "@/types/auth-request.interface";
 
 export const jwtAuthenticate = async (
-  req: IAuthRequest,
-  res: Response,
+  req: Request,
+  _: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   // unpack the token from header
   const authBearer = req.headers?.authorization?.match(/^Bearer (.+)/);
   if (!authBearer) {

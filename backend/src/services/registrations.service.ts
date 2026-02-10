@@ -1,5 +1,5 @@
 import { sendInvitation } from "@/configs/email";
-import { Registration } from "@/models/registration";
+import { Registration } from "@/models/registration.model";
 import { EamilError, type INodeMailerError } from "@/types/email.errors";
 import { HttpConfilctError } from "@/types/http.errors";
 import { registerLink } from "@/utils/utils";

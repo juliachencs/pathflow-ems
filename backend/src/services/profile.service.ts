@@ -1,4 +1,4 @@
-import { Employee } from "@/models/employee";
+import { Employee } from "@/models/employee.model";
 import { HttpNotFoundError } from "@/types/http.errors";
 
 export async function getProfileService(employeeId: string) {

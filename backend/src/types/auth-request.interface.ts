@@ -8,6 +8,6 @@ export interface IAuthPayload extends JwtPayload {
   empolyeeId: string;
 }
 
-export interface IAuthRequest extends Request {
-  auth: IAuthPayload;
-}
+// export interface IAuthRequest extends Request {
+//   auth: IAuthPayload;
+// }

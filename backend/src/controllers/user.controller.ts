@@ -1,3 +1,15 @@
+import {
+  getBoardingService,
+  updateBoardingService,
+} from "@/services/boarding.service";
+import {
+  getProfileService,
+  updateProfileService,
+} from "@/services/profile.service";
+import {
+  getVisaService,
+  submitVisaDocumentService,
+} from "@/services/visa.service";
 import type { IAuthRequest } from "@/types/auth-request.interface";
 import type {
   ISubmitDocumentAction,
