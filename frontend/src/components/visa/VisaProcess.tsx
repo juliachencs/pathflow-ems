@@ -59,8 +59,9 @@ const docConfigRecord: Record<DocType, { title: string; next: string }> = {
   I20: { title: "I-20", next: "" },
 };
 
-const emptyTemplateURL = '';
-const sampleTemplateURL = '';
+// TODO truly download file (from frontend?)
+const emptyTemplateURL = "";
+const sampleTemplateURL = "";
 
 const VisaProcess: React.FC<VisaProcessProps> = ({
   docKey,
@@ -71,6 +72,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
     (key) => key === docKey,
   );
   const steps = Object.values(docConfigRecord);
+  // TODO maybe extract this too
   const currResultStatus: ResultStatus =
     docStatus === "APPROVED"
       ? "success"
@@ -114,7 +116,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
           subTitle={processRecord[docStatus].resultSubTitle}
         >
           {(docStatus !== "PENDING" || docKey === "I20") && (
-            <>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {/* TODO handle long feedback & further dismantle */}
               {docStatus === "REJECTED" ? (
                 <>
@@ -138,7 +140,6 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
                         )}
                       </>
                     }
-                    style={{ marginTop: "20px" }}
                   />
                 </>
               ) : (
@@ -146,8 +147,18 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
                   type="info"
                   showIcon
                   description={items[currIndex].description}
-                  style={{ marginBottom: "20px" }}
                 />
+              )}
+
+              {(docKey === 'EAD' && docStatus === 'APPROVED') && (
+                <Space>
+                  <Button href={emptyTemplateURL} target="_blank" type="link">
+                    Download Empty I-983 Form
+                  </Button>
+                  <Button href={sampleTemplateURL} target="_blank" type="link">
+                    Download Sample I-983 Form
+                  </Button>
+                </Space>
               )}
 
               <Space.Compact>
@@ -156,7 +167,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
                   {docStatus === "REJECTED" ? "Resubmit" : "Upload"}
                 </Button>
               </Space.Compact>
-            </>
+            </div>
           )}
         </Result>
       </div>

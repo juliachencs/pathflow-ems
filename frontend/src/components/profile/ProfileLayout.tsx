@@ -17,6 +17,10 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   bordered = false,
   editMode = false,
 }) => {
+  const docPack = {
+    profileImage: values.profileImage,
+    visaDocuments: values.visaDocuments
+  }
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -37,7 +41,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
           editMode={editMode}
         />
 
-        <UploadedDocs values={values} bordered={bordered} />
+        <UploadedDocs docPack={docPack} bordered={bordered} />
       </div>
     </>
   );

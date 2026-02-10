@@ -1,13 +1,15 @@
 import { Button, Descriptions, Space } from "antd";
+import type React from "react";
 
-type DocItemPros = {
+type DocItemProps = {
+  itemKey: React.Key;
   label: string;
   url?: string;
 };
 
-const DocItems: React.FC<DocItemPros> = ({ label, url }) => {
+const DocItem: React.FC<DocItemProps> = ({ itemKey, label, url }) => {
   return (
-    <Descriptions.Item label={label}>
+    <Descriptions.Item key={itemKey} label={label}>
       <Space size="middle">
         <Button type="link" onClick={() => window.open(url, "_blank")}>
           Preview
@@ -21,4 +23,4 @@ const DocItems: React.FC<DocItemPros> = ({ label, url }) => {
   );
 };
 
-export default DocItems;
+export default DocItem;

@@ -1,8 +1,7 @@
-import { Card, Descriptions } from "antd";
-import type { ProfileLayoutProps } from "../ProfileLayout";
-import DocItems from "./DocItems";
+import { Button, Card, Descriptions, Space } from "antd";
+import type { VisaDocuments } from "../../../app/types";
 
-const uploadedDocsConfig: UploadedDocConfig<ProfileLayoutProps["values"]>[] = [
+const uploadedDocsConfig: UploadedDocConfig<UploadedDocsProps["docPack"]>[] = [
   {
     label: "Profile Picture",
     getUrl: (v) => v.profileImage,
@@ -30,20 +29,44 @@ type UploadedDocConfig<T> = {
   getUrl: (values: T) => string | undefined;
 };
 
-const UploadedDocs: React.FC<ProfileLayoutProps> = ({ values }) => {
+interface UploadedDocsProps {
+  docPack: {
+    profileImage?: string;
+    visaDocuments?: VisaDocuments;
+  };
+  bordered?: boolean;
+  title?: string;
+}
+
+const UploadedDocs: React.FC<UploadedDocsProps> = ({
+  docPack,
+  title = "Uploaded Documents",
+}) => {
   return (
-    <Card title="Uploaded Documents">
+    <Card title={title}>
       <Descriptions column={1} size="small" bordered>
         {uploadedDocsConfig.map((doc, index) => {
-          return (
-            (doc.getUrl(values)) && (
-              <DocItems
-                key={index}
-                label={doc.label}
-                url={doc.getUrl(values)}
-              />
-            )
-          );
+          const url = doc.getUrl(docPack);
+          if (url) {
+            // for some reason this reusable component just continiously not rendering
+            // return (<DocItem itemKey={index} label={doc.label} url={url} />);
+            return (
+              <Descriptions.Item key={index} label={doc.label}>
+                <Space size="middle">
+                  <Button
+                    type="link"
+                    onClick={() => window.open(url, "_blank")}
+                  >
+                    Preview
+                  </Button>
+                  {/* TODO Make this downloadable */}
+                  <Button type="link" href={url}>
+                    Download
+                  </Button>
+                </Space>
+              </Descriptions.Item>
+            );
+          }
         })}
       </Descriptions>
     </Card>

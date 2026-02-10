@@ -5,7 +5,7 @@ export type VisaStatus = "PROGRESS" | "FINISHED" | "NR" | "NA";
 export type VisaType = "Citizen" | "GreenCard" | "H1-B" | "L2" | "H4" | "Other" | "F1"
 export type Gender = "male" | "female" | "other"
 export type DocType = "OPT" | "EAD" | "I983" | "I20"
-export type ActionType =  "APPROVE" | "REJECT" | "SEND_NOTIFICATION" | "SUBMIT"
+export type ActionType = "APPROVE" | "REJECT" | "SEND_NOTIFICATION" | "SUBMIT"
 
 export interface KnownError {
   message: string;
@@ -29,6 +29,14 @@ export interface ContactInfo {
     email?: string | undefined;
   },
   relationship?: string;
+}
+
+export interface VisaDocuments {
+  OPT: string | undefined;
+  EAD: string | undefined;
+  I983: string | undefined;
+  I20: string | undefined;
+
 }
 export interface IProfileFull {
   _id?: string;
@@ -69,12 +77,7 @@ export interface IProfileFull {
 
   emergencyContacts?: ContactInfo[];
 
-  visaDocuments?: {
-    OPT: string | undefined;
-    EAD: string | undefined;
-    I983: string | undefined;
-    I20: string | undefined;
-  }
+  visaDocuments?: VisaDocuments;
 }
 
 export interface IVisaStatus {

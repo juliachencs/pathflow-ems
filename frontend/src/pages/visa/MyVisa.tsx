@@ -1,23 +1,25 @@
 import { Card, Divider } from "antd";
 import Title from "antd/es/typography/Title";
-import type { FileStatus } from "../../app/types";
+import type { FileStatus, VisaStatus } from "../../app/types";
 import type { DocType } from "../../app/types";
 import VisaProcess from "../../components/visa/VisaProcess";
+import VisaCompleted from "../../components/visa/VisaCompleted";
+import VisaNotRequired from "../../components/visa/VisaNotRequired";
 
 const MyVisa: React.FC = () => {
-  // TODO handle finished / NA / NR
 
-  // TODO rework on description data structure
+  const mockData: { key: DocType; status: FileStatus; visaState: VisaStatus } =
+    {
+      key: "EAD",
+      status: "PENDING",
+      visaState: 'FINISHED',
+    };
 
-  const mockData: { key: DocType; status: FileStatus } = {
-    key: "EAD",
-    status: 'APPROVED',
-  };
-
-  const feedback = 'document too blur'
+  const feedback = "document too blur";
 
   return (
     <>
+    {/* TODO fix styling */}
       <Card
         style={{
           padding: "0 80px 30px",
@@ -38,7 +40,19 @@ const MyVisa: React.FC = () => {
           My Visa Status
         </Title>
         <Divider></Divider>
-        <VisaProcess docKey={mockData.key} docStatus={mockData.status} feedback={feedback}/>
+        {mockData.visaState === "PROGRESS" && (
+          <VisaProcess
+            docKey={mockData.key}
+            docStatus={mockData.status}
+            feedback={feedback}
+          />
+        )}
+        {mockData.visaState === 'FINISHED' && (
+            <VisaCompleted />
+        )}
+        {(mockData.visaState === 'NA' || mockData.visaState === 'NR') && (
+            <VisaNotRequired />
+        )}
       </Card>
     </>
   );
