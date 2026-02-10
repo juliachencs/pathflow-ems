@@ -8,7 +8,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import GuestGuard from "../components/guard/GuestGuard";
 import DefaultLayout from "../components/layouts/default/DefaultLayout";
-import Boarding from "../pages/boarding/Boarding";
+import OnBoard from "../pages/boarding/OnBoard";
 import OnboardGuard from "../components/guard/OnboardGuard";
 import Dashboard from "../pages/DashBoard";
 import AuthGuard from "../components/guard/AuthGuard";
@@ -25,7 +25,7 @@ const routes = createRoutesFromElements(
     </Route>
     {/* <Route element={<AuthGuard />}> */}
       <Route element={<DefaultLayout />}>
-        <Route path="/onboarding" element={<Boarding />}></Route>
+        <Route path="/onboarding" element={<OnBoard />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route element={<AdminGuard />}>
           <Route path="/hr/profiles" element={<Dashboard />}></Route>

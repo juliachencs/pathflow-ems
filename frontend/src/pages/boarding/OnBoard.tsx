@@ -5,18 +5,31 @@ import {
   identitySchema,
   referenceSchema,
   workAuthSchema,
+  type BoardingFormValues,
 } from "../../app/schema/boardingSchema";
 import { FormProvider, useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Title from "antd/es/typography/Title";
-import { Button, Divider, Form, Steps, Typography } from "antd";
+import { Button, Divider, Form, message, Steps, Typography } from "antd";
 import ContactStep from "./steps/ContactStep";
 import AuthorizationStep from "./steps/WorkAuthStep";
 import ReferenceStep from "./steps/ReferenceStep";
 import SummaryStep from "./steps/SummaryStep";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import { boardingProfileMapper } from "../../app/util/profileMapper";
+import type { IProfileFull } from "../../app/types";
+import {
+  reSubmitBoardingApplication,
+  submitBoardingApplication,
+} from "../../features/boarding/boardingSlice";
+import { setBoarding } from "../../features/auth/authSlice";
 
-const Boarding: React.FC = () => {
+const OnBoard: React.FC = () => {
   const [step, setStep] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
+  const { currentUser } = useSelector((state: RootState) => state.auth);
+  const { status } = useSelector((state: RootState) => state.boarding);
 
   const defaults = {
     firstName: "",
@@ -28,6 +41,7 @@ const Boarding: React.FC = () => {
       zip: "",
     },
     cellPhoneNumber: "",
+    // TODO Handle the email address import here
     email: "something@gmail.com",
     ssn: "",
     dob: null,
@@ -71,7 +85,8 @@ const Boarding: React.FC = () => {
       return zodResolver(schema)(values, context, options);
     };
 
-  const methods = useForm({
+  // TODO default injection, data refresh
+  const methods = useForm<BoardingFormValues>({
     defaultValues: defaults,
     resolver: stepResolver(() => step),
   });
@@ -106,6 +121,21 @@ const Boarding: React.FC = () => {
     setStep(value);
   };
 
+  const submitApplication = async (data: IProfileFull) => {
+    try {
+      if (currentUser?.boarding === "UNSUBMIT") {
+        await dispatch(submitBoardingApplication(data)).unwrap();
+      } else {
+        await dispatch(reSubmitBoardingApplication(data)).unwrap();
+      }
+      message.success("You have successfully submit the form!", 3);
+      dispatch(setBoarding(status));
+    } catch (error) {
+      console.log(error);
+      // TODO: handle error
+    }
+  };
+
   const onNextStep = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
@@ -114,6 +144,7 @@ const Boarding: React.FC = () => {
       setStep((prev) => prev + 1);
     } else {
       console.log("done", methods.getValues());
+      submitApplication(boardingProfileMapper(methods.getValues()));
     }
   };
   return (
@@ -175,4 +206,4 @@ const Boarding: React.FC = () => {
   );
 };
 
-export default Boarding;
+export default OnBoard;
