@@ -13,19 +13,4 @@ const apiRouter = Router();
 apiRouter.use("/auth", authRouter);
 apiRouter.use(userRouter);
 
-// api open to hr, i.e. admin users
-apiRouter.post(
-  "/registrations/invite",
-  jwtAuthenticate,
-  authorize(["ADMIN"]),
-  adminController.invitate,
-);
-
-apiRouter.get(
-  "/registrations/history",
-  jwtAuthenticate,
-  authorize(["ADMIN"]),
-  adminController.getRegistrations,
-);
-
 export default apiRouter;
