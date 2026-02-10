@@ -2,13 +2,13 @@ import {
   Alert,
   Button,
   Divider,
-  Input,
   Result,
   Space,
   Steps,
   Typography,
 } from "antd";
 import type { DocType, FileStatus } from "../../app/types";
+import RHFInput from "../forms/RHF-Input";
 
 type StepStatus = "finish" | "process" | "error" | "wait" | undefined;
 type ResultStatus = "success" | "error" | "info";
@@ -27,6 +27,7 @@ export interface VisaProcessProps {
   docKey: DocType;
   docStatus: FileStatus;
   feedback?: string;
+  onSubmit: () => void;
 }
 
 const processRecord: Record<FileStatus, processTexts> = {
@@ -67,6 +68,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
   docKey,
   docStatus,
   feedback,
+  onSubmit
 }) => {
   const currIndex = Object.keys(docConfigRecord).findIndex(
     (key) => key === docKey,
@@ -162,8 +164,9 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
               )}
 
               <Space.Compact>
-                <Input placeholder="Document Url" />
-                <Button type="primary">
+                {/* <Input placeholder="Document Url" /> */}
+                <RHFInput name='url'/>
+                <Button type="primary" onClick={onSubmit}>
                   {docStatus === "REJECTED" ? "Resubmit" : "Upload"}
                 </Button>
               </Space.Compact>

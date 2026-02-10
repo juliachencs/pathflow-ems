@@ -36,7 +36,6 @@ export interface VisaDocuments {
   EAD: string | undefined;
   I983: string | undefined;
   I20: string | undefined;
-
 }
 export interface IProfileFull {
   _id?: string;

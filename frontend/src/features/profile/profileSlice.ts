@@ -11,7 +11,7 @@ interface ProfileState {
 export type ProfilePayload = Omit<IProfileFull, "_id">;
 
 export const fetchUserProfile = createAsyncThunk<IProfileFull, void, { rejectValue: KnownError }>(
-  'user/fetchUserProfile',
+  'profile/fetchUserProfile',
   async (_, { rejectWithValue }) => {
     try {
       return (await getOwnProfile()) as IProfileFull;
@@ -26,7 +26,7 @@ export const fetchUserProfile = createAsyncThunk<IProfileFull, void, { rejectVal
 );
 
 export const updateUserProfile = createAsyncThunk<IProfileFull, ProfilePayload, { rejectValue: KnownError }>(
-  'user/updateUserProfile',
+  'profile/updateUserProfile',
   async (profile, { rejectWithValue }) => {
     try {
       return (await updateOwnProfile(profile));

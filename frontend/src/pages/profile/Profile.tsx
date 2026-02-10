@@ -19,48 +19,48 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
 import { updateUserProfile } from "../../features/profile/profileSlice";
 
+const dummy: BoardingFormValues = {
+  firstName: "Jiaxuan",
+  lastName: "Xie",
+  address: {
+    street: "13201 S Commercial Ave",
+    city: "Chicago",
+    state: "IL",
+    zip: "60633",
+  },
+  cellPhoneNumber: "3195122427",
+  email: "something@gmail.com",
+  ssn: "333-333-4444",
+  dob: new Date("2026-02-09T06:00:00.000Z"),
+  gender: "male",
+  isUSCitizen: "no",
+  workAuthorization: "H4",
+  visaStartDate: new Date("2026-02-01T06:00:00.000Z"),
+  visaEndDate: new Date("2026-02-20T06:00:00.000Z"),
+  greenCardOrCitizen: "GreenCard",
+  reference: {
+    firstName: "Jiaxuan",
+    lastName: "Xie",
+    phone: "3195122427",
+    email: "mercucyedge@gmail.com",
+    relationship: "Me",
+  },
+  emergencyContacts: [
+    {
+      firstName: "Jiaxuan",
+      lastName: "Xie",
+      middleName: "",
+      phone: "3195122427",
+      email: "mercucyedge@gmail.com",
+      relationship: "Myself",
+    },
+  ],
+};
+
 const Profile: React.FC = () => {
   //   const { profile } = useSelector((state: RootState) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-
-  const dummy: BoardingFormValues = {
-    firstName: "Jiaxuan",
-    lastName: "Xie",
-    address: {
-      street: "13201 S Commercial Ave",
-      city: "Chicago",
-      state: "IL",
-      zip: "60633",
-    },
-    cellPhoneNumber: "3195122427",
-    email: "something@gmail.com",
-    ssn: "333-333-4444",
-    dob: new Date("2026-02-09T06:00:00.000Z"),
-    gender: "male",
-    isUSCitizen: "no",
-    workAuthorization: "H4",
-    visaStartDate: new Date("2026-02-01T06:00:00.000Z"),
-    visaEndDate: new Date("2026-02-20T06:00:00.000Z"),
-    greenCardOrCitizen: "GreenCard",
-    reference: {
-      firstName: "Jiaxuan",
-      lastName: "Xie",
-      phone: "3195122427",
-      email: "mercucyedge@gmail.com",
-      relationship: "Me",
-    },
-    emergencyContacts: [
-      {
-        firstName: "Jiaxuan",
-        lastName: "Xie",
-        middleName: "",
-        phone: "3195122427",
-        email: "mercucyedge@gmail.com",
-        relationship: "Myself",
-      },
-    ],
-  };
 
   const profile: IProfileFull = boardingProfileMapper(dummy);
   // const defaults: BoardingFormValues = profileBoardingMapper(profile!);
