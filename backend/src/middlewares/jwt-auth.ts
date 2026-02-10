@@ -1,10 +1,13 @@
 import jwt from "jsonwebtoken";
 import type { Response, NextFunction } from "express";
 import { HttpUnauthorizedError } from "@/types/http.errors";
-import type { AuthPayload, AuthRequest } from "@/types/auth-request.interface";
+import type {
+  IAuthPayload,
+  IAuthRequest,
+} from "@/types/auth-request.interface";
 
 export const jwtAuthenticate = async (
-  req: AuthRequest,
+  req: IAuthRequest,
   res: Response,
   next: NextFunction,
 ) => {
@@ -23,7 +26,7 @@ export const jwtAuthenticate = async (
     const accessSecret =
       process.env.JWT_ACCESS_SECRET || "somethingsupersecret";
 
-    const decoded = jwt.verify(token, accessSecret) as AuthPayload;
+    const decoded = jwt.verify(token, accessSecret) as IAuthPayload;
 
     req.auth = decoded;
 

@@ -2,14 +2,14 @@ import {
   getBoardingService,
   updateBoardingService,
 } from "@/services/user/boarding.service";
-import type { AuthRequest } from "@/types/auth-request.interface";
+import type { IAuthRequest } from "@/types/auth-request.interface";
 import type { IProfile } from "@/types/profile.interface";
 import type { Response, NextFunction } from "express";
 
 // GET /api/boarding/me
 // 获取员工的boarding application
 export async function getBoarding(
-  req: AuthRequest,
+  req: IAuthRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
@@ -30,7 +30,7 @@ export async function getBoarding(
 // | POST   | BOARDING     | USER  | /api/boarding/me           | submit boarding application                                                           |
 // | PUT    | BOARDING     | USER  | /api/boarding/me           | re-submit boarding application                                                        |
 export async function updateboarding(
-  req: AuthRequest,
+  req: IAuthRequest,
   res: Response,
   next: NextFunction,
 ) {

@@ -13,7 +13,10 @@ export async function getProfileService(employeeId: string) {
   };
 }
 
-export async function putProfileService(employeeId: string, profile: IProfile) {
+export async function updateProfileService(
+  employeeId: string,
+  profile: IProfile,
+) {
   const employee = await Employee.findByIdAndUpdate(
     employeeId,
     { profile: profile },

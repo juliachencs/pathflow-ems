@@ -24,11 +24,11 @@
 
 ## Stage5
 - [x] endpoints: registration
-- [ ] endpoints: profile
+- [ ] endpoints: profiles
 
 ## Stage6
-- [ ] endpoints: boarding
-- [ ] endpoints: visa
+- [ ] endpoints: boardings
+- [ ] endpoints: visas
   
 ## Stage7
 - [x] Auth verification middleware

@@ -1,10 +1,10 @@
 import jwt, { type SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import type { AuthPayload } from "@/types/auth-request.interface";
+import type { IAuthPayload } from "@/types/auth-request.interface";
 import type { StringValue } from "ms";
 import type { ApplyState } from "@/types/common";
 //
-export function generateAccessToken(payload: AuthPayload): string {
+export function generateAccessToken(payload: IAuthPayload): string {
   // the access token
   const accessSecret: string =
     process.env.JWT_ACCESS_SECRET || "somethingsupersecret";

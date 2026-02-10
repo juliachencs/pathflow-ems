@@ -9,7 +9,7 @@ import {
 } from "@/types/http.errors";
 import bcrypt from "bcrypt";
 import { generateAccessToken, hashPassWord } from "@/utils/utils";
-import type { AuthPayload } from "@/types/auth-request.interface";
+import type { IAuthPayload } from "@/types/auth-request.interface";
 
 export async function loginService(username: string, password: string) {
   // find the account
@@ -33,10 +33,10 @@ export async function loginService(username: string, password: string) {
   const info = profile.info;
   console.log(info);
 
-  const payload: AuthPayload = {
+  const payload: IAuthPayload = {
     role: account.role,
-    accountId: account._id,
-    empolyeeId: account.employeeId,
+    accountId: account._id.toString(),
+    empolyeeId: account.employeeId.toString(),
   };
 
   const accessToken = generateAccessToken(payload);
@@ -96,8 +96,8 @@ export async function registerService(
   // generate jwt token
   const payload = {
     role: account.role,
-    accountId: account._id,
-    empolyeeId: account.employeeId,
+    accountId: account._id.toString(),
+    empolyeeId: account.employeeId.toString(),
   };
   const token = generateAccessToken(payload);
 

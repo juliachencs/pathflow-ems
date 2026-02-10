@@ -1,7 +1,16 @@
-import type { IBoardingApplication } from "@/types/boarding.interface";
-import { ApplyStates, VisaStates, WorkAuthTypes } from "@/types/common";
-import { EamilError } from "@/types/email.errors";
-import type { IProfile, IProfileFull } from "@/types/profile.interface";
+import {
+  INIT_BOARDING_DATA,
+  type IBoardingData,
+  type IBoardingStatus,
+  type IWorkAuthorization,
+} from "@/types/boarding.interface";
+import { ApplyStates, WorkAuthTypes } from "@/types/common";
+import type { IEmployee } from "@/types/employee.interface";
+import {
+  VisaStates,
+  type IDocumentState,
+  type IVisaStatus,
+} from "@/types/visa.interface";
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
@@ -38,8 +47,9 @@ const personSchema = new Schema(
   { _id: false }, // <-- disable `_id`
 );
 
-const workAuthorizationSchema = new Schema(
+const workAuthorizationSchema = new Schema<IWorkAuthorization>(
   {
+    type: { type: String, enum: WorkAuthTypes, required: true },
     title: {
       type: { type: String },
       enum: WorkAuthTypes,
@@ -52,10 +62,10 @@ const workAuthorizationSchema = new Schema(
   { _id: false }, // <-- disable `_id`
 );
 
-const profileSchema = new Schema<IProfile>(
+const dataSchema = new Schema<IBoardingData>(
   {
     name: nameSchema,
-    profileImage: String, // URL
+    profileImage: { type: String, required: true, default: () => "" }, // URL
     address: addressSchema,
     cellPhone: { type: String, required: true },
     workPhone: String,
@@ -75,18 +85,24 @@ const profileSchema = new Schema<IProfile>(
     emergencyContacts: [
       { person: personSchema, relationship: { type: String, required: true } },
     ],
-
-    visaDocuments: {
-      OPT: String,
-      EAD: String,
-      I983: String,
-      I20: String,
+  },
+  { _id: false }, // <-- disable `_id`
+);
+const boardingSchema = new Schema<IBoardingStatus>(
+  {
+    state: {
+      type: String,
+      enum: ApplyStates,
+      required: true,
+      default: "UNSUBMIT",
+      index: true, // for fast query all employees upto its visa states
     },
+    feedback: String,
   },
   { _id: false }, // <-- disable `_id`
 );
 
-const stateSchema = new Schema(
+const stateSchema = new Schema<IDocumentState>(
   {
     state: {
       type: String,
@@ -100,29 +116,18 @@ const stateSchema = new Schema(
   { _id: false }, // <-- disable `_id`
 );
 
-const employeeSchema = new Schema(
+const visaSchema = new Schema<IVisaStatus>(
   {
-    profile: profileSchema,
-    boarding: {
-      state: {
-        type: String,
-        enum: ApplyStates,
-        required: true,
-        default: "UNSUBMIT",
-        index: true, // for fast query all employees upto its visa states
-      },
-      feedback: String,
-    },
-    visa: {
-      state: {
-        type: String,
-        enum: VisaStates,
-        required: true,
-        default: "NA",
-        index: true,
-      }, // for fast query all employees upto its visa states
-      curStage: { type: Number, enum: [0, 1, 2, 3, 4], default: 0 },
-      documents: [
+    state: {
+      type: String,
+      enum: VisaStates,
+      required: true,
+      default: "NA",
+      index: true,
+    }, // for fast query all employees upto its visa states
+    curStage: { type: Number, enum: [0, 1, 2, 3, 4], default: 0 },
+    documents: {
+      type: [
         { OPT: stateSchema },
         { EAD: stateSchema },
         { I983: stateSchema },
@@ -130,37 +135,39 @@ const employeeSchema = new Schema(
       ],
     },
   },
+  { _id: false }, // <-- disable `_id`
+);
+
+const employeeSchema = new Schema(
+  {
+    data: {
+      type: dataSchema,
+      required: true,
+    },
+    boarding: {
+      type: boardingSchema,
+      required: true,
+      default: () => ({
+        state: "UNSUBMIT",
+      }),
+    },
+    visa: {
+      type: visaSchema,
+      required: true,
+      default: () => ({
+        state: "NA",
+      }),
+    },
+  },
   {
     virtuals: {
       info: {
         get() {
           return {
-            _id: this._id,
-            profileImage: this.profile?.profileImage,
-            boarding: this.boarding?.state,
-            visa: this.visa?.state,
-          };
-        },
-      },
-
-      profileFull: {
-        get() {
-          return { _id: this._id, ...this.profile };
-        },
-      },
-
-      boardingApplication: {
-        get(): IBoardingApplication {
-          const boarding = {
-            state: "UNSUMBIT",
-            feedback: null,
-            ...this.boarding,
-          };
-
-          return {
-            ...boarding,
-            _id: this._id,
-            profile: this.profile as IProfile,
+            employeeId: this._id.toString(),
+            boarding: this.boarding.state,
+            visa: this.visa.state,
+            profileImage: this.data.profileImage,
           };
         },
       },

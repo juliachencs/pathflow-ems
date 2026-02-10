@@ -1,12 +1,9 @@
 # Data Interface
 
-## Employee Profile
+## Boarding Application Data
 
-<details>
-<summary>Full Description <a name="IProfileFull"> </summary>
-
-```typescript
-export interface IProfile {
+```Typescript
+interface BoardingData {
   name: {
     firstName: string;
     lastName: string;
@@ -62,7 +59,25 @@ export interface IProfile {
       relationship: string;
     },
   ];
+}
+```
 
+The boarding application status
+```typescript
+interface BoardingStatus {
+  state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
+}
+```
+
+
+## Employee Profile
+
+<details>
+<summary>Full Description <a name="IProfileFull"> </summary>
+
+```typescript
+interface Profile extends BoardingData{
   visaDocuments?: {
     OPT?: URL;
     EAD?: URL;
@@ -135,8 +150,8 @@ The server send back the following data to a client while requesting the boardin
 interface IBoardingApplication { 
   _id: string; // employee id
   state:  "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-  profile: IProfileFull;
   feedback?: string;
+  data: BoardingData;
 }
 ```
 
@@ -154,8 +169,8 @@ If the application is rejected by a HR, it will have a `feedback` field.
 
 ```typescript
 // IBoardingReviewAction
-interface IBoardingReviewAction{
-  _id: string; // employeeID
+interface BoardingReviewAction{
+  _id: string; // employee id
   actionType: "APPROVE" | "REJECT";
   payload: {
     feedback?: string;
@@ -190,10 +205,10 @@ interface IVisaStatus {
   state: IVisaState;
   curState: number;
   documents: [
-    {OPT: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
-    {EAD: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
-    {I983:{state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
-    {I20: {state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: URL }};
+    {"documentType":"OPT", state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: string };
+    {"documentType":"EAD", state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: string };
+    {"documentType":"I983", state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: string };
+    {"documentType": "I20", state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED", feedback?: string, url?: string };
   ]
 }
 ```
@@ -207,7 +222,7 @@ interface IVisaStatus {
 ```typescript
 // IVisaManagementStatus
 interface IManagedVisaStatus extends IVisaStatus{
-  
+  _id: string; // employee ID
   fullname: string;   // legal full name;
   workAuthorization: {
     title: string;

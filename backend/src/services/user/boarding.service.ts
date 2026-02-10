@@ -1,19 +1,7 @@
 import { Employee } from "@/models/employee";
-import type { IBoardingApplication } from "@/types/boarding.interface";
 import { HttpNotFoundError } from "@/types/http.errors";
 import type { IProfile } from "@/types/profile.interface";
 
-//
-
-/**
- * 
- * interface IBoardingApplication {
-    _id: string; // employee id
-    state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-    profile: IProfile;
-    feedback?: string;
-  }
-*/
 export async function getBoardingService(
   employeeId: string,
 ): Promise<{ message: string; data: IBoardingApplication }> {
@@ -46,6 +34,18 @@ export async function updateBoardingService(
     state: "PENDING",
   };
 
+  // update the visa status
+  if (profile.workAuthorization.type === "F1(CPT/OPT)") {
+    if (profile.workAuthorization.url) {
+      employee.profile.visaDocuments = { OPT: profile.workAuthorization.url };
+    }
+  } else {
+    // update the visa stauts to NR
+    employee.profile.visaDocuments = {};
+    employee.visa = {
+      state: "NR",
+    };
+  }
   // save the update
   await employee.save();
 

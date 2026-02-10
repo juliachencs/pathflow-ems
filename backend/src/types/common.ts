@@ -15,8 +15,8 @@ export const WorkAuthTypes = [
 export type WorkAuthType = (typeof WorkAuthTypes)[number];
 
 // OPT documents
-export const OPTDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
-export type OPTDocumentType = (typeof OPTDocumentTypes)[number];
+export const VisaDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
+export type VisaDocumentType = (typeof VisaDocumentTypes)[number];
 
 // State of a boarding application or a visa document
 export const ApplyStates = [
@@ -27,10 +27,6 @@ export const ApplyStates = [
 ] as const;
 export type ApplyState = (typeof ApplyStates)[number];
 
-// State of visa documents
-export const VisaStates = ["PROGRESS", "FINISHED", "NA", "NR"];
-export type VisaState = (typeof VisaStates)[number];
-
 export const ActionTypes = [
   "SUBMIT",
   "RESUBMIT",
@@ -39,11 +35,3 @@ export const ActionTypes = [
   "SEND_NOTIFICATION",
 ] as const;
 export type ActionType = (typeof ActionTypes)[number];
-
-export interface Action {
-  actionType: ActionType;
-  payload: {
-    [key: string]: any;
-    feedback?: string;
-  };
-}

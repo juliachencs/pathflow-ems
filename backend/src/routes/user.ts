@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userController from "@/controllers/user/index.controller";
+import userController from "@/controllers/user/user.controller";
 import { jwtAuthenticate } from "@/middlewares/jwt-auth";
 import { authorize } from "@/middlewares/authorize";
 
@@ -9,11 +9,15 @@ const middlewares = [jwtAuthenticate, authorize(["USER"])];
 
 // profile
 userRouter.get("/profile/me", middlewares, userController.getProfile);
-userRouter.put("/profile/me", middlewares, userController.putProfile);
+userRouter.put("/profile/me", middlewares, userController.updateProfile);
 
 //boarding
 userRouter.get("/boarding/me", middlewares, userController.getBoarding);
-userRouter.put("/boarding/me", middlewares, userController.updateboarding);
-userRouter.post("/boarding/me", middlewares, userController.updateboarding);
+userRouter.put("/boarding/me", middlewares, userController.updateBoarding);
+userRouter.post("/boarding/me", middlewares, userController.updateBoarding);
+
+//visa
+userRouter.get("/visa/me", middlewares, userController.getVisaStaus);
+userRouter.patch("/visa/me", middlewares, userController.submitVisaDocument);
 
 export default userRouter;
