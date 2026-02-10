@@ -1,7 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import RHFInput from "../../../components/forms/RHF-Input";
+import type { boardingStepsProps } from "../OnBoard";
 
-export default function IdentityStep() {
+const IdentityStep: React.FC<boardingStepsProps> = ({ disabled }) => {
   const { control } = useFormContext();
 
   return (
@@ -20,6 +21,7 @@ export default function IdentityStep() {
           label="First Name"
           required
           placeholder="First Name"
+          disabled={disabled}
         />
         <RHFInput
           name="lastName"
@@ -27,18 +29,21 @@ export default function IdentityStep() {
           label="Last Name"
           required
           placeholder="Last Name"
+          disabled={disabled}
         />
         <RHFInput
           name="middleName"
           control={control}
           label="Middle Name"
           placeholder="Middle Name"
+          disabled={disabled}
         />
         <RHFInput
           name="preferedName"
           control={control}
           label="Prefered Name"
           placeholder="Prefered Name"
+          disabled={disabled}
         />
 
         <RHFInput
@@ -47,8 +52,11 @@ export default function IdentityStep() {
           label="Profile Image"
           placeholder="Enter a URL"
           style={{ gridColumn: "1 / -1" }}
+          disabled={disabled}
         />
       </div>
     </>
   );
-}
+};
+
+export default IdentityStep;

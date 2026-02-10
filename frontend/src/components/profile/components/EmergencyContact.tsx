@@ -1,7 +1,7 @@
 import { Button, Card, Descriptions, Space, Typography } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import ContactForm from "../../auth/ContactForm";
+import ContactForm from "../../ContactForm";
 
 const EmergencyContact: React.FC<ProfileLayoutProps> = ({
   values,

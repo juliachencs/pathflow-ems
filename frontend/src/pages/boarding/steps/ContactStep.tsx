@@ -3,8 +3,9 @@ import RHFInput from "../../../components/forms/RHF-Input";
 import RHFDatePicker from "../../../components/forms/RHF-DatePicker";
 import RHFRadioGroup from "../../../components/forms/RHF-RadioGroup";
 import { Divider } from "antd";
+import type { boardingStepsProps } from "../OnBoard";
 
-export default function ContactStep() {
+const ContactStep: React.FC<boardingStepsProps> = ({ disabled }) => {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +25,7 @@ export default function ContactStep() {
           label="Street Address"
           required
           placeholder="Street"
+          disabled={disabled}
           style={{ gridColumn: "1 / -1" }}
         />
         <RHFInput
@@ -31,6 +33,7 @@ export default function ContactStep() {
           control={control}
           label="Apt #"
           placeholder="Apt #"
+          disabled={disabled}
         />
         <RHFInput
           name="address.city"
@@ -38,6 +41,7 @@ export default function ContactStep() {
           label="City"
           required
           placeholder="City"
+          disabled={disabled}
         />
         <RHFInput
           name="address.state"
@@ -45,6 +49,7 @@ export default function ContactStep() {
           label="State"
           required
           placeholder="State"
+          disabled={disabled}
         />
         <RHFInput
           name="address.zip"
@@ -52,6 +57,7 @@ export default function ContactStep() {
           label="Zip Code"
           required
           placeholder="Zip Code"
+          disabled={disabled}
         />
       </div>
       <Divider titlePlacement="start">Personal Contact Info</Divider>
@@ -62,12 +68,14 @@ export default function ContactStep() {
           label="Cellphone #"
           required
           placeholder="Phone #"
+          disabled={disabled}
         />
         <RHFInput
           name="workPhoneNumber"
           control={control}
           label="Work Phone #"
           placeholder="Phone #"
+          disabled={disabled}
         />
         <RHFInput
           name="email"
@@ -85,6 +93,7 @@ export default function ContactStep() {
         label="Social Security Number"
         required
         placeholder="SSN #"
+        disabled={disabled}
         style={{ maxWidth: "40%" }}
       />
       <RHFDatePicker
@@ -92,12 +101,14 @@ export default function ContactStep() {
         control={control}
         label="Date of Birth"
         required
+        disabled={disabled}
       />
       <RHFRadioGroup
         name="gender"
         control={control}
         label="Gender"
         required
+        disabled={disabled}
         options={[
           {
             label: "Male",
@@ -115,4 +126,6 @@ export default function ContactStep() {
       />
     </>
   );
-}
+};
+
+export default ContactStep;

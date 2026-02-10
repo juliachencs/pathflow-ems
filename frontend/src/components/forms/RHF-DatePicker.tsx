@@ -7,6 +7,7 @@ type RHFDatePickerProps<T extends FieldValues> = {
   control: Control<T>;
   label?: string;
   required?: boolean;
+  disabled?: boolean;
 };
 
 export default function RHFDatePicker<T extends FieldValues>({
@@ -14,6 +15,7 @@ export default function RHFDatePicker<T extends FieldValues>({
   control,
   label,
   required = false,
+  disabled = false,
 }: RHFDatePickerProps<T>) {
   return (
     <Controller
@@ -30,6 +32,7 @@ export default function RHFDatePicker<T extends FieldValues>({
             {...field}
             value={field.value ? dayjs(field.value) : null}
             onChange={(date) => field.onChange(date ? date.toDate() : null)}
+            disabled={disabled}
           />
         </Form.Item>
       )}

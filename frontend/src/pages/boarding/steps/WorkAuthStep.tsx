@@ -3,8 +3,9 @@ import RHFRadioGroup from "../../../components/forms/RHF-RadioGroup";
 import RHFDatePicker from "../../../components/forms/RHF-DatePicker";
 import RHFInput from "../../../components/forms/RHF-Input";
 import { useEffect } from "react";
+import type { boardingStepsProps } from "../OnBoard";
 
-export default function AuthorizationStep() {
+const AuthorizationStep: React.FC<boardingStepsProps> = ({ disabled }) => {
   const { control, watch, unregister } = useFormContext();
   const isCitizen = watch("isUSCitizen");
   const visaType = watch("workAuthorization");
@@ -29,6 +30,7 @@ export default function AuthorizationStep() {
         name="isUSCitizen"
         label="Permanent resident or citizen of the U.S.?"
         required
+        disabled={disabled}
         control={control}
         options={[
           {
@@ -46,6 +48,7 @@ export default function AuthorizationStep() {
           name="greenCardOrCitizen"
           label="You are Green Card Holder or Citizen?"
           required
+          disabled={disabled}
           control={control}
           options={[
             {
@@ -65,6 +68,7 @@ export default function AuthorizationStep() {
           name="workAuthorization"
           label="What is your work authorization?"
           required
+          disabled={disabled}
           control={control}
           options={[
             //"L2", "F1", "H4", "Other"
@@ -98,12 +102,14 @@ export default function AuthorizationStep() {
             name="visaStartDate"
             label="Start Date"
             required
+            disabled={disabled}
             control={control}
           />
           <RHFDatePicker
             name="visaEndDate"
             label="End Date"
             required
+            disabled={disabled}
             control={control}
           />
         </>
@@ -115,6 +121,7 @@ export default function AuthorizationStep() {
           control={control}
           label="Upload your OPT Receipt"
           required
+          disabled={disabled}
           placeholder="Provide URL"
         />
       )}
@@ -125,10 +132,13 @@ export default function AuthorizationStep() {
           control={control}
           label="Specify your Visa Title"
           required
+          disabled={disabled}
           placeholder="Visa Title"
           style={{ maxWidth: "30%" }}
         />
       )}
     </>
   );
-}
+};
+
+export default AuthorizationStep;

@@ -1,8 +1,9 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import ContactForm from "../../../components/auth/ContactForm";
+import ContactForm from "../../../components/ContactForm";
 import { Button, Divider, Typography } from "antd";
+import type { boardingStepsProps } from "../OnBoard";
 
-export default function ReferenceStep() {
+const ReferenceStep: React.FC<boardingStepsProps> = ({ disabled }) => {
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -26,7 +27,7 @@ export default function ReferenceStep() {
           marginBottom: "30px",
         }}
       >
-        <ContactForm namePrefix="reference" />
+        <ContactForm namePrefix="reference" disabled={disabled} />
       </div>
       <Divider titlePlacement="start">Emergency Contact</Divider>
       <div>
@@ -42,12 +43,19 @@ export default function ReferenceStep() {
             }}
           >
             <Typography.Text
-              style={{ display: "block", marginBottom: 20, fontSize: 14, fontWeight: 600 }}
+              style={{
+                display: "block",
+                marginBottom: 20,
+                fontSize: 14,
+                fontWeight: 600,
+              }}
             >
               Emergency Contact Info
             </Typography.Text>
             <ContactForm namePrefix={`emergencyContacts.${index}`} />
-            <Button onClick={() => remove(index)}>Remove Contact</Button>
+            <Button onClick={() => remove(index)} disabled={disabled}>
+              Remove Contact
+            </Button>
           </div>
         ))}
 
@@ -64,10 +72,13 @@ export default function ReferenceStep() {
             })
           }
           style={{ marginTop: "20px", marginBottom: "45px" }}
+          disabled={disabled}
         >
           Add Emergency Contact
         </Button>
       </div>
     </>
   );
-}
+};
+
+export default ReferenceStep;
