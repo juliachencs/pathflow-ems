@@ -285,10 +285,6 @@ const VisaManage: React.FC = () => {
   };
 
   const handleAccept = async () => {
-    console.log(
-      "Approved!",
-      `id: ${currentFile.employeeId} payload: ${currentFile.documentType}`,
-    );
     try {
       await dispatch(
         updateEmployeeVisa({

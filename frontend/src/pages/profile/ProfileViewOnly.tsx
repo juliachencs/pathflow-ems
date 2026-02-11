@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { fetchProfileById } from "../../features/profile/profileSlice";
 import type { IProfileFull } from "../../app/types";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dummyProfile: IProfileFull = {
   _id: "user_001",
   name: {
@@ -78,12 +79,11 @@ const dummyProfile: IProfileFull = {
 
 const ProfileViewOnly: React.FC = () => {
   const params = useParams();
-  // const { profile } = useSelector((state: RootState) => state.profile);
-  const profile = dummyProfile;
+  const { profile } = useSelector((state: RootState) => state.profile);
+  // const profile = dummyProfile;
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    console.log("effect fired");
     dispatch(fetchProfileById(params.id ?? ""))
       .unwrap()
       .catch((err) => console.log(err));

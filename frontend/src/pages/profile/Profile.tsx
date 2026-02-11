@@ -82,7 +82,6 @@ const Profile: React.FC = () => {
   const onSave = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
-    console.log(methods.getValues());
     const payload = boardingProfileMapper(methods.getValues());
     try {
       await dispatch(updateUserProfile(payload)).unwrap();

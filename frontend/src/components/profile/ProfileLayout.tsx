@@ -48,7 +48,6 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
     docPack.push(...visaDocPack);
   }
 
-  console.log(docPack.length);
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
