@@ -79,7 +79,7 @@ Response body:
 Request body
 
 ```typescript
-export interface IVisaReviewAction {
+export interface IReviewVisaAction {
   actionType: "APPROVE" | "ACCEPT" | "SEND_NOTIFICATION";
   payload: {
     documentType: VisaDocumentType;
