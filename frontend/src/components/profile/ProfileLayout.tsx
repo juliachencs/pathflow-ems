@@ -3,7 +3,7 @@ import ContactInfo from "./components/ContactInfo";
 import PersonalDetails from "./components/PersonalDetails";
 import ReferencePerson from "./components/ReferencePerson";
 import EmergencyContact from "./components/EmergencyContact";
-import UploadedDocs from "./components/UploadedDocs";
+import UploadedDocs, { type UploadedDoc } from "./components/UploadedDocs";
 import type { IProfileFull } from "../../app/types";
 
 export interface ProfileLayoutProps {
@@ -17,10 +17,38 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   bordered = false,
   editMode = false,
 }) => {
-  const docPack = {
-    profileImage: values.profileImage,
-    visaDocuments: values.visaDocuments
+  const docPack: UploadedDoc[] = [];
+
+  if (values.profileImage) {
+    docPack.push({
+      label: "Profile Picture",
+      url: values.profileImage,
+    });
   }
+
+  if (values.visaDocuments) {
+    const visaDocPack = [
+      {
+        label: "OPT Receipt",
+        url: values.visaDocuments?.OPT,
+      },
+      {
+        label: "EAD Card",
+        url: values.visaDocuments?.EAD,
+      },
+      {
+        label: "I-983 Form",
+        url: values.visaDocuments?.I983,
+      },
+      {
+        label: "I-20 Form",
+        url: values.visaDocuments?.I20,
+      },
+    ];
+    docPack.push(...visaDocPack);
+  }
+
+  console.log(docPack.length);
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -41,7 +69,9 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
           editMode={editMode}
         />
 
-        <UploadedDocs docPack={docPack} bordered={bordered} />
+        {docPack.length !== 0 && (
+          <UploadedDocs docPack={docPack} bordered={bordered} />
+        )}
       </div>
     </>
   );

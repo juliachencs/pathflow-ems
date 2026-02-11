@@ -12,6 +12,7 @@ import {
   setProfiles,
   setSearchKey,
 } from "../../features/empProfiles/empProfilesSlice";
+import SearchInput from "../../components/forms/SearchInput";
 
 const profilesMock: IProfileSummary[] = [
   {
@@ -359,7 +360,12 @@ const ProfileManage: React.FC = () => {
       <Title level={3} style={{ marginBottom: "40px" }}>
         Employee Profiles
       </Title>
-      {/* TODO Debounce */}
+      <SearchInput
+        placeholder="Search by employee name"
+        onChange={(e) => {
+          dispatch(setSearchKey(e.target.value));
+        }}
+      />
       <Input
         placeholder="Search by employee name"
         prefix={<SearchOutlined />}

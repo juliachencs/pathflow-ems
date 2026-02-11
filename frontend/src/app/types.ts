@@ -104,3 +104,34 @@ export interface IVisaStatus {
     { I20: { state: FileStatus, feedback?: string, url?: URL } },
   ]
 }
+
+export interface IVisaAction {
+  actionType: "REVIEW" | "SEND_NOTIFICATION";
+  payload: {
+    documentType: DocType;
+    url?: string;
+  };
+}
+
+export interface IVisaWorkAuth {
+  title: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface IManagedVisaStatus {
+  employeeId: string;
+  name: NamePacked;
+  workAuthorization: IVisaWorkAuth;
+  nextStep: string;
+  action: IVisaAction | undefined;
+
+  files: IVisaFiles;
+}
+
+export interface IVisaFiles {
+  OPT?: string;
+  EAD?: string;
+  I983?: string;
+  I20?: string;
+}
