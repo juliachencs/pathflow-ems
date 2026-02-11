@@ -42,12 +42,13 @@ export const fetchVisaListAll = createAsyncThunk<IManagedVisaStatus[], void, { r
     },
 );
 
-export type UserVisaPayload = {
+export type EmpVisaPayload = {
     id: string;
     actionType: ActionType;
     payload: {
         documentType: DocType;
-        url: string;
+        url?: string;
+        feedback?: string;
     }
 };
 
@@ -58,7 +59,7 @@ type UpdateVisaRespond = {
     }
 };
 
-export const updateEmployeeVisa = createAsyncThunk<UpdateVisaRespond, UserVisaPayload, { rejectValue: KnownError }>(
+export const updateEmployeeVisa = createAsyncThunk<UpdateVisaRespond, EmpVisaPayload, { rejectValue: KnownError }>(
     'employeeVisa/updateEmployeeVisa',
     async (visaPayload, { rejectWithValue }) => {
         try {

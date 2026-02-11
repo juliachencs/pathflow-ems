@@ -2,6 +2,10 @@ import {
   Button,
   Card,
   Divider,
+  Form,
+  message,
+  Modal,
+  Space,
   Tabs,
   Tag,
   Typography,
@@ -10,6 +14,7 @@ import {
 import VisaListIP from "./components/VisaListIP";
 import VisaListAll from "./components/VisaListAll";
 import type {
+  DocType,
   IManagedVisaStatus,
   IVisaAction,
   IVisaWorkAuth,
@@ -17,6 +22,12 @@ import type {
 } from "../../app/types";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
+import { useState } from "react";
+import TextArea from "antd/es/input/TextArea";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
+import { updateEmployeeVisa } from "../../features/empVisa/empVisaSlice";
+import { Controller, useForm } from "react-hook-form";
 
 const managedVisaStatusMock: IManagedVisaStatus[] = [
   {
@@ -146,7 +157,24 @@ export type VisaListProps = {
   columns: ColumnsType<IManagedVisaStatus>;
 };
 
+interface CurrentFile {
+  documentType: DocType | undefined;
+  url?: string;
+  employeeId?: string;
+}
+
+// TODO decouple (further!)
 const VisaManage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentFile, setCurrentFile] = useState<CurrentFile>({
+    documentType: undefined,
+  });
+  const [isRejectProcess, setIsRejectProcess] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { reset, trigger, getValues, control } = useForm<{ feedback: string }>({
+    defaultValues: { feedback: "" },
+  });
+
   const baseColumns: ColumnsType<IManagedVisaStatus> = [
     {
       title: "Name",
@@ -197,6 +225,23 @@ const VisaManage: React.FC = () => {
     },
   ];
 
+  const handleSendNotif = async (id: string, docType: DocType) => {
+    try {
+      await dispatch(
+        updateEmployeeVisa({
+          id,
+          actionType: "SEND_NOTIFICATION",
+          payload: {
+            documentType: docType,
+          },
+        }),
+      ).unwrap();
+    } catch (err) {
+      // TODO handle
+      console.log(err);
+    }
+  };
+
   const columnsIP: ColumnsType<IManagedVisaStatus> = [
     ...baseColumns,
     {
@@ -206,12 +251,84 @@ const VisaManage: React.FC = () => {
       render: (action: IVisaAction, record) => {
         const { actionType, payload } = action;
         if (actionType === "SEND_NOTIFICATION") {
-          return <Button>Send Notification</Button>;
+          return (
+            <Button
+              onClick={() => {
+                handleSendNotif(record.employeeId, payload.documentType);
+              }}
+            >
+              Send Notification
+            </Button>
+          );
         }
-        return <Button>Review Documents</Button>;
+        return (
+          <Button
+            onClick={() => {
+              setCurrentFile({
+                documentType: payload.documentType,
+                url: payload.url,
+                employeeId: record.employeeId,
+              });
+              setIsModalOpen(true);
+            }}
+          >
+            Review Documents
+          </Button>
+        );
       },
     },
   ];
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setIsRejectProcess(false);
+  };
+
+  const handleAccept = async () => {
+    console.log(
+      "Approved!",
+      `id: ${currentFile.employeeId} payload: ${currentFile.documentType}`,
+    );
+    try {
+      await dispatch(
+        updateEmployeeVisa({
+          id: currentFile.employeeId ?? "",
+          actionType: "APPROVE",
+          payload: {
+            documentType: currentFile.documentType ?? "I20",
+          },
+        }),
+      ).unwrap();
+      handleCancel();
+    } catch (err) {
+      // TODO handle
+      console.log(err);
+    }
+  };
+
+  const handleReject = async () => {
+    const isValid = await trigger();
+    if (!isValid) return;
+    const feedback = getValues().feedback;
+    try {
+      await dispatch(
+        updateEmployeeVisa({
+          id: currentFile.employeeId ?? "",
+          actionType: "REJECT",
+          payload: {
+            documentType: currentFile.documentType ?? "I20",
+            feedback
+          },
+        }),
+      ).unwrap();
+      reset();
+      handleCancel();
+    } catch (err) {
+      // TODO handle
+      console.log(err);
+      message.error(`Submit failure: please check console log for more info`)
+    }
+  };
 
   const tabs: TabsProps["items"] = [
     {
@@ -237,21 +354,75 @@ const VisaManage: React.FC = () => {
   ];
 
   return (
-    <Card>
-      <Typography.Title
-        level={3}
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 16,
-        }}
+    <>
+      <Card>
+        <Typography.Title
+          level={3}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 16,
+          }}
+        >
+          Employee Visa Status Managment
+        </Typography.Title>
+        <Divider style={{ margin: "30px 0" }}></Divider>
+        <Tabs defaultActiveKey="1" items={tabs}></Tabs>
+      </Card>
+      <Modal
+        title={`Now viewing ${currentFile.documentType}`}
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
       >
-        My Visa Status
-      </Typography.Title>
-      <Divider style={{ margin: "30px 0" }}></Divider>
-      <Tabs defaultActiveKey="1" items={tabs}></Tabs>
-    </Card>
+        <iframe
+          src={currentFile.url}
+          style={{ width: "100%", height: "55vh" }}
+        />
+        <Divider></Divider>
+        {isRejectProcess && (
+          <>
+            <Controller
+              name="feedback"
+              control={control}
+              rules={{ required: "Feedback is required" }}
+              render={({ field, fieldState }) => (
+                <Form.Item
+                  validateStatus={fieldState.error ? "error" : ""}
+                  help={fieldState.error?.message}
+                >
+                  <TextArea
+                    {...field}
+                    rows={3}
+                    placeholder="Provide feedback..."
+                    disabled={!isRejectProcess}
+                  />
+                </Form.Item>
+              )}
+            />
+            <Divider />
+            <Space>
+              <Button type="primary" onClick={handleReject}>
+                Submit
+              </Button>
+              <Button onClick={() => setIsRejectProcess(false)}>Cancel</Button>
+            </Space>
+          </>
+        )}
+        {!isRejectProcess && (
+          <Space>
+            <Button type="primary" onClick={handleAccept}>
+              Approve
+            </Button>
+            <Button danger onClick={() => setIsRejectProcess(true)}>
+              Reject
+            </Button>
+          </Space>
+        )}
+      </Modal>
+    </>
   );
 };
 

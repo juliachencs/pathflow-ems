@@ -22,6 +22,7 @@ const VisaListAll: React.FC<VisaListAllProps> = ({
         onChange={onSearchChange}
       />
       {/* rowKey is required!!! */}
+      {/* TODO maybe styling the file button */}
       <Table
         rowKey="employeeId"
         columns={columns}
@@ -34,7 +35,7 @@ const VisaListAll: React.FC<VisaListAllProps> = ({
                 label: label,
                 url: url,
             }));
-            return (<UploadedDocs docPack={docPack}/>);
+            return (<UploadedDocs docPack={docPack} title="Visa Documents"/>);
           },
           rowExpandable: (record) =>
             record.files && Object.values(record.files).some(Boolean),

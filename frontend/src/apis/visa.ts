@@ -32,6 +32,6 @@ export const updateEmpVisaStatus = async ({ id, actionType, payload }: {
         feedback?: string;
     }
 }) => {
-    const response = await api.patch(`${API_URL_ADMIN}/${id}`, { id, actionType, payload });
+    const response = await api.patch(`${API_URL_ADMIN}/${id}`, { actionType, payload });
     return response.data;
 };
