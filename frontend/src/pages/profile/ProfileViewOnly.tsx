@@ -10,6 +10,11 @@ import type { IProfileFull } from "../../app/types";
 import Title from "antd/es/typography/Title";
 import { Card } from "antd";
 import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchProfileById } from "../../features/profile/profileSlice";
 
 const dummy: BoardingFormValues = {
   firstName: "Jiaxuan",
@@ -50,10 +55,15 @@ const dummy: BoardingFormValues = {
 };
 
 const ProfileViewOnly: React.FC = () => {
-  //   const { profile } = useSelector((state: RootState) => state.profile);
+  const params = useParams();
+  // const { profile } = useSelector((state: RootState) => state.profile);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchProfileById(params.id ?? '')).unwrap().catch((err)=>console.log(err));
+  },[dispatch, params.id])
 
   const profile: IProfileFull = boardingProfileMapper(dummy);
-  // const defaults: BoardingFormValues = profileBoardingMapper(profile!);
 
   // Page will throw error if useFormContext getting null
   // TODO find a way to bypass FormProvider requirement

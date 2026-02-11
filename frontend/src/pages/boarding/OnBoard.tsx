@@ -29,6 +29,7 @@ import type { AppDispatch, RootState } from "../../app/store";
 import { boardingProfileMapper } from "../../app/util/profileMapper";
 import type { BoardingStatus, IProfileFull } from "../../app/types";
 import {
+  fetchBoardingStatus,
   reSubmitBoardingApplication,
   submitBoardingApplication,
 } from "../../features/boarding/boardingSlice";
@@ -150,10 +151,12 @@ const OnBoard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // I believe I know what I'm doing
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (currentUser?.boarding === "UNSUBMIT") setShowForm(true);
-  }, [currentUser]);
+    dispatch(fetchBoardingStatus()).unwrap().catch((err)=>console.log(err))
+    if (currentUser?.boarding === "UNSUBMIT") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowForm(true);
+    }
+  }, [currentUser, dispatch]);
 
   const CurrComponent = stepProvider[step].component;
   const getSchemaForStep = (step: number) => stepProvider[step]?.schema;

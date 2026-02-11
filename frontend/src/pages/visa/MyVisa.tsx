@@ -1,7 +1,7 @@
 import { Card, Divider, message } from "antd";
 import Title from "antd/es/typography/Title";
-import type { FileStatus, VisaDocuments, VisaStatus } from "../../app/types";
-import type { DocType } from "../../app/types";
+// import type { FileStatus, VisaDocuments, VisaStatus } from "../../app/types";
+// import type { DocType } from "../../app/types";
 import VisaProcess from "../../components/visa/VisaProcess";
 import VisaCompleted from "../../components/visa/VisaCompleted";
 import VisaNotRequired from "../../components/visa/VisaNotRequired";
@@ -11,9 +11,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import {
+  fetchUserVisa,
   submitUserVisaDoc,
   type UserVisaPayload,
 } from "../../features/visa/visaSlice";
+import { useEffect } from "react";
+
+// const mockData: {
+//   key: DocType | null;
+//   status: FileStatus | null;
+//   visaStatus: VisaStatus | null;
+//   feedback: string | undefined;
+//   userDocuments: VisaDocuments | undefined;
+// } = {
+//   key: "EAD",
+//   status: "APPROVED",
+//   visaStatus: "PROGRESS",
+//   feedback: "Document too blur",
+//   userDocuments: {
+//     OPT: "abc",
+//     EAD: "def",
+//     I983: "ghi",
+//     I20: "jkl",
+//   },
+// };
 
 const MyVisa: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,24 +42,11 @@ const MyVisa: React.FC = () => {
     (state: RootState) => state.visa,
   );
 
-  const mockData: {
-    key: DocType | null;
-    status: FileStatus | null;
-    visaStatus: VisaStatus | null;
-    feedback: string | undefined;
-    userDocuments: VisaDocuments | undefined;
-  } = {
-    key: "EAD",
-    status: "APPROVED",
-    visaStatus: "PROGRESS",
-    feedback: "Document too blur",
-    userDocuments: {
-      OPT: "abc",
-      EAD: "def",
-      I983: "ghi",
-      I20: "jkl",
-    },
-  };
+  useEffect(() => {
+    dispatch(fetchUserVisa())
+      .unwrap()
+      .catch((err) => console.log(err));
+  }, [dispatch]);
 
   const methods = useForm<visaFormValues>({
     resolver: zodResolver(visaSchema),
@@ -50,10 +58,10 @@ const MyVisa: React.FC = () => {
     const docUrl = methods.getValues();
     console.log(docUrl);
     try {
-      if (!mockData.key) throw new Error('missing key from visa state');
+      if (!key) throw new Error("missing key from visa state");
       const payload: UserVisaPayload = {
         payload: {
-          documentType: mockData.key,
+          documentType: key,
           url: docUrl.url,
         },
       };
@@ -88,20 +96,22 @@ const MyVisa: React.FC = () => {
           My Visa Status
         </Title>
         <Divider></Divider>
-        {(mockData.visaStatus === "PROGRESS" && mockData.key && mockData.status)&& (
-          <FormProvider {...methods}>
-            <VisaProcess
-              docKey={mockData.key}
-              docStatus={mockData.status}
-              feedback={mockData.feedback}
-              onSubmit={onSubmit}
-            />
-          </FormProvider>
+        {visaStatus === "PROGRESS" &&
+          key &&
+          status && (
+            <FormProvider {...methods}>
+              <VisaProcess
+                docKey={key}
+                docStatus={status}
+                feedback={feedback}
+                onSubmit={onSubmit}
+              />
+            </FormProvider>
+          )}
+        {visaStatus === "FINISHED" && (
+          <VisaCompleted docPack={userDocuments} />
         )}
-        {mockData.visaStatus === "FINISHED" && (
-          <VisaCompleted docPack={mockData.userDocuments} />
-        )}
-        {(mockData.visaStatus === "NA" || mockData.visaStatus === "NR") && (
+        {(visaStatus === "NA" || visaStatus === "NR") && (
           <VisaNotRequired />
         )}
       </Card>

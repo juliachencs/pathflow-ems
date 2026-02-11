@@ -14,10 +14,10 @@ import ProfileLayout from "../../components/profile/ProfileLayout";
 import type { IProfileFull } from "../../app/types";
 import Title from "antd/es/typography/Title";
 import { Button, Card, message, Popconfirm, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { updateUserProfile } from "../../features/profile/profileSlice";
+import { fetchUserProfile, updateUserProfile } from "../../features/profile/profileSlice";
 
 const dummy: BoardingFormValues = {
   firstName: "Jiaxuan",
@@ -64,6 +64,10 @@ const Profile: React.FC = () => {
 
   const profile: IProfileFull = boardingProfileMapper(dummy);
   // const defaults: BoardingFormValues = profileBoardingMapper(profile!);
+
+    useEffect(() => {
+      dispatch(fetchUserProfile()).unwrap().catch((err)=>console.log(err));
+    },[dispatch])
 
   const methods = useForm<BoardingFormValues>({
     // defaultValues: defaults,
