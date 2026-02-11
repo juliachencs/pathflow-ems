@@ -22,11 +22,17 @@ import type {
 } from "../../app/types";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../app/store";
-import { updateEmployeeVisa } from "../../features/empVisa/empVisaSlice";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import {
+  fetchVisaListAll,
+  fetchVisaListProgress,
+  setDummyVisaList,
+  setSearchKey,
+  updateEmployeeVisa,
+} from "../../features/empVisa/empVisaSlice";
 import { Controller, useForm } from "react-hook-form";
 
 const managedVisaStatusMock: IManagedVisaStatus[] = [
@@ -174,6 +180,19 @@ const VisaManage: React.FC = () => {
   const { reset, trigger, getValues, control } = useForm<{ feedback: string }>({
     defaultValues: { feedback: "" },
   });
+  const { visaListAllFiltered, visaListProgress } = useSelector(
+    (state: RootState) => state.employeeVisa,
+  );
+  useEffect(() => {
+    // TODO remove test file
+    dispatch(setDummyVisaList(managedVisaStatusMock));
+    dispatch(fetchVisaListAll())
+      .unwrap()
+      .catch((err) => console.log(err));
+    dispatch(fetchVisaListProgress())
+      .unwrap()
+      .catch((err) => console.log(err));
+  }, [dispatch]);
 
   const baseColumns: ColumnsType<IManagedVisaStatus> = [
     {
@@ -313,7 +332,7 @@ const VisaManage: React.FC = () => {
           actionType: "REJECT",
           payload: {
             documentType: currentFile.documentType ?? "I20",
-            feedback
+            feedback,
           },
         }),
       ).unwrap();
@@ -322,7 +341,7 @@ const VisaManage: React.FC = () => {
     } catch (err) {
       // TODO handle
       console.log(err);
-      message.error(`Submit failure: please check console log for more info`)
+      message.error(`Submit failure: please check console log for more info`);
     }
   };
 
@@ -333,7 +352,7 @@ const VisaManage: React.FC = () => {
         <div style={{ width: "30vw", textAlign: "center" }}>In Progress</div>
       ),
       children: (
-        <VisaListIP datasource={managedVisaStatusMock} columns={columnsIP} />
+        <VisaListIP datasource={visaListProgress} columns={columnsIP} />
       ),
     },
     {
@@ -341,9 +360,9 @@ const VisaManage: React.FC = () => {
       label: <div style={{ width: "30vw", textAlign: "center" }}>All</div>,
       children: (
         <VisaListAll
-          datasource={managedVisaStatusMock}
+          datasource={visaListAllFiltered}
           columns={baseColumns}
-          onSearchChange={(e) => console.log(e.target.value)}
+          onSearchChange={(e) => dispatch(setSearchKey(e.target.value))}
         />
       ),
     },

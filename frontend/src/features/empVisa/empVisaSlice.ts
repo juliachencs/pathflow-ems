@@ -116,14 +116,15 @@ const EmpVisaSlice = createSlice({
         },
         clearSearch: (state) => {
             state.searchKey = undefined;
-            state.visaListAllFiltered = null;
+            state.visaListAllFiltered = state.visaListAll;
         },
         // // mock test only
-        // setProfiles: (state, action: PayloadAction<IProfileSummary[]>) => {
-        //     console.log('setProfile')
-        //     state.profiles = action.payload;
-        //     state.profilesFiltered = sortProfiles(state);
-        // },
+        setDummyVisaList: (state, action: PayloadAction<IManagedVisaStatus[]>) => {
+            console.log('setDummy');
+            state.visaListProgress = action.payload;
+            state.visaListAll = action.payload;
+            state.visaListAllFiltered = state.visaListAll;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchVisaListProgress.pending, (state) => {
@@ -141,6 +142,7 @@ const EmpVisaSlice = createSlice({
         });
         builder.addCase(fetchVisaListAll.fulfilled, (state, action) => {
             state.visaListAll = action.payload;
+            state.visaListAllFiltered = state.visaListAll;
             state.loading = false;
         });
         builder.addCase(fetchVisaListAll.rejected, (state) => {
@@ -153,6 +155,7 @@ const EmpVisaSlice = createSlice({
             const { data } = action.payload;
             state.visaListProgress = data.progress;
             state.visaListAll = data.all;
+            state.visaListAllFiltered = state.visaListAll;
             state.loading = false;
         });
         builder.addCase(updateEmployeeVisa.rejected, (state) => {
@@ -161,5 +164,5 @@ const EmpVisaSlice = createSlice({
     },
 });
 
-export const { setSearchKey, clearSearch } = EmpVisaSlice.actions;
+export const { setSearchKey, clearSearch, setDummyVisaList } = EmpVisaSlice.actions;
 export default EmpVisaSlice.reducer;
