@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 
 interface ProfileState {
   profile: IProfileFull | null;
+  userProfile: IProfileFull | null;
   loading: boolean;
 }
 
@@ -57,6 +58,7 @@ export const fetchProfileById = createAsyncThunk<IProfileFull, string, { rejectV
 
 const initialState: ProfileState = {
   profile: null,
+  userProfile: null,
   loading: false,
 };
 
@@ -69,7 +71,7 @@ const profileSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-      state.profile = action.payload;
+      state.userProfile = action.payload;
       state.loading = false;
     });
     builder.addCase(fetchUserProfile.rejected, (state) => {
@@ -79,7 +81,7 @@ const profileSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(updateUserProfile.fulfilled, (state, action) => {
-      state.profile = action.payload;
+      state.userProfile = action.payload;
       state.loading = false;
     });
     builder.addCase(updateUserProfile.rejected, (state) => {

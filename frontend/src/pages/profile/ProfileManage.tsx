@@ -4,8 +4,16 @@ import Title from "antd/es/typography/Title";
 import type { ColumnsType } from "antd/es/table";
 import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import { useEffect } from "react";
+import {
+  fetchProfileList,
+  setProfiles,
+  setSearchKey,
+} from "../../features/empProfiles/empProfilesSlice";
 
-const profileSummariesMock: IProfileSummary[] = [
+const profilesMock: IProfileSummary[] = [
   {
     _id: "emp-001",
     name: { firstName: "John", lastName: "Doe", preferredName: "Johnny" },
@@ -290,6 +298,10 @@ const profileSummariesMock: IProfileSummary[] = [
 
 const ProfileManage: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { profilesFiltered } = useSelector(
+    (state: RootState) => state.employeeProfiles,
+  );
   const columns: ColumnsType<IProfileSummary> = [
     {
       title: "Name",
@@ -301,7 +313,6 @@ const ProfileManage: React.FC = () => {
           <Button
             type="link"
             onClick={() => {
-              console.log(record._id);
               navigate(`/profile/${record._id}`);
             }}
           >
@@ -335,25 +346,33 @@ const ProfileManage: React.FC = () => {
       key: "email",
     },
   ];
+
+  useEffect(() => {
+    dispatch(fetchProfileList())
+      .unwrap()
+      .catch((err) => console.log(err));
+    dispatch(setProfiles(profilesMock));
+  }, [dispatch]);
+
   return (
     <Card>
       <Title level={3} style={{ marginBottom: "40px" }}>
         Employee Profiles
       </Title>
-
+      {/* TODO Debounce */}
       <Input
         placeholder="Search by employee name"
         prefix={<SearchOutlined />}
-        onChange={() => {
-          console.log("hello");
+        onChange={(e) => {
+          dispatch(setSearchKey(e.target.value));
         }}
       ></Input>
       <Divider style={{ margin: "40px 0" }}></Divider>
       <Space orientation="vertical">
         <Title level={5} type="secondary">
-          Total Employees {profileSummariesMock.length}
+          Total Employees {profilesFiltered?.length ?? 0}
         </Title>
-        <Table columns={columns} dataSource={profileSummariesMock}></Table>
+        <Table columns={columns} dataSource={profilesFiltered ?? []}></Table>
       </Space>
     </Card>
   );

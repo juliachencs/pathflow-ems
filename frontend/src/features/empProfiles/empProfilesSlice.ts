@@ -29,7 +29,7 @@ export const fetchProfileList = createAsyncThunk<IProfileSummary[], void, { reje
 const sortProfiles = (state: EmpProfileState, profilesInput?: IProfileSummary[]): IProfileSummary[] | null => {
     // use default sort alphabeticaly by last name for now
     let profiles: IProfileSummary[] | null = state.profiles;
-    if(profilesInput) profiles = profilesInput;
+    if (profilesInput) profiles = profilesInput;
 
     profiles?.sort((a, b) => a.name.lastName.localeCompare(b.name.lastName));
     return profiles;
@@ -42,7 +42,7 @@ const searchProfiles = (state: EmpProfileState): IProfileSummary[] | null => {
     if (profiles && searchKey) {
         profiles = profiles.filter((profile) => {
             const { name } = profile;
-            return name.firstName.includes(searchKey) || name.lastName.includes(searchKey) || name.preferredName?.includes(searchKey);
+            return name.firstName.toLocaleLowerCase().includes(searchKey.toLocaleLowerCase()) || name.lastName.toLocaleLowerCase().includes(searchKey.toLocaleLowerCase()) || name.preferredName?.toLocaleLowerCase().includes(searchKey.toLocaleLowerCase());
         })
         // if result changed, sort it
         profiles = sortProfiles(state, profiles);
@@ -68,7 +68,13 @@ const EmpProfileSlice = createSlice({
         clearSearch: (state) => {
             state.searchKey = undefined;
             state.profilesFiltered = null;
-        }
+        },
+        // mock test only
+        setProfiles: (state, action: PayloadAction<IProfileSummary[]>) => {
+            console.log('setProfile')
+            state.profiles = action.payload;
+            state.profilesFiltered = sortProfiles(state);
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProfileList.pending, (state) => {
@@ -84,5 +90,5 @@ const EmpProfileSlice = createSlice({
     },
 });
 
-
+export const { setSearchKey, clearSearch, setProfiles } = EmpProfileSlice.actions;
 export default EmpProfileSlice.reducer;
