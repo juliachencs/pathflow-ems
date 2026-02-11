@@ -93,6 +93,12 @@ export interface IProfileSummary {
   email: string;
 }
 
+export interface IProfileCore {
+  _id: string;
+  fullName: string;
+  email: string;
+}
+
 export interface IVisaStatus {
   _id: string; // employeeID
   state: VisaStatus;
@@ -129,9 +135,25 @@ export interface IManagedVisaStatus {
   files: IVisaFiles;
 }
 
+// TODO Merge two visa files
 export interface IVisaFiles {
   OPT?: string;
   EAD?: string;
   I983?: string;
   I20?: string;
+}
+
+export interface IBoardingReviewAction {
+  actionType: "APPROVE" | "REJECT";
+  payload: {
+    feedback?: string;
+  }
+}
+
+export interface registerLogInfo {
+  name: string;
+  email: string;
+  registrationLink: string;
+  hasRegistered: boolean; // indicate if this link has been used to register an account
+  hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
 }
