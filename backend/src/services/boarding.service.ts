@@ -20,6 +20,29 @@ export async function getBoardingService(employeeId: string) {
   };
 }
 
+export async function submitBoardingService(employeeId: string, data: unknown) {
+  const employee = await Employee.findById(employeeId).exec();
+  if (!employee) {
+    throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
+  }
+  // make a new employee based on onBoarding data
+  const info = onBoarding(data);
+
+  employee.data = {...employee.data, ....info.data};
+  employee.boarding = info.boarding;
+  employee.visa = info.visa;
+
+  // save the update
+  await employee.save();
+
+  // update the registers dataset to mark this record is submitted 
+  
+  // make sure the 
+  return {
+    message: `You've submit the boarding application.`,
+    data: employee.profileFull,
+  };
+} 
 export async function updateBoardingService(employeeId: string, data: unknown) {
   const employee = await Employee.findById(employeeId).exec();
   if (!employee) {
@@ -36,6 +59,7 @@ export async function updateBoardingService(employeeId: string, data: unknown) {
   // save the update
   await employee.save();
 
+  // make sure the 
   return {
     message: `You've updated the boarding application of the ${employeeId}.`,
     data: employee.profileFull,

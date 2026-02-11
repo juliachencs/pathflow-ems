@@ -21,22 +21,6 @@ export async function login(
   }
 }
 
-export async function signout(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> {
-  try {
-    console.log("Request to sign out");
-    res.status(200).json({
-      success: true,
-      message: "You have signed out!",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
 export async function register(
   req: Request,
   res: Response,
@@ -57,6 +41,23 @@ export async function register(
       success: true,
       message: "You have sucessful created an account!",
       data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+// not really do anything
+export async function signout(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    console.log("Request to sign out");
+    res.status(200).json({
+      success: true,
+      message: "You have signed out!",
     });
   } catch (error) {
     next(error);

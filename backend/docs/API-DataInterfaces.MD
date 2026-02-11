@@ -1,5 +1,6 @@
 # Data Interface
 
+
 ## Boarding Application Data
 
 ```Typescript
@@ -25,14 +26,14 @@ interface BoardingData {
   workPhone?: string;
   email: string;
   SSN: string;
-  dob: Date; // date of birth
+  dob: string; // date of birth
   gender: string; // "male" | "female" | "NA"("I do not wish to answer")
 
   workAuthorization: {
     type: string; // "Green Card" |  "Citizen" | "H1-B" | "L2" | "H4" | "other" | "F1(CPT/OPT)"
     title?: string;
-    startDate?: Date;
-    endDate?: Date;
+    startDate?: string;
+    endDate?: string;
     url?: string;
   };
 

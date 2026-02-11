@@ -24,15 +24,20 @@
 
 ## Stage5
 - [x] endpoints: registration
-- [ ] endpoints: profiles
+- [x] endpoints: profiles
 
 ## Stage6
-- [ ] endpoints: boardings
-- [ ] endpoints: visas
+- [x] endpoints: boardings
+- [x] endpoints: visas
   
 ## Stage7
 - [x] Auth verification middleware
 - [x] Role verification middleware
+  
+## Stage8
+- [ ] test the backend
+- [ ] revise API document
+- [ ] test the frontend and backend
 
 # Phase2 
 - [ ] Test with frontend
