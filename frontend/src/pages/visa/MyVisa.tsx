@@ -1,7 +1,5 @@
 import { Card, Divider, message } from "antd";
 import Title from "antd/es/typography/Title";
-// import type { FileStatus, VisaDocuments, VisaStatus } from "../../app/types";
-// import type { DocType } from "../../app/types";
 import VisaProcess from "../../components/visa/VisaProcess";
 import VisaCompleted from "../../components/visa/VisaCompleted";
 import VisaNotRequired from "../../components/visa/VisaNotRequired";

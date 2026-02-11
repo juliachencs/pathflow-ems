@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import IdentityStep from "./steps/IdentityStep";
 import {
   contactSchema,
@@ -137,18 +137,18 @@ const OnBoard: React.FC = () => {
   const [editMode, setEditMode] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  // const { currentUser } = useSelector((state: RootState) => state.auth);
+  const { currentUser } = useSelector((state: RootState) => state.auth);
   const {
-    // status, feedback
+    status, feedback,
     boardingValues,
   } = useSelector((state: RootState) => state.boarding);
 
   // dummies
-  const status: BoardingStatus = "PENDING";
-  const feedback = null;
-  const currentUser = useMemo((): { boarding: BoardingStatus } => {
-    return { boarding: "REJECTED" };
-  }, []);
+  // const status: BoardingStatus = "PENDING";
+  // const feedback = null;
+  // const currentUser = useMemo((): { boarding: BoardingStatus } => {
+  //   return { boarding: "REJECTED" };
+  // }, []);
 
   useEffect(() => {
     dispatch(fetchBoardingStatus()).unwrap().catch((err)=>console.log(err))
