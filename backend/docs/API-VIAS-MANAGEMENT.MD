@@ -1,8 +1,15 @@
 # Interface
 
 ```Typescript
-export const VisaDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
+export interface IName {
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  preferredName?: string;
+}
 
+
+export const VisaDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
 export type VisaDocumentType = (typeof VisaDocumentTypes)[number];
 
 export interface IVisaFiles {
@@ -15,15 +22,15 @@ export interface IVisaFiles {
 
 export interface IManagedVisaStatus {
   employeeId: string;
-  fullName: string;
+  name: IName;
   workAuthorization: {
     title: string;
     startDate: string;
     endDate: string;
   };
-  nextStep: string; // "Waiting for approval" or "Waiting for OPT|EAD.."
+  nextStep: string; // "Waiting for approval" or "Waiting for OPT|EAD.." or "Done"
   action:
-    | {
+     {
         actionType: "REVIEW" | "SEND_NOTIFICATION";
         payload: {
           documentType: VisaDocumentType;
@@ -67,13 +74,12 @@ Response body:
 ```
 
 # PATCH  /api/visas/:id             
-功能：对某个员工的visa document进行Reject/Approve/send notification操作 / send notification
+功能：对某个员工的visa document进行Reject/Approve/send notification操作 
 
 Request body
 
 ```typescript
 export interface IVisaReviewAction {
-  employeeId: string;
   actionType: "APPROVE" | "ACCEPT" | "SEND_NOTIFICATION";
   payload: {
     documentType: VisaDocumentType;
@@ -83,9 +89,46 @@ export interface IVisaReviewAction {
 }
 ```
 
+<details>
+<summary>说明</summary>
+
+HR可以对某个员工(employeeId)的visa文档进行三种操作， 
+- Approve the document 这种时候需要提供以下数据：
+
+```typescript
+{
+  actionType: "APPROVE";
+  payload: {
+    documentType: VisaDocumentType;
+    url: string;
+  };
+}
+```
+
+- Reject the document
+```typescript
+{
+  actionType: "REJECT";
+  payload: {
+    documentType: VisaDocumentType;
+    url: string;
+    feedback: string;
+  };
+}
+```
+
+- Send notification
+```typescript
+{
+  actionType: "SEND_NOTIFICATION";
+  payload: {
+    documentType: VisaDocumentType;    
+  };
+}
+```
+</details>
 
 Response body:
-
 ```typescript
 {
   success: true,
