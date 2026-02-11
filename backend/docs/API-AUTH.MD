@@ -25,7 +25,7 @@ Response body:
   message: "Congratulations! Your account has been successfully created!";
   data: {
     username: string;
-    profileImage: DEFAULT_PROFILE_IMAGE_URL; //"https://api.dicebear.com/9.x/bottts/png" 
+    profileImage: ""; 
     employeeId: string;
     accessToken: string;
     role: "USER" | "ADMIN";
@@ -54,13 +54,13 @@ Response body:
 ```typescript
 {
   success: true;
-  message: "Successfully logged in!";
+  message: "You have successfully logged in!";
   data: {
     username: string;
-    profileImage: URL | DEFAULT_PROFILE_IMAGE_URL; 
+    profileImage: string; // the url to profile image  
     employeeId: string;
     accessToken: string;
-    role: "USER" | "AMDIN";
+    role: "USER" | "ADMIN";
     boarding:  "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED" ;
     visa: "PROGRESS" | "FINISHED" | null | "NA"; 
   }

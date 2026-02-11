@@ -27,26 +27,103 @@
 | PATCH  | VISA         | USER  | /api/visa/me               | 提交OPT/EAD/I983/I20文件链接                                                          |
 
 
-### Request 
-
-Request to register
+### Boarding application data <a name="baording">
 
 ```typescript
-{
-  password: string;
+export interface IBoardingData {
+  name: IName;
+  profileImage: string; // link to a picture
+  address: IAddress;
+  cellPhone: string;
+  workPhone?: string;
   email: string;
-  registerToken: string;
+  SSN: string;
+  dob: string; // date of birth
+  gender: string; // "male" | "female" | "NA"("I do not wish to answer")
+
+  workAuthorization: IWorkAuthorization;
+
+  reference: {
+    person: IPerson;
+    relationship: string;
+  };
+
+  emergencyContacts: [
+    {
+      person: IPerson;
+      relationship: string;
+    },
+  ];
 }
 ```
 
-Request to login
+### Profile相关的interfaces和types <a name="Profile">
+用户的profile和boarding data非常类似，只是多了visa files的列表
 ```typescript
-{
-  username: string;
-  password: string;
+
+// 这个是给employee 看自己的profile
+export interface IProfile extends IBoardingData {
+  files: IVisaFiles;
+}
+
+// 这个目前用于HR看某个员工的profile，但在考虑删除。
+export interface IProfileFull extends IProfile {
+  _id: string;
 }
 ```
 
 
-Requestion 
-IProfileFull
+### VISA 相关的interfaces和types 
+
+1. 定义visa文件的种类
+  
+```typescript
+// document types
+export const VisaDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
+export type VisaDocumentType = (typeof VisaDocumentTypes)[number];
+```
+
+2. 用户已上传的文件列表
+
+```typescript
+// file list 
+export interface IVisaFiles {
+  OPT?: string;
+  EAD?: string;
+  I983?: string;
+  I20?: string;
+}
+```
+
+3. 单个visa 文件当前的状态（不仅仅是file，还包括了审核的信息）
+```typescript
+// document status
+export const ApplyStates = [
+  "UNSUBMIT",
+  "PENDING",
+  "REJECTED",
+  "APPROVED",
+] as const;
+
+export type ApplyState = (typeof ApplyStates)[number];
+
+export interface IDocumentState {
+  state: ApplyState;
+  documentType: VisaDocumentType;
+  feedback?: string;
+  url?: string;
+}
+```
+
+4. 整个visa的状态（当前整个visa的进度和所需文件的审核状态)
+```typescript
+// visa status
+export interface IVisaStatus {
+  state: VisaState;
+  curStage?: number;
+  documents?: IDocumentState[];
+}
+```
+
+
+

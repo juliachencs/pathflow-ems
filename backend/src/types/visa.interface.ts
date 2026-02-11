@@ -1,8 +1,13 @@
-import type { ApplyState, VisaDocumentType } from "@/types/common";
+import type { IName } from "@/types/boarding.interface";
+import type { ApplyState, IVisaFiles } from "@/types/common";
 
-// State of visa documents
+// State of VISA Documents
 export const VisaStates = ["PROGRESS", "FINISHED", "NA", "NR"];
 export type VisaState = (typeof VisaStates)[number];
+
+// OPT documents
+export const VisaDocumentTypes = ["OPT", "EAD", "I983", "I20"] as const;
+export type VisaDocumentType = (typeof VisaDocumentTypes)[number];
 
 export interface IDocumentState {
   state: ApplyState;
@@ -11,6 +16,13 @@ export interface IDocumentState {
   url?: string;
 }
 
+export interface IVisaStatus {
+  state: VisaState;
+  curStage?: number;
+  documents?: IDocumentState[];
+}
+
+// Document Actions
 export interface ISubmitDocumentAction {
   actionType: "SUBMIT";
   payload: {
@@ -43,25 +55,14 @@ export interface ISendNotificationAction {
   };
 }
 
-export type IDocumentAction =
-  | ISubmitDocumentAction
-  | IRejectDocumentAction
-  | IAcceptDocumentAction
-  | ISendNotificationAction;
-
 export type IReviewDocumentAction =
   | IRejectDocumentAction
   | IAcceptDocumentAction
   | ISendNotificationAction;
 
-export interface IVisaStatus {
-  state: VisaState;
-  curStage?: number;
-  documents?: IDocumentState[];
-}
+export type IDocumentAction = ISubmitDocumentAction | IReviewDocumentAction;
 
-export interface IVisaReviewAction {
-  employeeId: string;
+export interface IReviewVisaAction {
   actionType: "APPROVE" | "ACCEPT" | "SEND_NOTIFICATION";
   payload: {
     documentType: VisaDocumentType;
@@ -69,16 +70,10 @@ export interface IVisaReviewAction {
     feedback?: string;
   };
 }
-export interface IVisaFiles {
-  OPT?: string;
-  EAD?: string;
-  I983?: string;
-  I20?: string;
-}
 
 export interface IManagedVisaStatus {
   employeeId: string;
-  fullName: string;
+  name: IName;
   workAuthorization: {
     title: string;
     startDate: Date;

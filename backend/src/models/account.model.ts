@@ -1,7 +1,15 @@
-import { Roles } from "@/types/common";
-import { model, Schema } from "mongoose";
+import { Roles, type Role } from "@/types/auth.interface";
+import { model, Schema, Types } from "mongoose";
 
-const accountSchema = new Schema({
+export interface IAccount {
+  username: string;
+  password: string;
+  role: Role;
+  email: string;
+  employeeId: Types.ObjectId;
+}
+
+const accountSchema = new Schema<IAccount>({
   username: { type: String, required: true, unique: true, index: true },
   password: { type: String, required: true },
   role: { type: String, enum: Roles, default: "USER", required: true },

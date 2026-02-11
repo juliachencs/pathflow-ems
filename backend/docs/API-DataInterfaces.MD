@@ -79,7 +79,7 @@ interface BoardingStatus {
 
 ```typescript
 interface Profile extends BoardingData{
-  visaDocuments?: {
+  files?: {
     OPT?: URL;
     EAD?: URL;
     I983?: URL;

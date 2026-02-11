@@ -1,5 +1,6 @@
 import { Employee } from "@/models/employee.model";
 import { onBoarding } from "@/services/boarding.utils";
+import type { IBoardingData } from "@/types/boarding.interface";
 import { HttpNotFoundError } from "@/types/http.errors";
 
 export async function getBoardingService(employeeId: string) {
@@ -20,7 +21,7 @@ export async function getBoardingService(employeeId: string) {
   };
 }
 
-export async function submitBoardingService(employeeId: string, data: unknown) {
+export async function submitBoardingService(employeeId: string, data: IBoardingData) {
   const employee = await Employee.findById(employeeId).exec();
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
@@ -28,7 +29,7 @@ export async function submitBoardingService(employeeId: string, data: unknown) {
   // make a new employee based on onBoarding data
   const info = onBoarding(data);
 
-  employee.data = {...employee.data, ....info.data};
+  employee.data = {...employee.data, ...info.data};
   employee.boarding = info.boarding;
   employee.visa = info.visa;
 
@@ -102,8 +103,7 @@ export interface IReviewBoardingAction {
     feedback?: string;
   } 
 }
-export async function reviewBoardingService(action: IReviewBoardingAction) {
-  const employeeId = action.employeeId;
+export async function reviewBoardingService(employeeId:string, action: IReviewBoardingAction) {
   const employee = await Employee.findById(employeeId).exec();
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");

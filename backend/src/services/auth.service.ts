@@ -1,6 +1,6 @@
 import { Registration } from "@/models/registration.model";
-import { Account } from "@/models/account.model";
-import { Employee } from "@/models/employee.model";
+import { Account, type IAccount } from "@/models/account.model";
+import { Employee, type IEmployee } from "@/models/employee.model";
 import {
   HttpBadRequestError,
   HttpConfilctError,
@@ -9,43 +9,38 @@ import {
 } from "@/types/http.errors";
 import bcrypt from "bcrypt";
 import { generateAccessToken, hashPassWord } from "@/utils/utils";
-import type { IAuthPayload } from "@/types/auth-request.interface";
+import type { IAuthPayload, IAuthData, Role } from "@/types/auth.interface";
+import type { HydratedDocument } from "mongoose";
+import type { ServiceReturnType } from "@/types/common";
 
-export async function loginService(username: string, password: string) {
+export async function loginService(
+  username: string,
+  password: string,
+): Promise<ServiceReturnType<IAuthData>> {
   // find the account
   const account = await Account.findOne({ username: username }).exec();
   if (!account) {
     throw new HttpNotFoundError("LOGIN_NOT_FOUND");
   }
 
-  //  check password
+  //  match the password
   const isMatch = await bcrypt.compare(password, account.password);
   if (!isMatch) {
     throw new HttpBadRequestError("LOGIN_UNMATCH");
   }
 
   // find the employee
-  const profile = await Employee.findById(account.employeeId).exec();
-  if (!profile) {
+  const employee: HydratedDocument<IEmployee> | null = await Employee.findById(
+    account.employeeId,
+  ).exec();
+  if (!employee) {
     throw new HttpServerError("LOGIN_NOT_FOUND_EMPLOYEE");
   }
 
-  const info = profile.info;
-  console.log(info);
-
-  const payload: IAuthPayload = {
-    role: account.role,
-    accountId: account._id.toString(),
-    empolyeeId: account.employeeId.toString(),
-  };
-
-  const accessToken = generateAccessToken(payload);
-
+  const result = makeAuthRepsonse(employee, account);
   return {
-    username: username,
-    role: account.role,
-    accessToken: accessToken,
-    ...info,
+    message: "You have successfully logged in!",
+    data: result,
   };
 }
 
@@ -54,7 +49,8 @@ export async function registerService(
   password: string,
   email: string,
   registerToken: string,
-) {
+  role: Role = "USER",
+): Promise<ServiceReturnType<IAuthData>> {
   // validate register Token
   const registration = await Registration.findOne({
     registerToken: registerToken,
@@ -75,16 +71,19 @@ export async function registerService(
     throw new HttpConfilctError("REGISTER_CONFLICT");
   }
 
-  // create an employee with the email
-  const employee = new Employee({ profile: { email: registration.email } });
+  // create an employee with the prefilled email
+  const employee = new Employee({
+    data: { profileImage: "", email: registration.email },
+  });
   await employee.save();
 
   // create an account
   const hashPW = await hashPassWord(password);
-  const account = new Account({
+  const account: HydratedDocument<IAccount> = new Account({
     username: username,
     password: hashPW,
     email: email,
+    role: role,
     employeeId: employee._id,
   });
   await account.save();
@@ -93,18 +92,33 @@ export async function registerService(
   registration.employeeId = employee._id;
   registration.save();
 
+  const result = makeAuthRepsonse(employee, account);
+
+  return {
+    message: "Congratulations! Your account has been successfully created!",
+    data: result,
+  };
+}
+
+function makeAuthRepsonse(
+  employee: HydratedDocument<IEmployee>,
+  account: HydratedDocument<IAccount>,
+): IAuthData {
   // generate jwt token
-  const payload = {
+  const payload: IAuthPayload = {
     role: account.role,
     accountId: account._id.toString(),
-    empolyeeId: account.employeeId.toString(),
+    employeeId: account.employeeId.toString(),
   };
   const token = generateAccessToken(payload);
 
   return {
-    username: username,
-    role: account.role,
+    username: account.username,
+    profileImage: employee.data.profileImage,
+    employeeId: account.employeeId.toString(),
     accessToken: token,
-    ...employee.info,
+    role: account.role,
+    boarding: employee.boarding.state,
+    visa: employee.visa.state,
   };
 }

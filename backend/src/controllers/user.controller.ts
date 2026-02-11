@@ -10,18 +10,23 @@ import {
   getVisaService,
   submitVisaDocumentService,
 } from "@/services/visa.service";
-import type { IAuthRequest } from "@/types/auth-request.interface";
+import { HttpUnauthorizedError } from "@/types/http.errors";
 import type {
   ISubmitDocumentAction,
   IVisaStatus,
 } from "@/types/visa.interface";
-import type { Response, NextFunction } from "express";
+import { isValidID } from "@/utils/utils";
+import type { Request, Response, NextFunction } from "express";
 
 type QueryFunc<T> = (id: string) => Promise<{ message: string; data: T }>;
 
 function queryController<T = unknown>(query_fn: QueryFunc<T>) {
-  return async (req: IAuthRequest, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.auth || !isValidID(req.auth.empolyeeId)) {
+        throw new HttpUnauthorizedError("AUTHORIZE_MISS_ID");
+      }
+
       const employeeId = req.auth.empolyeeId;
       const { message, data } = await query_fn(employeeId);
 
@@ -43,8 +48,12 @@ type MutationFunc<TInput, TOutput> = (
 function mutationController<T = unknown, U = unknown>(
   mutation_fn: MutationFunc<T, U>,
 ) {
-  return async (req: IAuthRequest, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.auth || !isValidID(req.auth.empolyeeId)) {
+        throw new HttpUnauthorizedError("AUTHORIZE_MISS_ID");
+      }
+
       const employeeId = req.auth.empolyeeId;
       const payload = req.body as T;
       const { message, data } = await mutation_fn(employeeId, payload);

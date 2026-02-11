@@ -1,12 +1,8 @@
 import type { IBoardingData } from "@/types/boarding.interface";
+import type { IVisaFiles } from "@/types/common";
 
 export interface IProfile extends IBoardingData {
-  visaDocuments?: {
-    OPT?: string;
-    EAD?: string;
-    I983?: string;
-    I20?: string;
-  };
+  files: IVisaFiles;
 }
 
 export interface IProfileFull extends IProfile {

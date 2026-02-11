@@ -6,13 +6,17 @@ import {
   transit,
   nextVisaStep,
 } from "@/services/visa.utils";
+import type { IEmployee } from "@/types/employee.interface";
 
 import {
   HttpBadRequestError,
   HttpNotFoundError,
   HttpServerError,
 } from "@/types/http.errors";
-import type { IVisaReviewAction } from "@/types/visa.interface";
+import type {
+  IManagedVisaStatus,
+  IReviewVisaAction,
+} from "@/types/visa.interface";
 
 import type {
   ISubmitDocumentAction,
@@ -67,14 +71,16 @@ export async function submitVisaDocumentService(
   };
 }
 
-export async function reviewVisaService(action: IVisaReviewAction) {
-  const employee = await Employee.findById(action.employeeId).exec();
-
+export async function reviewVisaService(
+  employeeId: string,
+  action: IReviewVisaAction,
+) {
+  const employee = await Employee.findById(employeeId).exec();
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
   }
 
-  const cur = employee.visa;
+  const cur: IVisaStatus = employee.visa;
   // check if state is legal
   if (!isLegalStatus(cur)) {
     throw new HttpServerError("ILLEGAL_VISA_STATUS");
@@ -104,21 +110,20 @@ export async function reviewVisaService(action: IVisaReviewAction) {
   };
 }
 
-export async function listVisaStatusService(inprogress: boolean = false) {
-  const filter = inprogress ? { "visa.state": "PROGRESS" } : {};
-  const feilds = [
-    "_id",
-    "data.name.firstName",
-    "data.name.lastName",
-    "data.workAuthorization",
-    "visa",
-  ];
+export async function listVisaStatusService(
+  inprogress: boolean = false,
+): Promise<{ message: string; data: IManagedVisaStatus[] }> {
+  const filter = inprogress
+    ? { "visa.state": "PROGRESS" }
+    : { "visa.state": { $in: ["PROGRESS", "FINISHED"] } };
+
+  const feilds = ["_id", "data.name", "data.workAuthorization", "visa"];
 
   const data = await Employee.find(filter, feilds).lean().exec();
-  const result = data.map((x) => {
+  const result: IManagedVisaStatus[] = data.map((x) => {
     return {
-      employeeId: x._id,
-      fullName: x.data.name.firstName + " " + x.data.name.lastName,
+      employeeId: x._id.toString(),
+      name: x.data.name,
       workAuthorization: {
         title: x.data.workAuthorization.title || x.data.workAuthorization.type,
         startDate: x.data.workAuthorization.startDate || new Date(),
@@ -131,8 +136,8 @@ export async function listVisaStatusService(inprogress: boolean = false) {
 
   return {
     message: inprogress
-      ? "You've got all employees who have not complete their visa document upload"
-      : "You've got all employees' visa status",
+      ? "You've got all OPT employees with visa documents in uploading"
+      : "You've got all OPT employees' visa status",
     data: result,
   };
 }

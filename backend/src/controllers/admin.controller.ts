@@ -17,6 +17,7 @@ import {
   reviewVisaService,
 } from "@/services/visa.service";
 import { HttpBadRequestError } from "@/types/http.errors";
+import { isValidID } from "@/utils/utils";
 import type { Request, Response, NextFunction } from "express";
 import { isValidObjectId } from "mongoose";
 
@@ -156,11 +157,7 @@ export async function getBoarding(
   console.log("Get request for retrive an employee's boarding application");
   try {
     const employeeId = req.params.id;
-    if (
-      !employeeId ||
-      !isValidObjectId(employeeId) ||
-      typeof employeeId !== "string"
-    ) {
+    if (!isValidID(employeeId)) {
       throw new HttpBadRequestError("INVALID_EMPLOYEE_ID");
     }
 
@@ -216,14 +213,22 @@ export async function reviewBoarding(
   res: Response,
   next: NextFunction,
 ): Promise<void> {
-  console.log("Get request for review an employee's boarding application");
+  const employeeId = req.params.id;
+  if (!isValidID(employeeId)) {
+    throw new HttpBadRequestError("INVALID_EMPLOYEE_ID");
+  }
+  console.log(
+    "Get request for review an employee's boarding application: ",
+    employeeId,
+  );
+
   try {
     if (!req.body) {
       throw new HttpBadRequestError("EMPTY_REQUEST_BODY");
     }
 
     // review
-    await reviewBoardingService(req.body);
+    await reviewBoardingService(employeeId, req.body);
 
     // updated boarding application list
     const { message, data } = await listAllBoardingService();

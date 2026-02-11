@@ -22,6 +22,7 @@ export const ErrorMessages = {
   // ROLE control
   AUTHORIZE_MISS_AUTH: "There is no auth information available",
   AUTHORIZE_NO_PERMISSION: "You don't have permission to access the resource",
+  AUTHORIZE_MISS_ID: "The decodered token misses the employee id",
 
   // NOT FOUND EMPLOYEE
   NOT_FOUND_EMPLOYEE:

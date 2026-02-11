@@ -9,12 +9,12 @@ export async function login(
   try {
     const { username, password } = req.body;
 
-    const result = await loginService(username, password);
+    const { message, data } = await loginService(username, password);
 
     res.status(200).json({
       success: true,
-      message: "You've logged in!",
-      data: result,
+      message,
+      data,
     });
   } catch (error) {
     next(error);
@@ -30,7 +30,7 @@ export async function register(
     console.log("request to register:", req.body);
     const { username, password, email, registerToken } = req.body;
 
-    const result = await registerService(
+    const { message, data } = await registerService(
       username,
       password,
       email,
@@ -39,8 +39,8 @@ export async function register(
 
     res.status(201).json({
       success: true,
-      message: "You have sucessful created an account!",
-      data: result,
+      message,
+      data,
     });
   } catch (error) {
     next(error);

@@ -1,3 +1,6 @@
+// import { Account } from "@/models/account.model";
+// import { Employee } from "@/models/employee.model";
+// import { Registration } from "@/models/registration.model";
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -8,6 +11,10 @@ const connectDB = async () => {
       throw new Error("No MongoDB URI! Please check MONGO_URI field in .env!");
     }
     await mongoose.connect(URI);
+    // await Registration.createCollection();
+    // await Account.createCollection();
+    // await Employee.createCollection();
+
     console.log("Database mounted");
   } catch (error) {
     console.error("Database connection failed");

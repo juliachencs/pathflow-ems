@@ -1,8 +1,9 @@
 import jwt, { type SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import type { IAuthPayload } from "@/types/auth-request.interface";
+import type { IAuthPayload } from "@/types/auth.interface";
 import type { StringValue } from "ms";
-import type { ApplyState } from "@/types/common";
+import { isValidObjectId } from "mongoose";
+
 //
 export function generateAccessToken(payload: IAuthPayload): string {
   // the access token
@@ -48,3 +49,11 @@ export const registerLink = (token: string) => {
   const link = base_url + `/register?registerToken=${token}`;
   return link;
 };
+
+export function isValidID(id: string | string[] | undefined): id is string {
+  if (!id || typeof id !== "string" || !isValidObjectId(id)) {
+    return false;
+  }
+
+  return true;
+}

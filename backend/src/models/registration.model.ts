@@ -1,6 +1,14 @@
 import { model, Schema, Types } from "mongoose";
 
-const registrationSchema = new Schema(
+export interface IRegistration {
+  name: string;
+  email: string;
+  registerToken: string;
+  employeeId: Types.ObjectId;
+  updatedAt: Date;
+  createdAt: Date;
+}
+const registrationSchema = new Schema<IRegistration>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -9,7 +17,6 @@ const registrationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Employee",
     },
-    hasApplied: Boolean,
   },
   {
     timestamps: true, // Automatically creates createdAt and updatedAt
