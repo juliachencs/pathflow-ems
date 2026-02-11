@@ -21,7 +21,7 @@ export interface IManagedVisaStatus {
     startDate: string;
     endDate: string;
   };
-  nextStep: string;
+  nextStep: string; // "Waiting for approval" or "Waiting for OPT|EAD.."
   action:
     | {
         actionType: "REVIEW" | "SEND_NOTIFICATION";
