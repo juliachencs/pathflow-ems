@@ -2,6 +2,7 @@ import type { IProfileFull } from '../app/types';
 import api from './base';
 
 const API_URL = '/profile';
+const API_URL_ADMIN = '/profiles';
 
 export const getOwnProfile = async () => {
     try {
@@ -11,7 +12,6 @@ export const getOwnProfile = async () => {
         console.error('Error fetching profile of currentUser:', error);
         throw error;
     }
-
 }
 
 export const updateOwnProfile = async (profile: IProfileFull) => {
@@ -22,5 +22,26 @@ export const updateOwnProfile = async (profile: IProfileFull) => {
         console.error('Error updating profile of currentUser:', error);
         throw error;
     }
+}
 
+
+export const fetchAllProfiles = async () => {
+    try {
+        const response = await api.get(`${API_URL_ADMIN}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        throw error;
+    }
+}
+
+
+export const getProfileById = async (id: string) => {
+    try {
+        const response = await api.get(`${API_URL_ADMIN}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching employee profile:', error);
+        throw error;
+    }
 }

@@ -31,6 +31,21 @@ export interface ContactInfo {
   relationship?: string;
 }
 
+export interface NamePacked {
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  preferredName?: string;
+}
+
+export interface WorkAuth {
+  type: VisaType;
+  title: string | undefined;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  url: string | undefined;
+}
+
 export interface VisaDocuments {
   OPT: string | undefined;
   EAD: string | undefined;
@@ -40,12 +55,7 @@ export interface VisaDocuments {
 export interface IProfileFull {
   _id?: string;
 
-  name: {
-    firstName: string;
-    lastName: string;
-    middleName: string | undefined;
-    preferredName: string | undefined;
-  };
+  name: NamePacked;
 
   profileImage: string | undefined; // link to a picture
 
@@ -64,19 +74,23 @@ export interface IProfileFull {
   dob: Date;
   gender: Gender;
 
-  workAuthorization: {
-    type: VisaType;
-    title: string | undefined;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    url: string | undefined;
-  };
+  workAuthorization: WorkAuth;
 
   reference?: ContactInfo;
 
   emergencyContacts?: ContactInfo[];
 
   visaDocuments?: VisaDocuments;
+}
+
+export interface IProfileSummary {
+  _id: string;
+
+  name: NamePacked;
+  SSN: string;
+  workAuthorization: WorkAuth;
+  cellPhone: string;
+  email: string;
 }
 
 export interface IVisaStatus {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { IProfileFull, KnownError } from "../../app/types";
-import { getOwnProfile, updateOwnProfile } from "../../apis/profile";
+import { getOwnProfile, getProfileById, updateOwnProfile } from "../../apis/profile";
 import type { AxiosError } from "axios";
 
 interface ProfileState {
@@ -40,6 +40,21 @@ export const updateUserProfile = createAsyncThunk<IProfileFull, ProfilePayload, 
   },
 );
 
+export const fetchProfileById = createAsyncThunk<IProfileFull, string, { rejectValue: KnownError }>(
+  'employeeProfiles/fetchProfileById',
+  async (id, { rejectWithValue }) => {
+    try {
+      return (await getProfileById(id)) as IProfileFull;
+    } catch (err) {
+      const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const initialState: ProfileState = {
   profile: null,
   loading: false,
@@ -68,6 +83,16 @@ const profileSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateUserProfile.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(fetchProfileById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchProfileById.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchProfileById.rejected, (state) => {
       state.loading = false;
     });
   },

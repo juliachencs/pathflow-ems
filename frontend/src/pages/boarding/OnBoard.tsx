@@ -177,7 +177,7 @@ const OnBoard: React.FC = () => {
       return zodResolver(schema)(values, context, options);
     };
 
-  // TODO data refresh, state setting
+  // TODO inject email
   // Yeah type is whaterver (for now)
   const methods = useForm<BoardingFormValues>({
     defaultValues: boardingValues ?? defaults,

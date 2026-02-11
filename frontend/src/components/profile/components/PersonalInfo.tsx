@@ -19,7 +19,7 @@ const PersonalInfo: React.FC<ProfileLayoutProps> = ({
           style={{ marginBottom: "20px" }}
           icon={<UserOutlined />}
         />
-        {editMode && (<RHFInput name="profileImgUrl" label="Profile Image link" placeholder="ImgURL"/>)}
+        {editMode && (<RHFInput name="profileImgUrl" label="Profile Image link" placeholder="ImgURL" control={control}/>)}
         <Descriptions column={2} bordered={bordered} size="small">
           <Descriptions.Item label="First Name">
             {values.name.firstName}

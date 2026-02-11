@@ -10,7 +10,7 @@ export type BoardingPayload = Omit<IProfileFull, "_id">;
 interface BoardingState {
     status: BoardingStatus;
     boardingValues: BoardingFormValues | null;
-    feedback: string | null;
+    feedback?: string;
     loading: boolean;
 }
 
@@ -65,7 +65,6 @@ export const fetchBoardingStatus = createAsyncThunk<IBoardingApplication, void, 
 const initialState: BoardingState = {
     status: "UNSUBMIT",
     boardingValues: null,
-    feedback: null,
     loading: false,
 };
 
@@ -102,7 +101,7 @@ const boardingSlice = createSlice({
         builder.addCase(fetchBoardingStatus.fulfilled, (state, action) => {
             state.status = action.payload.state;
             if (action.payload.state === 'REJECTED') {
-                state.feedback = action.payload.feedback!;
+                state.feedback = action.payload.feedback;
             }
             state.boardingValues = profileBoardingMapper(action.payload.profile);
             state.loading = false;

@@ -15,6 +15,10 @@ import AuthGuard from "../components/guard/AuthGuard";
 import AdminGuard from "../components/guard/RoleGuard";
 import Profile from "../pages/profile/Profile";
 import MyVisa from "../pages/visa/MyVisa";
+import ProfileManage from "../pages/profile/ProfileManage";
+import VisaManage from "../pages/visa/VisaManage";
+import HiringManage from "../pages/hiring/HiringManage";
+import ProfileViewOnly from "../pages/profile/ProfileViewOnly";
 
 const routes = createRoutesFromElements(
   <Route>
@@ -28,11 +32,12 @@ const routes = createRoutesFromElements(
       <Route element={<DefaultLayout />}>
         <Route path="/onboarding" element={<OnBoard />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
-        <Route element={<AdminGuard />}>
-          <Route path="/hr/profiles" element={<Dashboard />}></Route>
-          <Route path="/hr/visas" element={<Dashboard />}></Route>
-          <Route path="/hr/hiring" element={<Dashboard />}></Route>
-        </Route>
+        {/* <Route element={<AdminGuard />}> */}
+          <Route path="/hr/profiles" element={<ProfileManage />}></Route>
+          <Route path="/hr/visas" element={<VisaManage />}></Route>
+          <Route path="/hr/hiring" element={<HiringManage />}></Route>
+          <Route path="/profile/:id" element={<ProfileViewOnly />}></Route>
+        {/* </Route> */}
         {/* <Route element={<OnboardGuard />}> */}
           <Route path="/profile/me" element={<Profile />}></Route>
           <Route path="/visa/me" element={<MyVisa />}></Route>

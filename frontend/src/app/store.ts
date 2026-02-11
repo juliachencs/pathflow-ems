@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import boardingReducer from "../features/boarding/boardingSlice"
 import profileReducer from '../features/profile/profileSlice';
 import visaReducer from '../features/visa/visaSlice'
+import employeeProfilesReducer from '../features/empProfiles/empProfilesSlice'
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         boarding: boardingReducer,
         profile: profileReducer,
         visa: visaReducer,
+        employeeProfiles: employeeProfilesReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     devTools: true,
