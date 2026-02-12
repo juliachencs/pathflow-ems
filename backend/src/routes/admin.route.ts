@@ -34,12 +34,12 @@ adminRouter.patch(
 );
 
 // //visa
-// adminRouter.get(
-//   "/visas/progress",
-//   middlewares,
-//   adminController.getProgressVisas,
-// );
-// adminRouter.get("/visas/all", middlewares, adminController.getAllVisas);
-// adminRouter.patch("/visas/:id", middlewares, adminController.reviewVisa);
+adminRouter.get(
+  "/visas/progress",
+  middlewares,
+  adminController.getProgressVisas,
+);
+adminRouter.get("/visas/all", middlewares, adminController.getAllVisas);
+adminRouter.patch("/visas/:id", middlewares, adminController.reviewVisa);
 
 export default adminRouter;

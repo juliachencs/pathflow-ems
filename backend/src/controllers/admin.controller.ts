@@ -11,6 +11,11 @@ import {
   getRegistrations,
   sendInvitation,
 } from "@/controllers/admin/registrations.controller";
+import {
+  getAllVisas,
+  getProgressVisas,
+  reviewVisa,
+} from "@/controllers/admin/visas.controller";
 
 const adminController = {
   // registrations
@@ -27,8 +32,8 @@ const adminController = {
   reviewBoarding,
 
   // visas
-  // getAllVisas: getAllVisas,
-  // getProgressVisas: getProgressVisas,
-  // reviewVisa: reviewVisa,
+  getAllVisas: getAllVisas,
+  getProgressVisas: getProgressVisas,
+  reviewVisa: reviewVisa,
 };
 export default adminController;

@@ -40,7 +40,7 @@ export const ErrorMessages = {
   ILLEGAL_VISA_STATUS:
     "The visa status is illegal. Please contact the admin to check your visa status.",
   ILLEGAL_VISA_SUBMIT: "You are not supposed to submit data at this step",
-
+  ILLEGAL_VISA_ACTION: "You are not supposed to do something at this step",
   //INVITATION ERROR
   INVITE_BAD_REQUEST:
     "Please provide the name and email to invite someone to register.",

@@ -1,3 +1,12 @@
+import {
+  listVisaStatusService,
+  reviewVisaService,
+} from "@/services/visa.service";
+import { HttpBadRequestError } from "@/types/http.errors";
+import { isValidID } from "@/utils/utils";
+
+import type { Request, Response, NextFunction } from "express";
+
 export async function reviewVisa(
   req: Request,
   res: Response,
@@ -8,13 +17,16 @@ export async function reviewVisa(
     if (!req.body) {
       throw new HttpBadRequestError("EMPTY_REQUEST_BODY");
     }
-
+    const employeeId = req.params.id;
+    if (!employeeId || !isValidID(employeeId)) {
+      throw new HttpBadRequestError("INVALID_EMPLOYEE_ID");
+    }
     // review
-    await reviewVisaService(req.body);
+    await reviewVisaService(employeeId, req.body);
 
     // updated boarding application list
-    const { data: all } = await listAllBoardingService();
-    const { data: progress } = await listAllBoardingService(true);
+    const { data: all } = await listVisaStatusService();
+    const { data: progress } = await listVisaStatusService(true);
     res.status(200).json({
       success: true,
       message: "You've reivewed the visa document",

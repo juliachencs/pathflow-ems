@@ -1,7 +1,3 @@
-// import {
-//   getBoardingService,
-//   updateBoardingService,
-// } from "@/services/boarding.service";
 import {
   getBoardingApplicationService,
   submitBoardingService,
@@ -10,15 +6,15 @@ import {
   getProfileService,
   updateProfileService,
 } from "@/services/profile.service";
-// import {
-//   getVisaService,
-//   submitVisaDocumentService,
-// } from "@/services/visa.service";
-// import type {
-//   ISubmitDocumentAction,
-//   IVisaStatus,
-// } from "@/types/visa.interface";
+import {
+  getVisaService,
+  submitVisaDocumentService,
+} from "@/services/visa.service";
 import { HttpUnauthorizedError } from "@/types/http.errors";
+import type {
+  ISubmitDocumentAction,
+  IVisaStatus,
+} from "@/types/visa.interface";
 
 import { isValidID } from "@/utils/utils";
 import type { Request, Response, NextFunction } from "express";
@@ -78,13 +74,13 @@ function mutationController<T = unknown, U = unknown>(
 const userController = {
   getProfile: queryController(getProfileService),
   getBoarding: queryController(getBoardingApplicationService),
-  // getVisaStaus: queryController(getVisaService),
+  getVisaStaus: queryController(getVisaService),
 
   updateProfile: mutationController(updateProfileService),
   submitBoarding: mutationController(submitBoardingService),
-  // submitVisaDocument: mutationController<ISubmitDocumentAction, IVisaStatus>(
-  //   submitVisaDocumentService,
-  // ),
+  submitVisaDocument: mutationController<ISubmitDocumentAction, IVisaStatus>(
+    submitVisaDocumentService,
+  ),
 };
 
 export default userController;

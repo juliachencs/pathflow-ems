@@ -51,7 +51,7 @@ export function initVisaStatus(workAuth: IWorkAuthorization) {
 //   return true;
 // }
 
-export function nextVisaStep(cur) {
+export function nextVisaStep(cur: IVisaStatus) {
   if (cur.state === "NA" || cur.state === "NR") {
     return {
       nextStep: "NA",
@@ -102,7 +102,7 @@ export function transit(cur, action) {
   // action should be one of "SUBMIT" "APPROVE" "REJECT"
   let doc = {
     documentType: action.payload.documentType,
-    url: action.payload.url,
+    url: action.payload.url || cur.documents[cur.curStage - 1].url,
   };
 
   switch (action.actionType) {
@@ -133,12 +133,12 @@ export function transit(cur, action) {
   return cur;
 }
 
-export function isLegalStatus(cur) {
+export function isLegalStatus(cur: IVisaStatus) {
   if (cur.state === "NA" || cur.state === "NR" || cur.state === "FINISHED") {
     return true;
   }
 
-  if (cur.state !== "PRGORESS") {
+  if (cur.state !== "PROGRESS" || !cur.curStage) {
     return false;
   }
 
@@ -161,7 +161,9 @@ export function isLegalAction(cur, action) {
   }
 
   // cur.state is progress
-  const doc = cur.documents[cur.curStatge - 1];
+  console.log("THE visa status:", cur);
+  const doc = cur.documents[cur.curStage - 1];
+  console.log(doc);
   if (doc.documentType !== action.payload.documentType) {
     return false;
   }
@@ -186,13 +188,12 @@ export function collectFiles(visa: IVisaStatus): IVisaFiles {
     return {};
   }
 
-  if (visa.documents.slice(0, visa.curStage).length == 0) {
+  if (!visa.documents) {
     return {};
   }
 
-  const docs = visa.documents.slice(0, visa.curStage);
   const files: IVisaFiles = {};
-  for (const doc of docs) {
+  for (const doc of visa.documents) {
     if (doc.url) {
       files[doc.documentType] = doc.url;
     }

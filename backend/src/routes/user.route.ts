@@ -17,7 +17,7 @@ userRouter.put("/boarding/me", middlewares, userController.submitBoarding);
 userRouter.post("/boarding/me", middlewares, userController.submitBoarding);
 
 //visa
-// userRouter.get("/visa/me", middlewares, userController.getVisaStaus);
-// userRouter.patch("/visa/me", middlewares, userController.submitVisaDocument);
+userRouter.get("/visa/me", middlewares, userController.getVisaStaus);
+userRouter.patch("/visa/me", middlewares, userController.submitVisaDocument);
 
 export default userRouter;

@@ -76,8 +76,8 @@ export interface IManagedVisaStatus {
   name: IName;
   workAuthorization: {
     title: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
   };
   nextStep: string;
   action:
