@@ -84,7 +84,7 @@ export interface IProfileFull {
 }
 
 export interface IProfileSummary {
-  _id: string;
+  employeeId: string;
 
   name: NamePacked;
   SSN: string;
@@ -94,7 +94,7 @@ export interface IProfileSummary {
 }
 
 export interface IProfileCore {
-  _id: string;
+  employeeId: string;
   fullName: string;
   email: string;
 }

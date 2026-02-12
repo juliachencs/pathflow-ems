@@ -14,7 +14,6 @@ export const updateOwnProfile = async (payload: IProfile) => {
     return response.data.data;
 }
 
-
 export const fetchAllProfiles = async () => {
     const response = await api.get(`${API_URL_ADMIN}`);
     return response.data.data;
