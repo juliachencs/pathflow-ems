@@ -2,6 +2,7 @@ import type { IName } from "@/types/boarding.interface";
 import type { ApplyState, IVisaFiles } from "@/types/common";
 
 // State of VISA Documents
+
 export const VisaStates = ["PROGRESS", "FINISHED", "NA", "NR"];
 export type VisaState = (typeof VisaStates)[number];
 

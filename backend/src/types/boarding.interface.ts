@@ -65,12 +65,12 @@ export interface IBoardingData {
 
   workAuthorization: IWorkAuthorization;
 
-  reference: {
+  reference?: {
     person: IPerson;
     relationship: string;
   };
 
-  emergencyContacts: [
+  emergencyContacts?: [
     {
       person: IPerson;
       relationship: string;
@@ -78,15 +78,17 @@ export interface IBoardingData {
   ];
 }
 
+// The status of boarding application
 export interface IBoardingStatus {
-  state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  state: ApplyState;
   feedback?: string;
 }
 
+// Application =  data + status
 export interface IBoardingApplication {
-  state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
-  feedback?: string;
   data: IBoardingData;
+  state: ApplyState;
+  feedback?: string;
 }
 
 //

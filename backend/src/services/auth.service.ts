@@ -110,6 +110,7 @@ function makeAuthRepsonse(
     accountId: account._id.toString(),
     employeeId: account.employeeId.toString(),
   };
+
   const token = generateAccessToken(payload);
 
   return {
