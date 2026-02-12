@@ -10,12 +10,14 @@ export interface ProfileLayoutProps {
   values: IProfileFull;
   bordered?: boolean;
   editMode?: boolean;
+  compactMode?: boolean;
 }
 
 const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   values,
   bordered = false,
   editMode = false,
+  compactMode = false,
 }) => {
   const docPack: UploadedDoc[] = [];
 
@@ -51,7 +53,12 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <PersonalInfo values={values} bordered={bordered} editMode={editMode} />
+        <PersonalInfo
+          values={values}
+          bordered={bordered}
+          editMode={editMode}
+          compactMode={compactMode}
+        />
         <ContactInfo values={values} bordered={bordered} editMode={editMode} />
         <PersonalDetails
           values={values}

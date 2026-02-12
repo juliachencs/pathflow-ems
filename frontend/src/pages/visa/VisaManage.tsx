@@ -2,10 +2,7 @@ import {
   Button,
   Card,
   Divider,
-  Form,
   message,
-  Modal,
-  Space,
   Tabs,
   Tag,
   Typography,
@@ -23,7 +20,6 @@ import type {
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import TextArea from "antd/es/input/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import {
@@ -33,7 +29,7 @@ import {
   setSearchKey,
   updateEmployeeVisa,
 } from "../../features/empVisa/empVisaSlice";
-import { Controller, useForm } from "react-hook-form";
+import ReviewModal from "../../components/ReviewModal";
 
 const managedVisaStatusMock: IManagedVisaStatus[] = [
   {
@@ -175,11 +171,7 @@ const VisaManage: React.FC = () => {
   const [currentFile, setCurrentFile] = useState<CurrentFile>({
     documentType: undefined,
   });
-  const [isRejectProcess, setIsRejectProcess] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { reset, trigger, getValues, control } = useForm<{ feedback: string }>({
-    defaultValues: { feedback: "" },
-  });
   const { visaListAllFiltered, visaListProgress } = useSelector(
     (state: RootState) => state.employeeVisa,
   );
@@ -300,7 +292,6 @@ const VisaManage: React.FC = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setIsRejectProcess(false);
   };
 
   const handleAccept = async () => {
@@ -318,13 +309,11 @@ const VisaManage: React.FC = () => {
     } catch (err) {
       // TODO handle
       console.log(err);
+      message.error(`Submit failure: please check console for more info`);
     }
   };
 
-  const handleReject = async () => {
-    const isValid = await trigger();
-    if (!isValid) return;
-    const feedback = getValues().feedback;
+  const handleReject = async (feedback: string) => {
     try {
       await dispatch(
         updateEmployeeVisa({
@@ -336,12 +325,11 @@ const VisaManage: React.FC = () => {
           },
         }),
       ).unwrap();
-      reset();
       handleCancel();
     } catch (err) {
       // TODO handle
       console.log(err);
-      message.error(`Submit failure: please check console log for more info`);
+      message.error(`Submit failure: please check console for more info`);
     }
   };
 
@@ -385,58 +373,18 @@ const VisaManage: React.FC = () => {
         <Divider style={{ margin: "30px 0" }}></Divider>
         <Tabs defaultActiveKey="1" items={tabs}></Tabs>
       </Card>
-      <Modal
-        title={`Now viewing ${currentFile.documentType}`}
-        closable={{ "aria-label": "Custom Close Button" }}
+      <ReviewModal
         open={isModalOpen}
+        child={
+          <iframe
+            style={{ width: "100%", height: "60vh" }}
+            src={currentFile.url}
+          />
+        }
         onCancel={handleCancel}
-        footer={null}
-      >
-        <iframe
-          src={currentFile.url}
-          style={{ width: "100%", height: "55vh" }}
-        />
-        <Divider></Divider>
-        {isRejectProcess && (
-          <>
-            <Controller
-              name="feedback"
-              control={control}
-              rules={{ required: "Feedback is required" }}
-              render={({ field, fieldState }) => (
-                <Form.Item
-                  validateStatus={fieldState.error ? "error" : ""}
-                  help={fieldState.error?.message}
-                >
-                  <TextArea
-                    {...field}
-                    rows={3}
-                    placeholder="Provide feedback..."
-                    disabled={!isRejectProcess}
-                  />
-                </Form.Item>
-              )}
-            />
-            <Divider />
-            <Space>
-              <Button type="primary" onClick={handleReject}>
-                Submit
-              </Button>
-              <Button onClick={() => setIsRejectProcess(false)}>Cancel</Button>
-            </Space>
-          </>
-        )}
-        {!isRejectProcess && (
-          <Space>
-            <Button type="primary" onClick={handleAccept}>
-              Approve
-            </Button>
-            <Button danger onClick={() => setIsRejectProcess(true)}>
-              Reject
-            </Button>
-          </Space>
-        )}
-      </Modal>
+        onAccept={handleAccept}
+        onReject={handleReject}
+      />
     </>
   );
 };

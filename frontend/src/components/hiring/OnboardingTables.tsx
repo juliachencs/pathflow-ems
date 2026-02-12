@@ -12,7 +12,7 @@ type OnboardingTablesProps = {
   datasourceApproved: IProfileCore[];
   datasourceRejectd: IProfileCore[];
   onTabChange?: (key: string) => void;
-  onAction?: (value: string) => void;
+  onAction: (value: string) => void;
 };
 const OnboardingTables: React.FC<OnboardingTablesProps> = ({
   datasourcePending,
@@ -37,7 +37,7 @@ const OnboardingTables: React.FC<OnboardingTablesProps> = ({
       dataIndex: "_id",
       key: "action",
       render: (value) => (
-        <Button type="link" onClick={() => onAction?.(value)}>
+        <Button type="link" onClick={() => onAction(value)}>
           View Application
         </Button>
       ),
