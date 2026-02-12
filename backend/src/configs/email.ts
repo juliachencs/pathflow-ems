@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     user: "jacky.kilback@ethereal.email",
     pass: "ZDYByjHbPKjFhCGumq",
   },
-  tls : { rejectUnauthorized: false }
+  tls: { rejectUnauthorized: false },
 });
 
 export const sendInvitation = async (
