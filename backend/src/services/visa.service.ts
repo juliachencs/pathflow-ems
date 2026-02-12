@@ -101,7 +101,7 @@ export async function reviewVisaService(
   }
 
   if (action.actionType === "SEND_NOTIFICATION") {
-    const email = employee.data?.email;
+    const email = employee.data.email;
     sendNotification(
       email,
       employee.data.name.firstName,

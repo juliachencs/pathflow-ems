@@ -65,6 +65,7 @@ export async function getHistory() {
       name: x.name,
       email: x.email,
       registrationLink: registerLink(x.registerToken),
+      hasRegistered: !!x.employeeId,
     };
   });
   return result;
