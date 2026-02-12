@@ -46,36 +46,82 @@ const registerHistoryDummy: registerLogInfo[] = [
   },
 ];
 
-
 // Array 1
 const profilesDummy1: IProfileCore[] = [
-  { _id: "1a2b3c", fullName: "Alice Johnson", email: "alice.johnson@example.com" },
-  { _id: "1a2b3d", fullName: "Michael Chen", email: "michael.chen@example.com" },
-  { _id: "1a2b3e", fullName: "Sophia Martinez", email: "sophia.martinez@example.com" },
+  {
+    _id: "1a2b3c",
+    fullName: "Alice Johnson",
+    email: "alice.johnson@example.com",
+  },
+  {
+    _id: "1a2b3d",
+    fullName: "Michael Chen",
+    email: "michael.chen@example.com",
+  },
+  {
+    _id: "1a2b3e",
+    fullName: "Sophia Martinez",
+    email: "sophia.martinez@example.com",
+  },
   { _id: "1a2b3f", fullName: "David Kim", email: "david.kim@example.com" },
   { _id: "1a2b3g", fullName: "Emily Brown", email: "emily.brown@example.com" },
 ];
 
 // Array 2
 const profilesDummy2: IProfileCore[] = [
-  { _id: "2b3c4d", fullName: "James Wilson", email: "james.wilson@example.com" },
-  { _id: "2b3c4e", fullName: "Olivia Davis", email: "olivia.davis@example.com" },
-  { _id: "2b3c4f", fullName: "William Garcia", email: "william.garcia@example.com" },
-  { _id: "2b3c4g", fullName: "Ava Martinez", email: "ava.martinez@example.com" },
-  { _id: "2b3c4h", fullName: "Liam Anderson", email: "liam.anderson@example.com" },
+  {
+    _id: "2b3c4d",
+    fullName: "James Wilson",
+    email: "james.wilson@example.com",
+  },
+  {
+    _id: "2b3c4e",
+    fullName: "Olivia Davis",
+    email: "olivia.davis@example.com",
+  },
+  {
+    _id: "2b3c4f",
+    fullName: "William Garcia",
+    email: "william.garcia@example.com",
+  },
+  {
+    _id: "2b3c4g",
+    fullName: "Ava Martinez",
+    email: "ava.martinez@example.com",
+  },
+  {
+    _id: "2b3c4h",
+    fullName: "Liam Anderson",
+    email: "liam.anderson@example.com",
+  },
 ];
 
 // Array 3
 const profilesDummy3: IProfileCore[] = [
   { _id: "3c4d5e", fullName: "Mia Thomas", email: "mia.thomas@example.com" },
   { _id: "3c4d5f", fullName: "Noah Lee", email: "noah.lee@example.com" },
-  { _id: "3c4d5g", fullName: "Charlotte Harris", email: "charlotte.harris@example.com" },
-  { _id: "3c4d5h", fullName: "Elijah Walker", email: "elijah.walker@example.com" },
-  { _id: "3c4d5i", fullName: "Amelia Scott", email: "amelia.scott@example.com" },
+  {
+    _id: "3c4d5g",
+    fullName: "Charlotte Harris",
+    email: "charlotte.harris@example.com",
+  },
+  {
+    _id: "3c4d5h",
+    fullName: "Elijah Walker",
+    email: "elijah.walker@example.com",
+  },
+  {
+    _id: "3c4d5i",
+    fullName: "Amelia Scott",
+    email: "amelia.scott@example.com",
+  },
 ];
+
+type TabKey = "PENDING" | "APPROVED" | "REJECTED";
 
 const HiringManage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tabKey, setTabKey] = useState<TabKey>("PENDING");
   const methods = useForm<{ name: string; email: string }>({
     defaultValues: { name: "", email: "" },
     resolver: zodResolver(registTokenSchema),
@@ -88,8 +134,16 @@ const HiringManage: React.FC = () => {
     methods.reset();
     setIsModalOpen(false);
   };
+
+  const handleTabChange = (key: string) => {
+    setTabKey((key as TabKey));
+  };
+
+  const handleAction = async (value: string) => {
+    console.log(tabKey, value, 'GaGa');
+  };
   return (
-    <Card style={{minWidth: '40vw'}}>
+    <Card style={{ minWidth: "40vw" }}>
       <Typography.Title
         level={3}
         style={{
@@ -130,8 +184,16 @@ const HiringManage: React.FC = () => {
           ]}
         />
       </Space>
-      <Divider titlePlacement="start" style={{marginTop: '50px'}}>Onboarding Application Review</Divider>
-      <OnboardingTables datasourcePending={profilesDummy1} datasourceApproved={profilesDummy2} datasourceRejectd={profilesDummy3}/>
+      <Divider titlePlacement="start" style={{ marginTop: "50px" }}>
+        Onboarding Application Review
+      </Divider>
+      <OnboardingTables
+        datasourcePending={profilesDummy1}
+        datasourceApproved={profilesDummy2}
+        datasourceRejectd={profilesDummy3}
+        onTabChange={handleTabChange}
+        onAction={handleAction}
+      />
     </Card>
   );
 };

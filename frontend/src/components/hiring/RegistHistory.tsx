@@ -4,7 +4,7 @@ import type { registerLogInfo } from "../../app/types";
 import {
   CheckCircleOutlined,
   ClockCircleOutlined,
-  SyncOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 
 export type RegistHistoryProps = {
@@ -13,7 +13,7 @@ export type RegistHistoryProps = {
 
 const presets = [
   { status: "success", icon: <CheckCircleOutlined /> },
-  { status: "processing", icon: <SyncOutlined spin /> },
+  { status: "processing", icon: <InfoCircleOutlined /> },
   { status: "default", icon: <ClockCircleOutlined /> },
 ];
 
@@ -41,7 +41,7 @@ const columns: ColumnsType<registerLogInfo> = [
       let message = "Unused";
       if (record.hasRegistered) {
         index = 1;
-        message = "Registed";
+        message = "Registered";
       }
       if (record.hasApplied) {
         index = 0;
