@@ -1,6 +1,6 @@
 import { Card, Descriptions } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
-import { dateFormatter } from "../dateBuildHelper";
+import dayjs from "dayjs";
 
 const WorkAuth: React.FC<ProfileLayoutProps> = ({ values }) => {
   return (
@@ -16,12 +16,16 @@ const WorkAuth: React.FC<ProfileLayoutProps> = ({ values }) => {
         )}
         <Descriptions.Item label="Start Date">
           {values.workAuthorization.startDate
-            ? dateFormatter(values.workAuthorization.startDate)
+            ? dayjs(values.workAuthorization.startDate.toISOString()).format(
+                "MM/DD/YYYY",
+              )
             : "-"}
         </Descriptions.Item>
         <Descriptions.Item label="End Date">
           {values.workAuthorization.endDate
-            ? dateFormatter(values.workAuthorization.endDate)
+            ? dayjs(values.workAuthorization.endDate.toISOString()).format(
+                "MM/DD/YYYY",
+              )
             : "-"}
         </Descriptions.Item>
       </Descriptions>

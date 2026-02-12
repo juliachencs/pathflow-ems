@@ -16,7 +16,10 @@ import { Button, Card, message, Popconfirm, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { fetchUserProfile, updateUserProfile } from "../../features/profile/profileSlice";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from "../../features/profile/profileSlice";
 
 // const dummy: BoardingFormValues = {
 //   firstName: "Jiaxuan",
@@ -57,16 +60,18 @@ import { fetchUserProfile, updateUserProfile } from "../../features/profile/prof
 // };
 
 const Profile: React.FC = () => {
-    const { profile } = useSelector((state: RootState) => state.profile);
+  const { profile } = useSelector((state: RootState) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
   // const profile: IProfileFull = boardingProfileMapper(dummy);
   const defaults: BoardingFormValues = profileBoardingMapper(profile!);
 
-    useEffect(() => {
-      dispatch(fetchUserProfile()).unwrap().catch((err)=>console.log(err));
-    },[dispatch])
+  useEffect(() => {
+    dispatch(fetchUserProfile())
+      .unwrap()
+      .catch((err) => console.log(err));
+  }, [dispatch]);
 
   const methods = useForm<BoardingFormValues>({
     defaultValues: defaults,
@@ -77,7 +82,6 @@ const Profile: React.FC = () => {
   const onSave = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
-    console.log(methods.getValues());
     const payload = boardingProfileMapper(methods.getValues());
     try {
       await dispatch(updateUserProfile(payload)).unwrap();
@@ -137,7 +141,9 @@ const Profile: React.FC = () => {
               </Space>
             )}
           </div>
-          <ProfileLayout values={profile!} editMode={editMode} />
+          {profile !== null && (
+            <ProfileLayout values={profile} editMode={editMode} />
+          )}
         </Card>
       </FormProvider>
     </>
