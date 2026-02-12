@@ -75,7 +75,7 @@ export interface IBoardingApplication {
 
 // 这个是给employee 看自己的profile
 export interface IProfile extends IBoardingData {
-  files: IVisaFiles;
+  files: IVisaFiles; 
 }
 
 // interface for HR-Employee Profiles Page
@@ -89,6 +89,7 @@ export interface IProfileSummary {
   email: string;
 }
 ```
+
 
 
 ### VISA 相关的interfaces和types 

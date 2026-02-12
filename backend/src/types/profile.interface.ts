@@ -19,8 +19,8 @@ export interface IProfileSummary {
   email: string;
 }
 
-export interface IProfileCore {
-  _id: string;
-  fullName: string;
-  email: string;
-}
+// export interface IProfileCore {
+//   _id: string;
+//   fullName: string;
+//   email: string;
+// }

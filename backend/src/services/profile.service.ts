@@ -6,7 +6,9 @@ import type { IProfile, IProfileSummary } from "@/types/profile.interface";
 import { flattenObject } from "@/utils/utils";
 import type { HydratedDocument } from "mongoose";
 
-export async function getProfileService(employeeId: string) {
+export async function getProfileService(
+  employeeId: string,
+): ServiceReturnType<IProfile> {
   const employee = await Employee.findById(employeeId).exec();
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
@@ -17,7 +19,10 @@ export async function getProfileService(employeeId: string) {
   };
 }
 
-export async function updateProfileService(employeeId: string, profile: any) {
+export async function updateProfileService(
+  employeeId: string,
+  profile: any,
+): ServiceReturnType<IProfile> {
   // filter out unused field
   const flatData = flattenObject({ data: profile });
   console.log(flatData);
