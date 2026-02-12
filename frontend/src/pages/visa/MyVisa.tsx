@@ -54,7 +54,6 @@ const MyVisa: React.FC = () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
     const docUrl = methods.getValues();
-    console.log(docUrl);
     try {
       if (!key) throw new Error("missing key from visa state");
       const payload: UserVisaPayload = {

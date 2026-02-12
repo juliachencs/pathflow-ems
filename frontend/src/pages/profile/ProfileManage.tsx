@@ -1,8 +1,7 @@
-import { Button, Card, Divider, Input, Space, Table } from "antd";
+import { Button, Card, Divider, Space, Table } from "antd";
 import type { IProfileSummary, NamePacked, WorkAuth } from "../../app/types";
 import Title from "antd/es/typography/Title";
 import type { ColumnsType } from "antd/es/table";
-import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
@@ -12,6 +11,7 @@ import {
   setProfiles,
   setSearchKey,
 } from "../../features/empProfiles/empProfilesSlice";
+import SearchInput from "../../components/forms/SearchInput";
 
 const profilesMock: IProfileSummary[] = [
   {
@@ -351,6 +351,7 @@ const ProfileManage: React.FC = () => {
     dispatch(fetchProfileList())
       .unwrap()
       .catch((err) => console.log(err));
+    // TODO remove test file
     dispatch(setProfiles(profilesMock));
   }, [dispatch]);
 
@@ -359,14 +360,12 @@ const ProfileManage: React.FC = () => {
       <Title level={3} style={{ marginBottom: "40px" }}>
         Employee Profiles
       </Title>
-      {/* TODO Debounce */}
-      <Input
+      <SearchInput
         placeholder="Search by employee name"
-        prefix={<SearchOutlined />}
         onChange={(e) => {
           dispatch(setSearchKey(e.target.value));
         }}
-      ></Input>
+      />
       <Divider style={{ margin: "40px 0" }}></Divider>
       <Space orientation="vertical">
         <Title level={5} type="secondary">
