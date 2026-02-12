@@ -7,6 +7,7 @@ interface VisaState {
   visaStatus: VisaStatus | null;
   status: FileStatus | null;
   key: DocType | null;
+  curStage: number | null;
   feedback?: string;
   userDocuments?: VisaDocuments;
   loading: boolean;
@@ -23,7 +24,7 @@ export const fetchUserVisa = createAsyncThunk<IVisaStatus, void, { rejectValue: 
   'visa/fetchUserVisa',
   async (_, { rejectWithValue }) => {
     try {
-      return (await getVisaStatus());
+      return (await getVisaStatus()) as IVisaStatus;
     } catch (err) {
       const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
       if (!error.response) {
@@ -53,8 +54,21 @@ const initialState: VisaState = {
   visaStatus: null,
   status: null,
   key: null,
+  curStage: null,
   loading: false,
 };
+
+const loadVisaStatus = (state: VisaState, payload: IVisaStatus) => {
+  const { state: visaStatus, curStage, documents } = payload;
+  const stageIndex = curStage - 1;
+  const curDoc = documents[stageIndex];
+  const key: DocType = curDoc.documentType;
+  const status: FileStatus = curDoc.state;
+  state.key = key;
+  state.visaStatus = visaStatus;
+  state.status = status;
+  state.curStage = curDoc.state === 'UNSUBMIT' ? stageIndex - 1 : stageIndex;
+}
 
 const visaSlice = createSlice({
   name: 'visa',
@@ -65,14 +79,7 @@ const visaSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchUserVisa.fulfilled, (state, action) => {
-      const { state: visaStatus, curState, documents } = action.payload;
-      const curDoc = documents[curState];
-      const key = Object.keys(curDoc)[0] as DocType;
-      const status = Object.values(curDoc)[0].state;
-
-      state.key = key;
-      state.visaStatus = visaStatus;
-      state.status = status;
+      loadVisaStatus(state, action.payload);
       state.loading = false;
     });
     builder.addCase(fetchUserVisa.rejected, (state) => {
@@ -82,14 +89,7 @@ const visaSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(submitUserVisaDoc.fulfilled, (state, action) => {
-      const { state: visaStatus, curState, documents } = action.payload;
-      const curDoc = documents[curState];
-      const key = Object.keys(curDoc)[0] as DocType;
-      const status = Object.values(curDoc)[0].state;
-
-      state.key = key;
-      state.visaStatus = visaStatus;
-      state.status = status;
+      loadVisaStatus(state, action.payload);
       state.loading = false;
     });
     builder.addCase(submitUserVisaDoc.rejected, (state) => {

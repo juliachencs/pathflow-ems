@@ -6,23 +6,23 @@ const API_URL_ADMIN = '/visas';
 
 export const getVisaStatus = async () => {
     const response = await api.get(`${API_URL}/me`);
-    return response.data;
+    return response.data.data;
 };
 
 export const submitVisaFile = async ({ payload }: { payload: { documentType: DocType; url: string } }) => {
     const actionType: ActionType = 'SUBMIT';
     const response = await api.patch(`${API_URL}/me`, { actionType, payload });
-    return response.data;
+    return response.data.data;
 };
 
 export const getEmpVisaStatusIP = async () => {
     const response = await api.get(`${API_URL_ADMIN}/progress`);
-    return response.data;
+    return response.data.data;
 };
 
 export const getEmpVisaStatusAll = async () => {
     const response = await api.get(`${API_URL_ADMIN}/all`);
-    return response.data;
+    return response.data.data;
 };
 
 export const updateEmpVisaStatus = async ({ id, actionType, payload }: {
@@ -33,5 +33,5 @@ export const updateEmpVisaStatus = async ({ id, actionType, payload }: {
     }
 }) => {
     const response = await api.patch(`${API_URL_ADMIN}/${id}`, { actionType, payload });
-    return response.data;
+    return response.data.data;
 };

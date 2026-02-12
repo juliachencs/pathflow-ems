@@ -34,7 +34,7 @@ const OnboardingTables: React.FC<OnboardingTablesProps> = ({
     },
     {
       title: "Action",
-      dataIndex: "_id",
+      dataIndex: "employeeId",
       key: "action",
       render: (value) => (
         <Button type="link" onClick={() => onAction(value)}>

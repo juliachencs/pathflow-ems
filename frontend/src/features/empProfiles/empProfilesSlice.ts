@@ -81,6 +81,7 @@ const EmpProfileSlice = createSlice({
         });
         builder.addCase(fetchProfileList.fulfilled, (state, action) => {
             state.profiles = sortProfiles(state, action.payload);
+            state.profilesFiltered = state.profiles;
             state.loading = false;
         });
         builder.addCase(fetchProfileList.rejected, (state) => {

@@ -16,14 +16,14 @@ const WorkAuth: React.FC<ProfileLayoutProps> = ({ values }) => {
         )}
         <Descriptions.Item label="Start Date">
           {values.workAuthorization.startDate
-            ? dayjs(values.workAuthorization.startDate.toISOString()).format(
+            ? dayjs(values.workAuthorization.startDate).format(
                 "MM/DD/YYYY",
               )
             : "-"}
         </Descriptions.Item>
         <Descriptions.Item label="End Date">
           {values.workAuthorization.endDate
-            ? dayjs(values.workAuthorization.endDate.toISOString()).format(
+            ? dayjs(values.workAuthorization.endDate).format(
                 "MM/DD/YYYY",
               )
             : "-"}

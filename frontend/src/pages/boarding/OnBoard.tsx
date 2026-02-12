@@ -26,8 +26,8 @@ import ReferenceStep from "./steps/ReferenceStep";
 import SummaryStep from "./steps/SummaryStep";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
-import { boardingProfileMapper } from "../../app/util/profileMapper";
-import type { BoardingStatus, IProfileFull } from "../../app/types";
+import { BoardingDataToFormValueMapper, BoardingFormValueToDataMapper } from "../../app/util/profileMapper";
+import type { BoardingData, BoardingStatus } from "../../app/types";
 import {
   fetchBoardingStatus,
   reSubmitBoardingApplication,
@@ -71,7 +71,7 @@ const steps = [
   },
 ];
 
-const defaults = {
+const defaults: BoardingFormValues = {
   firstName: "",
   lastName: "",
   address: {
@@ -138,10 +138,9 @@ const OnBoard: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { currentUser } = useSelector((state: RootState) => state.auth);
-  const {
-    status, feedback,
-    boardingValues,
-  } = useSelector((state: RootState) => state.boarding);
+  const { status, feedback, boardingValues } = useSelector(
+    (state: RootState) => state.boarding,
+  );
 
   // dummies
   // const status: BoardingStatus = "PENDING";
@@ -151,12 +150,14 @@ const OnBoard: React.FC = () => {
   // }, []);
 
   useEffect(() => {
-    dispatch(fetchBoardingStatus()).unwrap().catch((err)=>console.log(err))
+    dispatch(fetchBoardingStatus())
+      .unwrap()
+      .catch((err) => console.log(err));
     if (currentUser?.boarding === "UNSUBMIT") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowForm(true);
     }
-  }, [currentUser, dispatch]);
+  }, [currentUser, dispatch, status]);
 
   const CurrComponent = stepProvider[step].component;
   const getSchemaForStep = (step: number) => stepProvider[step]?.schema;
@@ -180,12 +181,17 @@ const OnBoard: React.FC = () => {
       return zodResolver(schema)(values, context, options);
     };
 
-  // TODO inject email
+  // TODO!! inject email
   // Yeah type is whaterver (for now)
   const methods = useForm<BoardingFormValues>({
-    defaultValues: boardingValues ?? defaults,
+    defaultValues: defaults,
     resolver: stepResolver(() => step),
   });
+
+  useEffect(() => {
+    const formValue = BoardingDataToFormValueMapper(boardingValues);
+    methods.reset(formValue);
+  }, [boardingValues]);
 
   const onChange = (value: number) => {
     if (editMode) {
@@ -194,7 +200,7 @@ const OnBoard: React.FC = () => {
     setStep(value);
   };
 
-  const submitApplication = async (data: IProfileFull) => {
+  const submitApplication = async (data: BoardingData) => {
     try {
       if (currentUser?.boarding === "UNSUBMIT") {
         await dispatch(submitBoardingApplication(data)).unwrap();
@@ -212,13 +218,14 @@ const OnBoard: React.FC = () => {
   // TODO More dynamic Step handling & further dismantle of Boarding page
   const onNextStep = async () => {
     const isValid = await methods.trigger();
+    console.log(methods.formState.errors);
     if (!isValid) return;
 
     if (step < 4) {
       setFarStep((prev) => (step >= prev ? step + 1 : prev));
       setStep((prev) => prev + 1);
     } else {
-      submitApplication(boardingProfileMapper(methods.getValues()));
+      submitApplication(BoardingFormValueToDataMapper(methods.getValues()));
     }
   };
 
@@ -296,7 +303,7 @@ const OnBoard: React.FC = () => {
             <Divider style={{ marginBottom: 40 }} />
             <Form layout="vertical">
               <FormProvider {...methods}>
-                <CurrComponent disabled />
+                <CurrComponent disabled={!editMode} />
               </FormProvider>
             </Form>
             <Button

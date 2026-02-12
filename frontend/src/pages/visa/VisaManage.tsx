@@ -25,134 +25,133 @@ import type { AppDispatch, RootState } from "../../app/store";
 import {
   fetchVisaListAll,
   fetchVisaListProgress,
-  setDummyVisaList,
   setSearchKey,
   updateEmployeeVisa,
 } from "../../features/empVisa/empVisaSlice";
 import ReviewModal from "../../components/ReviewModal";
 
-const managedVisaStatusMock: IManagedVisaStatus[] = [
-  {
-    employeeId: "emp_001",
-    name: {
-      firstName: "David",
-      lastName: "Chen",
-      preferredName: "Dave",
-    },
-    workAuthorization: {
-      title: "F1 - OPT",
-      startDate: "2025-01-15",
-      endDate: "2025-01-16",
-    },
-    nextStep: "Review OPT document",
-    action: {
-      actionType: "REVIEW",
-      payload: {
-        documentType: "OPT",
-        url: "https://example.com/docs/emp_001_opt.pdf",
-      },
-    },
-    files: {
-      OPT: "https://example.com/docs/emp_001_opt.pdf",
-    },
-  },
-  {
-    employeeId: "emp_002",
-    name: {
-      firstName: "Maria",
-      lastName: "Garcia",
-      middleName: "Elena",
-    },
-    workAuthorization: {
-      title: "F1 - STEM OPT",
-      startDate: "2024-12-21",
-      endDate: "2025-01-31",
-    },
-    nextStep: "Submit I-983 training plan",
-    action: {
-      actionType: "SEND_NOTIFICATION",
-      payload: {
-        documentType: "I983",
-      },
-    },
-    files: {
-      OPT: "https://example.com/docs/emp_002_opt.pdf",
-    },
-  },
-  {
-    employeeId: "emp_003",
-    name: {
-      firstName: "Ravi",
-      lastName: "Patel",
-    },
-    workAuthorization: {
-      title: "H1-B",
-      startDate: "2023-10-01",
-      endDate: "2026-09-30",
-    },
-    nextStep: "Wait for HR approval of EAD",
-    action: {
-      actionType: "REVIEW",
-      payload: {
-        documentType: "EAD",
-        url: "https://example.com/docs/emp_003_ead.pdf",
-      },
-    },
-    files: {
-      EAD: "https://example.com/docs/emp_003_ead.pdf",
-      I20: "https://example.com/docs/emp_003_i20.pdf",
-    },
-  },
-  {
-    employeeId: "emp_004",
-    name: {
-      firstName: "Sophia",
-      lastName: "Kim",
-    },
-    workAuthorization: {
-      title: "F1 - OPT",
-      startDate: "2025-03-01",
-      endDate: "2026-02-28",
-    },
-    nextStep: "Upload EAD document",
-    action: {
-      actionType: "SEND_NOTIFICATION",
-      payload: {
-        documentType: "EAD",
-      },
-    },
-    files: {
-      OPT: "https://example.com/docs/emp_004_opt.pdf",
-      I20: "https://example.com/docs/emp_004_i20.pdf",
-    },
-  },
-  {
-    employeeId: "emp_005",
-    name: {
-      firstName: "Liam",
-      lastName: "Johnson",
-      preferredName: "Lee",
-    },
-    workAuthorization: {
-      title: "F1 - STEM OPT",
-      startDate: "2024-09-15",
-      endDate: "2026-09-14",
-    },
-    nextStep: "Review I-20 document",
-    action: {
-      actionType: "REVIEW",
-      payload: {
-        documentType: "I20",
-        url: "https://example.com/docs/emp_005_i20.pdf",
-      },
-    },
-    files: {
-      OPT: "https://example.com/docs/emp_005_opt.pdf",
-      EAD: "https://example.com/docs/emp_005_ead.pdf",
-      I20: "https://example.com/docs/emp_005_i20.pdf",
-    },
-  },
-];
+// const managedVisaStatusMock: IManagedVisaStatus[] = [
+//   {
+//     employeeId: "emp_001",
+//     name: {
+//       firstName: "David",
+//       lastName: "Chen",
+//       preferredName: "Dave",
+//     },
+//     workAuthorization: {
+//       title: "F1 - OPT",
+//       startDate: "2025-01-15",
+//       endDate: "2025-01-16",
+//     },
+//     nextStep: "Review OPT document",
+//     action: {
+//       actionType: "REVIEW",
+//       payload: {
+//         documentType: "OPT",
+//         url: "https://example.com/docs/emp_001_opt.pdf",
+//       },
+//     },
+//     files: {
+//       OPT: "https://example.com/docs/emp_001_opt.pdf",
+//     },
+//   },
+//   {
+//     employeeId: "emp_002",
+//     name: {
+//       firstName: "Maria",
+//       lastName: "Garcia",
+//       middleName: "Elena",
+//     },
+//     workAuthorization: {
+//       title: "F1 - STEM OPT",
+//       startDate: "2024-12-21",
+//       endDate: "2025-01-31",
+//     },
+//     nextStep: "Submit I-983 training plan",
+//     action: {
+//       actionType: "SEND_NOTIFICATION",
+//       payload: {
+//         documentType: "I983",
+//       },
+//     },
+//     files: {
+//       OPT: "https://example.com/docs/emp_002_opt.pdf",
+//     },
+//   },
+//   {
+//     employeeId: "emp_003",
+//     name: {
+//       firstName: "Ravi",
+//       lastName: "Patel",
+//     },
+//     workAuthorization: {
+//       title: "H1-B",
+//       startDate: "2023-10-01",
+//       endDate: "2026-09-30",
+//     },
+//     nextStep: "Wait for HR approval of EAD",
+//     action: {
+//       actionType: "REVIEW",
+//       payload: {
+//         documentType: "EAD",
+//         url: "https://example.com/docs/emp_003_ead.pdf",
+//       },
+//     },
+//     files: {
+//       EAD: "https://example.com/docs/emp_003_ead.pdf",
+//       I20: "https://example.com/docs/emp_003_i20.pdf",
+//     },
+//   },
+//   {
+//     employeeId: "emp_004",
+//     name: {
+//       firstName: "Sophia",
+//       lastName: "Kim",
+//     },
+//     workAuthorization: {
+//       title: "F1 - OPT",
+//       startDate: "2025-03-01",
+//       endDate: "2026-02-28",
+//     },
+//     nextStep: "Upload EAD document",
+//     action: {
+//       actionType: "SEND_NOTIFICATION",
+//       payload: {
+//         documentType: "EAD",
+//       },
+//     },
+//     files: {
+//       OPT: "https://example.com/docs/emp_004_opt.pdf",
+//       I20: "https://example.com/docs/emp_004_i20.pdf",
+//     },
+//   },
+//   {
+//     employeeId: "emp_005",
+//     name: {
+//       firstName: "Liam",
+//       lastName: "Johnson",
+//       preferredName: "Lee",
+//     },
+//     workAuthorization: {
+//       title: "F1 - STEM OPT",
+//       startDate: "2024-09-15",
+//       endDate: "2026-09-14",
+//     },
+//     nextStep: "Review I-20 document",
+//     action: {
+//       actionType: "REVIEW",
+//       payload: {
+//         documentType: "I20",
+//         url: "https://example.com/docs/emp_005_i20.pdf",
+//       },
+//     },
+//     files: {
+//       OPT: "https://example.com/docs/emp_005_opt.pdf",
+//       EAD: "https://example.com/docs/emp_005_ead.pdf",
+//       I20: "https://example.com/docs/emp_005_i20.pdf",
+//     },
+//   },
+// ];
 
 export type VisaListProps = {
   datasource: IManagedVisaStatus[] | null;
@@ -176,14 +175,14 @@ const VisaManage: React.FC = () => {
     (state: RootState) => state.employeeVisa,
   );
   useEffect(() => {
-    // TODO remove test file
-    dispatch(setDummyVisaList(managedVisaStatusMock));
     dispatch(fetchVisaListAll())
       .unwrap()
       .catch((err) => console.log(err));
     dispatch(fetchVisaListProgress())
       .unwrap()
       .catch((err) => console.log(err));
+    // // TODO remove test file
+    // dispatch(setDummyVisaList(managedVisaStatusMock));
   }, [dispatch]);
 
   const baseColumns: ColumnsType<IManagedVisaStatus> = [

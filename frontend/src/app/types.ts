@@ -2,8 +2,8 @@ export type UserRole = "USER" | "ADMIN";
 export type BoardingStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
 export type FileStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
 export type VisaStatus = "PROGRESS" | "FINISHED" | "NR" | "NA";
-export type VisaType = "Citizen" | "GreenCard" | "H1-B" | "L2" | "H4" | "Other" | "F1"
-export type Gender = "male" | "female" | "other"
+export type VisaType = "Citizen" | "Green Card" | "H1-B" | "L2" | "H4" | "Other" | "F1(CPT/OPT)"
+export type Gender = "male" | "female" | "NA"
 export type DocType = "OPT" | "EAD" | "I983" | "I20"
 export type ActionType = "APPROVE" | "REJECT" | "SEND_NOTIFICATION" | "SUBMIT"
 
@@ -14,43 +14,9 @@ export interface KnownError {
 }
 
 export interface IBoardingApplication {
-  _id: string; // employee id
   state: BoardingStatus;
-  profile: IProfileFull;
+  data: IProfile;
   feedback?: string;
-}
-
-export interface IBoardingApplicationNew {
-  _id: string; // employee id
-  state: BoardingStatus;
-  data: IBoardingData;
-  feedback?: string;
-}
-
-
-// NEW
-export interface IBoardingData {
-  name: NamePacked;
-
-  profileImage: string | undefined; // link to a picture
-
-  address: {
-    street: string;
-    state: string;
-    city: string;
-    zip: string;
-    secondary: string | undefined;
-  };
-
-  cellPhone: string;
-  workPhone: string | undefined;
-  email: string;
-  SSN: string;
-  dob: Date;
-  gender: Gender;
-  workAuthorization: WorkAuth;
-  reference?: ContactInfo;
-  emergencyContacts?: ContactInfo[];
 }
 
 export interface ContactInfo {
@@ -85,39 +51,9 @@ export interface VisaDocuments {
   I983: string | undefined;
   I20: string | undefined;
 }
-export interface IProfileFull {
-  _id?: string;
-
-  name: NamePacked;
-
-  profileImage: string | undefined; // link to a picture
-
-  address: {
-    street: string;
-    state: string;
-    city: string;
-    zip: string;
-    secondary: string | undefined,
-  };
-
-  cellPhone: string;
-  workPhone: string | undefined;
-  email: string;
-  SSN: string;
-  dob: Date;
-  gender: Gender;
-
-  workAuthorization: WorkAuth;
-
-  reference?: ContactInfo;
-
-  emergencyContacts?: ContactInfo[];
-
-  visaDocuments?: VisaDocuments;
-}
 
 export interface IProfileSummary {
-  _id: string;
+  employeeId: string;
 
   name: NamePacked;
   SSN: string;
@@ -127,21 +63,21 @@ export interface IProfileSummary {
 }
 
 export interface IProfileCore {
-  _id: string;
+  employeeId: string;
   fullName: string;
   email: string;
 }
 
+export interface IVisaDoc {
+  _id: string;
+  state: FileStatus;
+  documentType: DocType;
+}
+
 export interface IVisaStatus {
-  _id: string; // employeeID
   state: VisaStatus;
-  curState: number;
-  documents: [
-    { OPT: { state: FileStatus, feedback?: string, url?: URL } },
-    { EAD: { state: FileStatus, feedback?: string, url?: URL } },
-    { I983: { state: FileStatus, feedback?: string, url?: URL } },
-    { I20: { state: FileStatus, feedback?: string, url?: URL } },
-  ]
+  curStage: number;
+  documents: IVisaDoc[]
 }
 
 export interface IVisaAction {
@@ -189,4 +125,65 @@ export interface registerLogInfo {
   registrationLink: string;
   hasRegistered: boolean; // indicate if this link has been used to register an account
   hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
+}
+
+export interface BoardingData {
+  name: {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    preferredName?: string;
+  };
+
+  profileImage: string; // link to a picture
+
+  address: {
+    street: string;
+    state: string;
+    city: string;
+    zip: string;
+    secondary: string;
+  };
+
+  cellPhone: string;
+  workPhone?: string;
+  email: string;
+  SSN: string;
+  dob: string; // date of birth
+  gender: Gender; // "male" | "female" | "NA"("I do not wish to answer")
+
+  workAuthorization: {
+    type: VisaType; // "Green Card" |  "Citizen" | "H1-B" | "L2" | "H4" | "other" | "F1(CPT/OPT)"
+    title?: string;
+    startDate?: string;
+    endDate?: string;
+    url?: string;
+  };
+
+  reference: {
+    person?: {
+      firstName: string;
+      lastName: string;
+      middleName?: string;
+      phone?: string;
+      email?: string;
+    };
+    relationship?: string;
+  };
+
+  emergencyContacts?:
+  {
+    person: {
+      firstName: string;
+      lastName: string;
+      middleName?: string;
+      phone?: string;
+      email?: string;
+    };
+    relationship: string;
+  }[];
+}
+
+export interface IProfile extends BoardingData {
+  files: IVisaFiles
 }

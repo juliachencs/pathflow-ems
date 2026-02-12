@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import {
-  boardingProfileMapper,
-  profileBoardingMapper,
+  BoardingDataToFormValueMapper,
+  BoardingFormValueToDataMapper,
 } from "../../app/util/profileMapper";
 import ProfileLayout from "../../components/profile/ProfileLayout";
 import Title from "antd/es/typography/Title";
@@ -59,13 +59,10 @@ import {
 //   ],
 // };
 
-const Profile: React.FC = () => {
-  const { profile } = useSelector((state: RootState) => state.profile);
+const MyProfile: React.FC = () => {
+  const { userProfile } = useSelector((state: RootState) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-
-  // const profile: IProfileFull = boardingProfileMapper(dummy);
-  const defaults: BoardingFormValues = profileBoardingMapper(profile!);
 
   useEffect(() => {
     dispatch(fetchUserProfile())
@@ -74,16 +71,25 @@ const Profile: React.FC = () => {
   }, [dispatch]);
 
   const methods = useForm<BoardingFormValues>({
-    defaultValues: defaults,
-    // defaultValues: dummy,
     resolver: zodResolver(onboardingSchema),
   });
+
+  useEffect(() => {
+    if (editMode) {
+      methods.reset(BoardingDataToFormValueMapper(userProfile));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editMode]);
 
   const onSave = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
-    const payload = boardingProfileMapper(methods.getValues());
     try {
+      const { files } = userProfile!;
+      const payload = {
+        ...BoardingFormValueToDataMapper(methods.getValues()),
+        files,
+      };
       await dispatch(updateUserProfile(payload)).unwrap();
       message.success("Successfully update profile!", 3);
       setEditMode((prev) => !prev);
@@ -141,8 +147,8 @@ const Profile: React.FC = () => {
               </Space>
             )}
           </div>
-          {profile !== null && (
-            <ProfileLayout values={profile} editMode={editMode} />
+          {userProfile && (
+            <ProfileLayout values={userProfile} editMode={editMode} />
           )}
         </Card>
       </FormProvider>
@@ -150,4 +156,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default MyProfile;

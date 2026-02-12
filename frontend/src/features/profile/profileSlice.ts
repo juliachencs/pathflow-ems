@@ -1,21 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { IProfileFull, KnownError } from "../../app/types";
+import type { IProfile, KnownError } from "../../app/types";
 import { getOwnProfile, getProfileById, updateOwnProfile } from "../../apis/profile";
 import type { AxiosError } from "axios";
 
 interface ProfileState {
-  profile: IProfileFull | null;
-  userProfile: IProfileFull | null;
+  profile: IProfile | null;
+  userProfile: IProfile | null;
   loading: boolean;
 }
 
-export type ProfilePayload = Omit<IProfileFull, "_id">;
-
-export const fetchUserProfile = createAsyncThunk<IProfileFull, void, { rejectValue: KnownError }>(
+export const fetchUserProfile = createAsyncThunk<IProfile, void, { rejectValue: KnownError }>(
   'profile/fetchUserProfile',
   async (_, { rejectWithValue }) => {
     try {
-      return (await getOwnProfile()) as IProfileFull;
+      return (await getOwnProfile()) as IProfile;
     } catch (err) {
       const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
       if (!error.response) {
@@ -26,11 +24,11 @@ export const fetchUserProfile = createAsyncThunk<IProfileFull, void, { rejectVal
   },
 );
 
-export const updateUserProfile = createAsyncThunk<IProfileFull, ProfilePayload, { rejectValue: KnownError }>(
+export const updateUserProfile = createAsyncThunk<IProfile, IProfile, { rejectValue: KnownError }>(
   'profile/updateUserProfile',
   async (profile, { rejectWithValue }) => {
     try {
-      return (await updateOwnProfile(profile));
+      return (await updateOwnProfile(profile)) as IProfile;
     } catch (err) {
       const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
       if (!error.response) {
@@ -41,11 +39,11 @@ export const updateUserProfile = createAsyncThunk<IProfileFull, ProfilePayload, 
   },
 );
 
-export const fetchProfileById = createAsyncThunk<IProfileFull, string, { rejectValue: KnownError }>(
+export const fetchProfileById = createAsyncThunk<IProfile, string, { rejectValue: KnownError }>(
   'employeeProfiles/fetchProfileById',
   async (id, { rejectWithValue }) => {
     try {
-      return (await getProfileById(id)) as IProfileFull;
+      return (await getProfileById(id)) as IProfile;
     } catch (err) {
       const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
       if (!error.response) {
@@ -72,6 +70,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
       state.userProfile = action.payload;
+      console.log(state.userProfile)
       state.loading = false;
     });
     builder.addCase(fetchUserProfile.rejected, (state) => {

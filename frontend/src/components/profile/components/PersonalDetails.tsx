@@ -20,7 +20,7 @@ const PersonalDetails: React.FC<ProfileLayoutProps> = ({
             {values.SSN}
           </Descriptions.Item>
           <Descriptions.Item label="Date of Birth">
-            {dayjs(values.dob.toISOString()).format('MM/DD/YYYY')}
+            {dayjs(values.dob).format('MM/DD/YYYY')}
           </Descriptions.Item>
           <Descriptions.Item label="Gender">
             {editMode ? (
@@ -47,14 +47,14 @@ const PersonalDetails: React.FC<ProfileLayoutProps> = ({
             )}
           </Descriptions.Item>
           <Descriptions.Item label="U.S. Residency">
-            {values.workAuthorization.type === "GreenCard" ||
+            {values.workAuthorization.type === "Green Card" ||
             values.workAuthorization.type === "Citizen"
               ? "Yes"
               : "No"}
           </Descriptions.Item>
         </Descriptions>
         {!(
-          values.workAuthorization.type === "GreenCard" ||
+          values.workAuthorization.type === "Green Card" ||
           values.workAuthorization.type === "Citizen"
         ) && <WorkAuth values={values} />}
       </div>

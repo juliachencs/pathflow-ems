@@ -1,0 +1,10 @@
+
+HR account:
+
+"username": "pathflowhr",
+"password": "ABC@abc@123",
+"email": "cxd1988@example.com"
+
+EMPLOYEE account:
+username: pathflowboss
+password: ABC@abc@123

@@ -120,7 +120,7 @@ const ContactStep: React.FC<boardingStepsProps> = ({ disabled }) => {
           },
           {
             label: "Not wish to answer",
-            value: "other",
+            value: "NA",
           },
         ]}
       />

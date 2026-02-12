@@ -25,7 +25,7 @@ export const contactSchema = z.object({
   email: z.email(),
   ssn: z.string().min(1, "SSN is required"),
   dob: z.date({ error: "Date of birth is required" }),
-  gender: z.enum(["male", "female", "other"] as const, {
+  gender: z.enum(["male", "female", "NA"] as const, {
     error: "Please choose from one",
   }),
   // do we really need?
@@ -37,9 +37,9 @@ export const workAuthSchema = z
     isUSCitizen: z.enum(["yes", "no"] as const, {
       error: "Please choose from one",
     }),
-    greenCardOrCitizen: z.enum(["GreenCard", "Citizen"] as const).optional(),
+    greenCardOrCitizen: z.enum(["Green Card", "Citizen"] as const).optional(),
     workAuthorization: z
-      .enum(["H1-B", "L2", "F1", "H4", "Other"] as const)
+      .enum(["H1-B", "L2", "H4", "Other", "F1(CPT/OPT)"] as const)
       .optional(), // H1-B, L2, F1(CPT/OPT), H4, Other
     optReceiptUrl: z.url().optional(), // F1 only
     otherVisaTitle: z.string().optional(), // "Other" only
@@ -61,7 +61,7 @@ export const workAuthSchema = z
         path: ["workAuthorization"],
       });
     }
-    if (data.workAuthorization === "F1" && !data.optReceiptUrl) {
+    if (data.workAuthorization === "F1(CPT/OPT)" && !data.optReceiptUrl) {
       ctx.addIssue({
         code: "custom",
         message: "OPT receipt URL is required for F1",
