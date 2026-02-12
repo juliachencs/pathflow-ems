@@ -31,7 +31,6 @@ import {
   boardingProfileMapper,
 } from "../../app/util/profileMapper";
 import type {
-  BoardingData,
   BoardingStatus,
   IProfileFull,
 } from "../../app/types";
@@ -161,6 +160,7 @@ const OnBoard: React.FC = () => {
       .unwrap()
       .catch((err) => console.log(err));
     if (currentUser?.boarding === "UNSUBMIT") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowForm(true);
     }
   }, [currentUser, dispatch, status]);
