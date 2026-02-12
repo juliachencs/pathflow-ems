@@ -59,13 +59,13 @@ import {
 //   ],
 // };
 
-const Profile: React.FC = () => {
+const MyProfile: React.FC = () => {
   const { profile } = useSelector((state: RootState) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
   // const profile: IProfileFull = boardingProfileMapper(dummy);
-  const defaults: BoardingFormValues = profileBoardingMapper(profile!);
+  // const defaults: BoardingFormValues = profileBoardingMapper(profile!);
 
   useEffect(() => {
     dispatch(fetchUserProfile())
@@ -74,7 +74,7 @@ const Profile: React.FC = () => {
   }, [dispatch]);
 
   const methods = useForm<BoardingFormValues>({
-    defaultValues: defaults,
+    defaultValues: {},
     // defaultValues: dummy,
     resolver: zodResolver(onboardingSchema),
   });
@@ -141,13 +141,13 @@ const Profile: React.FC = () => {
               </Space>
             )}
           </div>
-          {profile !== null && (
+          {/* {profile !== null && (
             <ProfileLayout values={profile} editMode={editMode} />
-          )}
+          )} */}
         </Card>
       </FormProvider>
     </>
   );
 };
 
-export default Profile;
+export default MyProfile;

@@ -248,3 +248,7 @@ export interface BoardingData {
     },
   ];
 }
+
+export interface IProfile extends IBoardingData {
+  files: IVisaFiles
+}

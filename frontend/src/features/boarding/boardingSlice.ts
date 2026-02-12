@@ -106,6 +106,9 @@ const boardingSlice = createSlice({
             if (action.payload.state === 'REJECTED') {
                 state.feedback = action.payload.feedback;
             }
+            else {
+                state.feedback = undefined;
+            }
             state.boardingValues = action.payload.data;
             state.loading = false;
         });
