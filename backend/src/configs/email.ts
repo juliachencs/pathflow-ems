@@ -55,24 +55,27 @@ PathFlowEMS-HR`;
 export const sendNotification = async (
   email: string,
   name: string,
-  notification: string,
+  documentType: string,
 ) => {
   const text_email = `
 Dear ${name},
 
-${notification}
+Just a friendly reminder to please submit your ${documentType} to ensure the visa review process can be finalized on time.
+Thank you for your prompt attention to this. Please let me know if you need any assistance!
 
 Best regards, 
 PathFlowEMS-HR`;
+
   const html_email = `<p>Dear ${name}, </p>
-   <p>${notification}</p>
+   <p>Just a friendly reminder to please submit your ${documentType} to ensure the visa review process can be finalized on time.
+Thank you for your prompt attention to this. Please let me know if you need any assistance!</p>
    <p>Best regards, </p>
    <p>PathFlowEMS-HR</p>`;
 
   const info = await transporter.sendMail({
     from: '"PathFLowEMS-HR" <jacky.kilback@ethereal.email>',
     to: email,
-    subject: "Notification for submitting document",
+    subject: "Notification for submitting document: " + documentType,
     text: text_email, // Plain-text version of the message
     html: html_email, // HTML version of the message
   });

@@ -1,3 +1,4 @@
+import { sendNotification } from "@/configs/email";
 import { Employee } from "@/models/employee.model";
 import {
   collectFiles,
@@ -100,8 +101,12 @@ export async function reviewVisaService(
   }
 
   if (action.actionType === "SEND_NOTIFICATION") {
-    //TODO: send notification
     const email = employee.data?.email;
+    sendNotification(
+      email,
+      employee.data.name.firstName,
+      action.payload.documentType,
+    );
     return {
       message: `We have email ${email} to request ${action.payload.documentType}`,
       data: employee.visa,
