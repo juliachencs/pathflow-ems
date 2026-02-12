@@ -167,46 +167,46 @@ export function fakeEmployee() {
 }
 
 
-// const users = faker.helpers.multiple(fakeEmployee, {
-//   count: 20,
-// });
+const users = faker.helpers.multiple(fakeEmployee, {
+  count: 20,
+});
 
-//console.log(users);
+console.log(users);
 // fs.writeFile(
 //     "employees.json",
 //     JSON.stringify(users), ()=>{console.log("DONE");});
 
 
-const employeeIds = [
-"698d8cc6437f628e1b34f92b",
-"698d8cc6437f628e1b34f92c",
-"698d8cc6437f628e1b34f92d",
-"698d8cc6437f628e1b34f92e",
-"698d8cc6437f628e1b34f92f",
-"698d8cc6437f628e1b34f930",
-"698d8cc6437f628e1b34f931",
-"698d8cc6437f628e1b34f932",
-"698d8cc6437f628e1b34f933",
-"698d8cc6437f628e1b34f934",
-"698d8cc6437f628e1b34f935",
-"698d8cc6437f628e1b34f936",
-"698d8cc6437f628e1b34f937",
-"698d8cc6437f628e1b34f938",
-"698d8cc6437f628e1b34f939",
-"698d8cc6437f628e1b34f93a",
-"698d8cc6437f628e1b34f93b",
-"698d8cc6437f628e1b34f93c",
-"698d8cc6437f628e1b34f93d",
-"698d8cc6437f628e1b34f93e",
-];
+// const employeeIds = [
+// "698d8cc6437f628e1b34f92b",
+// "698d8cc6437f628e1b34f92c",
+// "698d8cc6437f628e1b34f92d",
+// "698d8cc6437f628e1b34f92e",
+// "698d8cc6437f628e1b34f92f",
+// "698d8cc6437f628e1b34f930",
+// "698d8cc6437f628e1b34f931",
+// "698d8cc6437f628e1b34f932",
+// "698d8cc6437f628e1b34f933",
+// "698d8cc6437f628e1b34f934",
+// "698d8cc6437f628e1b34f935",
+// "698d8cc6437f628e1b34f936",
+// "698d8cc6437f628e1b34f937",
+// "698d8cc6437f628e1b34f938",
+// "698d8cc6437f628e1b34f939",
+// "698d8cc6437f628e1b34f93a",
+// "698d8cc6437f628e1b34f93b",
+// "698d8cc6437f628e1b34f93c",
+// "698d8cc6437f628e1b34f93d",
+// "698d8cc6437f628e1b34f93e",
+// ];
 
-const accounts = employeeIds.map((id) => ({
-  username: faker.internet.username(),
-  password: "$2b$10$UB6z.bt204oEaFAIx82mpOWkAR5.ygHT2dZm/v8DsfeliFIX9at0O", //ABC@abc@123
-  role:  "USER",
-  email: faker.internet.email(),
-  employeeId: id}));
+// const accounts = employeeIds.map((id) => ({
+//   username: faker.internet.username(),
+//   password: "$2b$10$UB6z.bt204oEaFAIx82mpOWkAR5.ygHT2dZm/v8DsfeliFIX9at0O", //ABC@abc@123
+//   role:  "USER",
+//   email: faker.internet.email(),
+//   employeeId: id}));
 
-console.log(accounts);
+// console.log(accounts);
 
-fs.writeFile( "accounts.json", JSON.stringify(accounts), ()=>{console.log("finished");});
+// fs.writeFile( "accounts.json", JSON.stringify(accounts), ()=>{console.log("finished");});
