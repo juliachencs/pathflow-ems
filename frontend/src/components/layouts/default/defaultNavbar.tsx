@@ -16,7 +16,7 @@ const DefaultNav: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state: RootState) => state.auth);
-  const role: UserRole = "USER" as const;
+  const role: UserRole = currentUser?.role ?? 'USER';
   const items: NavItem[] = [
     {
       key: "dashboard",

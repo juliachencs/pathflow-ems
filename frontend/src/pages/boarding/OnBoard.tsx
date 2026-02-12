@@ -218,7 +218,6 @@ const OnBoard: React.FC = () => {
       setFarStep((prev) => (step >= prev ? step + 1 : prev));
       setStep((prev) => prev + 1);
     } else {
-      console.log("done", methods.getValues());
       submitApplication(boardingProfileMapper(methods.getValues()));
     }
   };
