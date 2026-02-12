@@ -12,7 +12,7 @@ export const getVisaStatus = async () => {
 export const submitVisaFile = async ({ payload }: { payload: { documentType: DocType; url: string } }) => {
     const actionType: ActionType = 'SUBMIT';
     const response = await api.patch(`${API_URL}/me`, { actionType, payload });
-    return response.data;
+    return response.data.data;
 };
 
 export const getEmpVisaStatusIP = async () => {

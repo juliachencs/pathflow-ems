@@ -7,7 +7,7 @@ const API_URL_ADMIN = '/boardings';
 export const submitApplication = async (data: IProfileFull) => {
     try {
         const response = await api.post(`${API_URL}/me`, data);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error('Error submit boarding application:', error);
         throw error;
@@ -18,7 +18,7 @@ export const submitApplication = async (data: IProfileFull) => {
 export const reSubmitApplication = async (data: IProfileFull) => {
     try {
         const response = await api.put(`${API_URL}/me`, data);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error('Error re-submit boarding application:', error);
         throw error;
