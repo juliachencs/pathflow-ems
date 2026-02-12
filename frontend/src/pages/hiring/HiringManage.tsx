@@ -5,8 +5,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registTokenSchema } from "../../app/schema/registTokenSchema";
 import RegistHistory from "../../components/hiring/RegistHistory";
-import type { registerLogInfo } from "../../app/types";
-
+import type { IProfileCore, registerLogInfo } from "../../app/types";
+import OnboardingTables from "../../components/hiring/OnboardingTables";
 
 const registerHistoryDummy: registerLogInfo[] = [
   {
@@ -46,6 +46,34 @@ const registerHistoryDummy: registerLogInfo[] = [
   },
 ];
 
+
+// Array 1
+const profilesDummy1: IProfileCore[] = [
+  { _id: "1a2b3c", fullName: "Alice Johnson", email: "alice.johnson@example.com" },
+  { _id: "1a2b3d", fullName: "Michael Chen", email: "michael.chen@example.com" },
+  { _id: "1a2b3e", fullName: "Sophia Martinez", email: "sophia.martinez@example.com" },
+  { _id: "1a2b3f", fullName: "David Kim", email: "david.kim@example.com" },
+  { _id: "1a2b3g", fullName: "Emily Brown", email: "emily.brown@example.com" },
+];
+
+// Array 2
+const profilesDummy2: IProfileCore[] = [
+  { _id: "2b3c4d", fullName: "James Wilson", email: "james.wilson@example.com" },
+  { _id: "2b3c4e", fullName: "Olivia Davis", email: "olivia.davis@example.com" },
+  { _id: "2b3c4f", fullName: "William Garcia", email: "william.garcia@example.com" },
+  { _id: "2b3c4g", fullName: "Ava Martinez", email: "ava.martinez@example.com" },
+  { _id: "2b3c4h", fullName: "Liam Anderson", email: "liam.anderson@example.com" },
+];
+
+// Array 3
+const profilesDummy3: IProfileCore[] = [
+  { _id: "3c4d5e", fullName: "Mia Thomas", email: "mia.thomas@example.com" },
+  { _id: "3c4d5f", fullName: "Noah Lee", email: "noah.lee@example.com" },
+  { _id: "3c4d5g", fullName: "Charlotte Harris", email: "charlotte.harris@example.com" },
+  { _id: "3c4d5h", fullName: "Elijah Walker", email: "elijah.walker@example.com" },
+  { _id: "3c4d5i", fullName: "Amelia Scott", email: "amelia.scott@example.com" },
+];
+
 const HiringManage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const methods = useForm<{ name: string; email: string }>({
@@ -61,7 +89,7 @@ const HiringManage: React.FC = () => {
     setIsModalOpen(false);
   };
   return (
-    <Card>
+    <Card style={{minWidth: '40vw'}}>
       <Typography.Title
         level={3}
         style={{
@@ -88,11 +116,22 @@ const HiringManage: React.FC = () => {
         <Button onClick={() => setIsModalOpen(true)} type="primary">
           Generate token and send email
         </Button>
-        <Collapse items={[{key: 'item', label: 'Registration Token History', children: (
-          <RegistHistory datasource={registerHistoryDummy}></RegistHistory>
-        )}]}/>
+        <Collapse
+          items={[
+            {
+              key: "item",
+              label: "Registration Token History",
+              children: (
+                <RegistHistory
+                  datasource={registerHistoryDummy}
+                ></RegistHistory>
+              ),
+            },
+          ]}
+        />
       </Space>
-            <Divider titlePlacement="end"> Manage Onboarding</Divider>
+      <Divider titlePlacement="start" style={{marginTop: '50px'}}>Onboarding Application Review</Divider>
+      <OnboardingTables datasourcePending={profilesDummy1} datasourceApproved={profilesDummy2} datasourceRejectd={profilesDummy3}/>
     </Card>
   );
 };

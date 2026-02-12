@@ -19,7 +19,7 @@ const presets = [
 
 const columns: ColumnsType<registerLogInfo> = [
   {
-    title: "Name",
+    title: "Full Name",
     dataIndex: "name",
     key: "name",
   },
