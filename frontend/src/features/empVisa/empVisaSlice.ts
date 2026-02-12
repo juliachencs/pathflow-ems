@@ -53,10 +53,8 @@ export type EmpVisaPayload = {
 };
 
 type UpdateVisaRespond = {
-    data: {
-        progress: IManagedVisaStatus[],
-        all: IManagedVisaStatus[]
-    }
+    progress: IManagedVisaStatus[],
+    all: IManagedVisaStatus[]
 };
 
 export const updateEmployeeVisa = createAsyncThunk<UpdateVisaRespond, EmpVisaPayload, { rejectValue: KnownError }>(
@@ -118,9 +116,8 @@ const EmpVisaSlice = createSlice({
             state.searchKey = undefined;
             state.visaListAllFiltered = state.visaListAll;
         },
-        // // mock test only
+        // mock test only
         setDummyVisaList: (state, action: PayloadAction<IManagedVisaStatus[]>) => {
-            console.log('setDummy');
             state.visaListProgress = action.payload;
             state.visaListAll = action.payload;
             state.visaListAllFiltered = state.visaListAll;
@@ -152,9 +149,9 @@ const EmpVisaSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(updateEmployeeVisa.fulfilled, (state, action) => {
-            const { data } = action.payload;
-            state.visaListProgress = data.progress;
-            state.visaListAll = data.all;
+            console.log(action.payload);
+            state.visaListProgress = action.payload.progress;
+            state.visaListAll = action.payload.all;
             state.visaListAllFiltered = state.visaListAll;
             state.loading = false;
         });

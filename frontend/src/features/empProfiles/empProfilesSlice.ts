@@ -71,7 +71,6 @@ const EmpProfileSlice = createSlice({
         },
         // mock test only
         setProfiles: (state, action: PayloadAction<IProfileSummary[]>) => {
-            console.log('setProfile')
             state.profiles = action.payload;
             state.profilesFiltered = sortProfiles(state);
         },
@@ -82,6 +81,7 @@ const EmpProfileSlice = createSlice({
         });
         builder.addCase(fetchProfileList.fulfilled, (state, action) => {
             state.profiles = sortProfiles(state, action.payload);
+            state.profilesFiltered = state.profiles;
             state.loading = false;
         });
         builder.addCase(fetchProfileList.rejected, (state) => {

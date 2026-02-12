@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import {
-  boardingProfileMapper,
-  profileBoardingMapper,
+  BoardingDataToFormValueMapper,
+  BoardingFormValueToDataMapper,
 } from "../../app/util/profileMapper";
 import ProfileLayout from "../../components/profile/ProfileLayout";
 import Title from "antd/es/typography/Title";
@@ -16,7 +16,10 @@ import { Button, Card, message, Popconfirm, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { fetchUserProfile, updateUserProfile } from "../../features/profile/profileSlice";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from "../../features/profile/profileSlice";
 
 // const dummy: BoardingFormValues = {
 //   firstName: "Jiaxuan",
@@ -56,30 +59,37 @@ import { fetchUserProfile, updateUserProfile } from "../../features/profile/prof
 //   ],
 // };
 
-const Profile: React.FC = () => {
-    const { profile } = useSelector((state: RootState) => state.profile);
+const MyProfile: React.FC = () => {
+  const { userProfile } = useSelector((state: RootState) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  // const profile: IProfileFull = boardingProfileMapper(dummy);
-  const defaults: BoardingFormValues = profileBoardingMapper(profile!);
-
-    useEffect(() => {
-      dispatch(fetchUserProfile()).unwrap().catch((err)=>console.log(err));
-    },[dispatch])
+  useEffect(() => {
+    dispatch(fetchUserProfile())
+      .unwrap()
+      .catch((err) => console.log(err));
+  }, [dispatch]);
 
   const methods = useForm<BoardingFormValues>({
-    defaultValues: defaults,
-    // defaultValues: dummy,
     resolver: zodResolver(onboardingSchema),
   });
+
+  useEffect(() => {
+    if (editMode) {
+      methods.reset(BoardingDataToFormValueMapper(userProfile));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editMode]);
 
   const onSave = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
-    console.log(methods.getValues());
-    const payload = boardingProfileMapper(methods.getValues());
     try {
+      const { files } = userProfile!;
+      const payload = {
+        ...BoardingFormValueToDataMapper(methods.getValues()),
+        files,
+      };
       await dispatch(updateUserProfile(payload)).unwrap();
       message.success("Successfully update profile!", 3);
       setEditMode((prev) => !prev);
@@ -137,11 +147,13 @@ const Profile: React.FC = () => {
               </Space>
             )}
           </div>
-          <ProfileLayout values={profile!} editMode={editMode} />
+          {userProfile && (
+            <ProfileLayout values={userProfile} editMode={editMode} />
+          )}
         </Card>
       </FormProvider>
     </>
   );
 };
 
-export default Profile;
+export default MyProfile;

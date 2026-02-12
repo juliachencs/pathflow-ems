@@ -14,6 +14,8 @@ import {
   type UserVisaPayload,
 } from "../../features/visa/visaSlice";
 import { useEffect } from "react";
+// import type { DocType, FileStatus, VisaStatus, VisaDocuments } from "../../app/types";
+
 
 // const mockData: {
 //   key: DocType | null;
@@ -23,7 +25,7 @@ import { useEffect } from "react";
 //   userDocuments: VisaDocuments | undefined;
 // } = {
 //   key: "EAD",
-//   status: "APPROVED",
+//   status: 'PENDING',
 //   visaStatus: "PROGRESS",
 //   feedback: "Document too blur",
 //   userDocuments: {
@@ -36,13 +38,15 @@ import { useEffect } from "react";
 
 const MyVisa: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { key, status, visaStatus, feedback, userDocuments } = useSelector(
+  const { key, status, visaStatus, feedback, curStage, userDocuments } = useSelector(
     (state: RootState) => state.visa,
   );
+    // const { key, status, visaStatus, feedback, userDocuments } = mockData;
 
   useEffect(() => {
     dispatch(fetchUserVisa())
       .unwrap()
+      .then()
       .catch((err) => console.log(err));
   }, [dispatch]);
 
@@ -54,7 +58,6 @@ const MyVisa: React.FC = () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
     const docUrl = methods.getValues();
-    console.log(docUrl);
     try {
       if (!key) throw new Error("missing key from visa state");
       const payload: UserVisaPayload = {
@@ -102,6 +105,7 @@ const MyVisa: React.FC = () => {
                 docKey={key}
                 docStatus={status}
                 feedback={feedback}
+                currStage={curStage ?? 0}
                 onSubmit={onSubmit}
               />
             </FormProvider>

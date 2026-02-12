@@ -1,9 +1,9 @@
 import { Card, Descriptions } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
 import WorkAuth from "./WorkAuth";
-import { dateFormatter } from "../dateBuildHelper";
 import RHFRadioGroup from "../../forms/RHF-RadioGroup";
 import { useFormContext } from "react-hook-form";
+import dayjs from "dayjs";
 
 const PersonalDetails: React.FC<ProfileLayoutProps> = ({
   values,
@@ -20,7 +20,7 @@ const PersonalDetails: React.FC<ProfileLayoutProps> = ({
             {values.SSN}
           </Descriptions.Item>
           <Descriptions.Item label="Date of Birth">
-            {dateFormatter(values.dob)}
+            {dayjs(values.dob).format('MM/DD/YYYY')}
           </Descriptions.Item>
           <Descriptions.Item label="Gender">
             {editMode ? (
@@ -47,14 +47,14 @@ const PersonalDetails: React.FC<ProfileLayoutProps> = ({
             )}
           </Descriptions.Item>
           <Descriptions.Item label="U.S. Residency">
-            {values.workAuthorization.type === "GreenCard" ||
+            {values.workAuthorization.type === "Green Card" ||
             values.workAuthorization.type === "Citizen"
               ? "Yes"
               : "No"}
           </Descriptions.Item>
         </Descriptions>
         {!(
-          values.workAuthorization.type === "GreenCard" ||
+          values.workAuthorization.type === "Green Card" ||
           values.workAuthorization.type === "Citizen"
         ) && <WorkAuth values={values} />}
       </div>

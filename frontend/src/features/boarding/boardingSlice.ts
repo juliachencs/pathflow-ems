@@ -1,24 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { IBoardingApplication, IProfileFull, KnownError, BoardingStatus } from "../../app/types";
+import type { KnownError, BoardingStatus, BoardingData } from "../../app/types";
 import type { AxiosError } from "axios";
 import { getApplicationStatus, reSubmitApplication, submitApplication } from "../../apis/boarding";
-import type { BoardingFormValues } from "../../app/schema/boardingSchema";
-import { profileBoardingMapper } from "../../app/util/profileMapper";
 
-export type BoardingPayload = Omit<IProfileFull, "_id">;
+type BoardingPayload = BoardingData;
 
+interface BoardingRespond {
+    data: BoardingData;
+    feedback?: string;
+    state: BoardingStatus;
+}
 interface BoardingState {
     status: BoardingStatus;
-    boardingValues: BoardingFormValues | null;
+    boardingValues: BoardingData | null;
     feedback?: string;
     loading: boolean;
 }
 
-export const submitBoardingApplication = createAsyncThunk<IBoardingApplication, BoardingPayload, { rejectValue: KnownError }>(
+export const submitBoardingApplication = createAsyncThunk<BoardingRespond, BoardingPayload, { rejectValue: KnownError }>(
     'boarding/submitBoardingApplication',
     async (boardingData, { rejectWithValue }) => {
         try {
-            return await submitApplication(boardingData);
+            return (await submitApplication(boardingData)) as BoardingRespond;
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
@@ -30,11 +33,11 @@ export const submitBoardingApplication = createAsyncThunk<IBoardingApplication, 
     }
 )
 
-export const reSubmitBoardingApplication = createAsyncThunk<IBoardingApplication, BoardingPayload, { rejectValue: KnownError }>(
+export const reSubmitBoardingApplication = createAsyncThunk<BoardingRespond, BoardingPayload, { rejectValue: KnownError }>(
     'boarding/reSubmitBoardingApplication',
     async (boardingData, { rejectWithValue }) => {
         try {
-            return await reSubmitApplication(boardingData);
+            return (await reSubmitApplication(boardingData)) as BoardingRespond;
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
@@ -46,11 +49,11 @@ export const reSubmitBoardingApplication = createAsyncThunk<IBoardingApplication
     }
 )
 
-export const fetchBoardingStatus = createAsyncThunk<IBoardingApplication, void, { rejectValue: KnownError }>(
+export const fetchBoardingStatus = createAsyncThunk<BoardingRespond, void, { rejectValue: KnownError }>(
     'boarding/fetchBoardingStatus',
     async (_, { rejectWithValue }) => {
         try {
-            return await getApplicationStatus();
+            return (await getApplicationStatus()) as BoardingRespond;
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
@@ -78,7 +81,7 @@ const boardingSlice = createSlice({
         });
         builder.addCase(submitBoardingApplication.fulfilled, (state, action) => {
             state.status = 'PENDING';
-            state.boardingValues = profileBoardingMapper(action.payload.profile);
+            state.boardingValues = action.payload.data;
             state.loading = false;
         });
         builder.addCase(submitBoardingApplication.rejected, (state) => {
@@ -89,7 +92,7 @@ const boardingSlice = createSlice({
         });
         builder.addCase(reSubmitBoardingApplication.fulfilled, (state, action) => {
             state.status = 'PENDING';
-            state.boardingValues = profileBoardingMapper(action.payload.profile);
+            state.boardingValues = action.payload.data;
             state.loading = false;
         });
         builder.addCase(reSubmitBoardingApplication.rejected, (state) => {
@@ -103,7 +106,10 @@ const boardingSlice = createSlice({
             if (action.payload.state === 'REJECTED') {
                 state.feedback = action.payload.feedback;
             }
-            state.boardingValues = profileBoardingMapper(action.payload.profile);
+            else {
+                state.feedback = undefined;
+            }
+            state.boardingValues = action.payload.data;
             state.loading = false;
         });
         builder.addCase(fetchBoardingStatus.rejected, (state) => {

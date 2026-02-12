@@ -16,7 +16,7 @@ const DefaultNav: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state: RootState) => state.auth);
-  const role: UserRole = "USER" as const;
+  const role: UserRole = currentUser?.role ?? "USER";
   const items: NavItem[] = [
     {
       key: "dashboard",
@@ -55,20 +55,26 @@ const DefaultNav: React.FC = () => {
     },
   ];
 
-  const profileItem: Required<MenuProps>["items"][number][] = [{
-    key: "user",
-    label: currentUser?.name ?? "User",
-    icon: <UserOutlined />,
-    // TODO?: Shall I use dropdown insted?
-    children: [
-      {
-        key: "profile",
-        label: "Profile",
-        onClick: () => navigate("/profile/me"),
-      },
-      { key: "logout", label: "Logout", onClick: () => dispatch(clearAuth()) },
-    ],
-  }];
+  const profileItem: Required<MenuProps>["items"][number][] = [
+    {
+      key: "user",
+      label: currentUser?.name ?? "User",
+      icon: <UserOutlined />,
+      // TODO?: Shall I use dropdown insted?
+      children: [
+        {
+          key: "profile",
+          label: "Profile",
+          onClick: () => navigate("/profile/me"),
+        },
+        {
+          key: "logout",
+          label: "Logout",
+          onClick: () => dispatch(clearAuth()),
+        },
+      ],
+    },
+  ];
 
   const visibleItems: Required<MenuProps>["items"][number][] = items
     .filter((item) => {
@@ -107,10 +113,8 @@ const DefaultNav: React.FC = () => {
           style={{ flex: 1, minWidth: 0 }}
         />
       </div>
-
-      <div>
-        <Menu theme="dark" mode="horizontal" items={profileItem} />
-      </div>
+      // TODO fix collapsed
+      <Menu theme="dark" mode="horizontal" items={profileItem} />
     </Header>
   );
 };

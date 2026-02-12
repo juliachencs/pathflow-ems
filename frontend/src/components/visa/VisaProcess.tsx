@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Button,
-  Divider,
-  Result,
-  Space,
-  Steps,
-  Typography,
-} from "antd";
+import { Alert, Button, Divider, Result, Space, Steps, Typography } from "antd";
 import type { DocType, FileStatus } from "../../app/types";
 import RHFInput from "../forms/RHF-Input";
 
@@ -26,6 +18,7 @@ interface processTexts {
 export interface VisaProcessProps {
   docKey: DocType;
   docStatus: FileStatus;
+  currStage: number;
   feedback?: string;
   onSubmit: () => void;
 }
@@ -67,12 +60,10 @@ const sampleTemplateURL = "";
 const VisaProcess: React.FC<VisaProcessProps> = ({
   docKey,
   docStatus,
+  currStage,
   feedback,
-  onSubmit
+  onSubmit,
 }) => {
-  const currIndex = Object.keys(docConfigRecord).findIndex(
-    (key) => key === docKey,
-  );
   const steps = Object.values(docConfigRecord);
   // TODO maybe extract this too
   const currResultStatus: ResultStatus =
@@ -85,10 +76,10 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
   const items: StepProp[] = steps.map((step, index) => {
     let description = `${processRecord["UNSUBMIT"].stepDescription}`;
     let status: StepStatus = "wait";
-    if (currIndex > index) {
+    if (currStage > index) {
       description = `${processRecord["APPROVED"].stepDescription} ${step.next}`;
       status = "finish";
-    } else if (currIndex === index) {
+    } else if (currStage === index) {
       if (docStatus === "PENDING") {
         description = `${processRecord["PENDING"].stepDescription} ${step.title}`;
         status = "process";
@@ -110,7 +101,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
   return (
     <>
       <div>
-        <Steps orientation="vertical" current={currIndex} items={items} />
+        <Steps orientation="vertical" current={currStage} items={items} />
         <Divider></Divider>
         <Result
           status={currResultStatus}
@@ -148,11 +139,11 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
                 <Alert
                   type="info"
                   showIcon
-                  description={items[currIndex].description}
+                  description={items[currStage].description}
                 />
               )}
 
-              {(docKey === 'EAD' && docStatus === 'APPROVED') && (
+              {docKey === "EAD" && docStatus === "APPROVED" && (
                 <Space>
                   <Button href={emptyTemplateURL} target="_blank" type="link">
                     Download Empty I-983 Form
@@ -165,7 +156,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
 
               <Space.Compact>
                 {/* <Input placeholder="Document Url" /> */}
-                <RHFInput name='url'/>
+                <RHFInput name="url" />
                 <Button type="primary" onClick={onSubmit}>
                   {docStatus === "REJECTED" ? "Resubmit" : "Upload"}
                 </Button>
