@@ -79,8 +79,6 @@ export const fetchOnboardList = createAsyncThunk<OnboardListResponse, void, { re
 //     },
 // );
 
-
-// TODO!! type fix
 export const fetchOnboardStatusById = createAsyncThunk<IBoardingApplication, string, { rejectValue: KnownError }>(
     'hiring/fetchOnboardStatusById',
     async (id, { rejectWithValue }) => {

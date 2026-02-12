@@ -18,13 +18,13 @@ import Register from "../pages/auth/register";
 import AuthGuard from "../components/guard/authGuard";
 import OnboardGuard from "../components/guard/onboardGuard";
 import DefaultLayout from "../components/layouts/default/defaultLayout";
-import Dashboard from "../pages/dashBoard";
+import Dashboard from "../pages/DashBoard";
+import Welcome from "../pages/Welcome";
 
 const routes = createRoutesFromElements(
   <Route>
     <Route element={<GuestLayout />}>
-      // TODO make some page
-      <Route path="*" element={<></>}></Route>
+      <Route path="*" element={<Welcome />}></Route>
       <Route element={<GuestGuard />}>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Register />}></Route>
