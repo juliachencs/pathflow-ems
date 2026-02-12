@@ -4,10 +4,10 @@ import PersonalDetails from "./components/PersonalDetails";
 import ReferencePerson from "./components/ReferencePerson";
 import EmergencyContact from "./components/EmergencyContact";
 import UploadedDocs, { type UploadedDoc } from "./components/UploadedDocs";
-import type { IProfile } from "../../app/types";
+import type { BoardingData, IProfile } from "../../app/types";
 
 export interface ProfileLayoutProps {
-  values: IProfile;
+  values: IProfile | BoardingData;
   bordered?: boolean;
   editMode?: boolean;
   compactMode?: boolean;
@@ -27,7 +27,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
       url: values.profileImage,
     });
   }
-  if (values.files) {
+  if ("files" in values && values.files) {
     const visaDocPack = [
       {
         label: "OPT Receipt",
@@ -48,8 +48,6 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
     ];
     docPack.push(...visaDocPack);
   }
-
-
 
   return (
     <>

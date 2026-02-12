@@ -8,7 +8,7 @@ import {
   Typography,
 } from "antd";
 import SendEmailModal from "../../components/hiring/SendEmailModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registTokenSchema } from "../../app/schema/registTokenSchema";
@@ -18,7 +18,12 @@ import ReviewModal from "../../components/ReviewModal";
 import ProfileLayout from "../../components/profile/ProfileLayout";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
-import { fetchOnboardStatusById, updateBoardingStatusById } from "../../features/hiring/hiringSlice";
+import {
+  fetchOnboardList,
+  fetchOnboardStatusById,
+  fetchRegistrationHistory,
+  updateBoardingStatusById,
+} from "../../features/hiring/hiringSlice";
 
 // const registerHistoryDummy = [
 //   {
@@ -211,6 +216,20 @@ const HiringManage: React.FC = () => {
     registrationHistory,
     loadedOnboarding,
   } = useSelector((state: RootState) => state.hiring);
+
+  useEffect(() => {
+    try {
+      dispatch(fetchRegistrationHistory())
+        .unwrap()
+        .catch((e) => console.log(e));
+      dispatch(fetchOnboardList())
+        .unwrap()
+        .catch((e) => console.log(e));
+    } catch (error) {
+      console.log(error);
+      // TODO handle!
+    }
+  }, [dispatch]);
 
   const handleSubmitToken = async () => {
     const isValid = await methods.trigger();

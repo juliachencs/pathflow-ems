@@ -14,9 +14,8 @@ export interface KnownError {
 }
 
 export interface IBoardingApplication {
-  _id: string; // employee id
   state: BoardingStatus;
-  profile: IProfileFull;
+  data: IProfile;
   feedback?: string;
 }
 

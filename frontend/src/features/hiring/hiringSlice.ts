@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { IBoardingApplicationNew, IBoardingData, IBoardingReviewAction, IProfileCore, KnownError, registerLogInfo } from "../../app/types";
+import type { IBoardingApplication, BoardingData, IBoardingReviewAction, IProfileCore, KnownError, registerLogInfo } from "../../app/types";
 import type { AxiosError } from "axios";
 import { getAllBoardingStatus, getBoardingStatusById, updateOneBoardingStatus } from "../../apis/boarding";
 import { getRegistraionHistory, sendRegistrationInvite } from "../../apis/regiseration";
@@ -9,7 +9,7 @@ interface HiringState {
     onboardListPending: IProfileCore[] | null;
     onboardListRejected: IProfileCore[] | null;
     onboardListApproved: IProfileCore[] | null;
-    loadedOnboarding?: IBoardingData;
+    loadedOnboarding?: BoardingData;
     loading: boolean;
 }
 
@@ -81,11 +81,11 @@ export const fetchOnboardList = createAsyncThunk<OnboardListResponse, void, { re
 
 
 // TODO!! type fix
-export const fetchOnboardStatusById = createAsyncThunk<IBoardingApplicationNew, string, { rejectValue: KnownError }>(
+export const fetchOnboardStatusById = createAsyncThunk<IBoardingApplication, string, { rejectValue: KnownError }>(
     'hiring/fetchOnboardStatusById',
     async (id, { rejectWithValue }) => {
         try {
-            return (await getBoardingStatusById(id)) as IBoardingApplicationNew;
+            return (await getBoardingStatusById(id)) as IBoardingApplication;
         } catch (err) {
             const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
             if (!error.response) {
@@ -116,7 +116,7 @@ export const updateBoardingStatusById = createAsyncThunk<OnboardListResponse, up
     }
 )
 
-export const fetchRegistrationHistory = createAsyncThunk<registerLogInfo[], updateBoardingStatusPayload, { rejectValue: KnownError }>(
+export const fetchRegistrationHistory = createAsyncThunk<registerLogInfo[], void, { rejectValue: KnownError }>(
     'hiring/fetchRegistrationHistory',
     async (_, { rejectWithValue }) => {
         try {
@@ -210,7 +210,7 @@ const hiringSlice = createSlice({
         builder.addCase(sendInvitationToUser.rejected, (state) => {
             state.loading = false;
         });
-                builder.addCase(fetchOnboardStatusById.pending, (state) => {
+        builder.addCase(fetchOnboardStatusById.pending, (state) => {
             state.loading = true;
         });
         builder.addCase(fetchOnboardStatusById.fulfilled, (state, action) => {
