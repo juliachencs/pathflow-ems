@@ -22,6 +22,7 @@ import {
   fetchOnboardList,
   fetchOnboardStatusById,
   fetchRegistrationHistory,
+  sendInvitationToUser,
   updateBoardingStatusById,
 } from "../../features/hiring/hiringSlice";
 
@@ -234,7 +235,14 @@ const HiringManage: React.FC = () => {
   const handleSubmitToken = async () => {
     const isValid = await methods.trigger();
     if (!isValid) return;
-    console.log(methods.getValues());
+    const payload = methods.getValues();
+    console.log(payload);
+    try {
+      await dispatch(sendInvitationToUser(payload)).unwrap();
+    } catch (error) {
+      console.log(error);
+      // TODO: handle error
+    }
     methods.reset();
     setIsTokenModalOpen(false);
   };

@@ -1,15 +1,15 @@
-import type { IBoardingReviewAction, IProfileFull } from '../app/types';
+import type { BoardingData, IBoardingReviewAction } from '../app/types';
 import api from './base';
 
 const API_URL = '/boarding';
 const API_URL_ADMIN = '/boardings';
 
-export const submitApplication = async (data: IProfileFull) => {
+export const submitApplication = async (data: BoardingData) => {
     const response = await api.post(`${API_URL}/me`, data);
     return response.data.data;
 }
 
-export const reSubmitApplication = async (data: IProfileFull) => {
+export const reSubmitApplication = async (data: BoardingData) => {
     const response = await api.put(`${API_URL}/me`, data);
     return response.data.data;
 }

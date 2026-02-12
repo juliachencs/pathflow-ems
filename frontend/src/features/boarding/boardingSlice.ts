@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { IProfileFull, KnownError, BoardingStatus, BoardingData } from "../../app/types";
+import type { KnownError, BoardingStatus, BoardingData } from "../../app/types";
 import type { AxiosError } from "axios";
 import { getApplicationStatus, reSubmitApplication, submitApplication } from "../../apis/boarding";
 
-type BoardingPayload = Omit<IProfileFull, "_id">;
+type BoardingPayload = BoardingData;
 
 interface BoardingRespond {
     data: BoardingData;

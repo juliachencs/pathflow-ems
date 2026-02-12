@@ -51,36 +51,6 @@ export interface VisaDocuments {
   I983: string | undefined;
   I20: string | undefined;
 }
-export interface IProfileFull {
-  _id?: string;
-
-  name: NamePacked;
-
-  profileImage: string | undefined; // link to a picture
-
-  address: {
-    street: string;
-    state: string;
-    city: string;
-    zip: string;
-    secondary: string | undefined,
-  };
-
-  cellPhone: string;
-  workPhone: string | undefined;
-  email: string;
-  SSN: string;
-  dob: Date;
-  gender: Gender;
-
-  workAuthorization: WorkAuth;
-
-  reference?: ContactInfo;
-
-  emergencyContacts?: ContactInfo[];
-
-  visaDocuments?: VisaDocuments;
-}
 
 export interface IProfileSummary {
   employeeId: string;
@@ -201,17 +171,17 @@ export interface BoardingData {
     relationship?: string;
   };
 
-  emergencyContacts?: 
-    {
-      person: {
-        firstName: string;
-        lastName: string;
-        middleName?: string;
-        phone?: string;
-        email?: string;
-      };
-      relationship: string;
-    }[];
+  emergencyContacts?:
+  {
+    person: {
+      firstName: string;
+      lastName: string;
+      middleName?: string;
+      phone?: string;
+      email?: string;
+    };
+    relationship: string;
+  }[];
 }
 
 export interface IProfile extends BoardingData {
