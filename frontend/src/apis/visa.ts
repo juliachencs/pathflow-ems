@@ -17,12 +17,12 @@ export const submitVisaFile = async ({ payload }: { payload: { documentType: Doc
 
 export const getEmpVisaStatusIP = async () => {
     const response = await api.get(`${API_URL_ADMIN}/progress`);
-    return response.data;
+    return response.data.data;
 };
 
 export const getEmpVisaStatusAll = async () => {
     const response = await api.get(`${API_URL_ADMIN}/all`);
-    return response.data;
+    return response.data.data;
 };
 
 export const updateEmpVisaStatus = async ({ id, actionType, payload }: {
@@ -33,5 +33,5 @@ export const updateEmpVisaStatus = async ({ id, actionType, payload }: {
     }
 }) => {
     const response = await api.patch(`${API_URL_ADMIN}/${id}`, { actionType, payload });
-    return response.data;
+    return response.data.data;
 };
