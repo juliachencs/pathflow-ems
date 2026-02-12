@@ -1,4 +1,9 @@
 import {
+  getBoarding,
+  getBoardings,
+  reviewBoarding,
+} from "@/controllers/admin/boardings.controller";
+import {
   getProfile,
   getProfiles,
 } from "@/controllers/admin/profiles.controller";
@@ -9,17 +14,17 @@ import {
 
 const adminController = {
   // registrations
-  getRegistrations: getRegistrations,
-  sendInvitation: sendInvitation,
+  getRegistrations,
+  sendInvitation,
 
   // profiels
-  getProfile: getProfile,
-  getProfiles: getProfiles,
+  getProfile,
+  getProfiles,
 
   // boardings
-  // getBoardings: getBoardings,
-  // getBoarding: getBoarding,
-  // reviewBoarding: reviewBoarding,
+  getBoardings,
+  getBoarding,
+  reviewBoarding,
 
   // visas
   // getAllVisas: getAllVisas,

@@ -88,3 +88,11 @@ export interface IBoardingApplication {
   feedback?: string;
   data: IBoardingData;
 }
+
+//
+export interface IReviewBoardingAction {
+  actionType: "APPROVE" | "REJECT";
+  payload: {
+    feedback?: string;
+  };
+}

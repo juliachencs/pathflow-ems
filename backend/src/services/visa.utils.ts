@@ -1,3 +1,4 @@
+import type { IWorkAuthorization } from "@/types/boarding.interface";
 import type { IEmployee } from "@/types/employee.interface";
 import type {
   IDocumentState,
@@ -6,7 +7,7 @@ import type {
   IVisaStatus,
 } from "@/types/visa.interface";
 
-export function initVisaStatus(workAuth) {
+export function initVisaStatus(workAuth: IWorkAuthorization) {
   // not opt
   if (workAuth.type !== "F1(CPT/OPT)") {
     return { state: "NR" };

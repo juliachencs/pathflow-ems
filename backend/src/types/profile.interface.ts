@@ -19,8 +19,10 @@ export interface IProfileSummary {
   email: string;
 }
 
-// export interface IProfileCore {
-//   _id: string;
-//   fullName: string;
-//   email: string;
-// }
+// interface for HR Hiring Management Page: Onbaording Application Review
+export interface IProfileCore {
+  employeeId: string;
+  fullName: string;
+  email: string;
+  name: IName;
+}

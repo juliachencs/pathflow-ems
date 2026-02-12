@@ -12,6 +12,7 @@ Response body:
 ```typescript
 {
   success: true;
+  message: string;
   data: IProfileSummary[];
 }
 ```
@@ -27,7 +28,8 @@ Response body:
 ```typescript
 {
   success: true;
-  data: IProfileFull;
+  message: string;
+  data: IProfile;
 }
 ```
 </details>
@@ -45,9 +47,8 @@ Response body:
       name: string;
       email: string;
       registrationLink: string;
-      hasRegistered:boolean; // indicate if this link has been used to register an account
-      hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
-  
+      // hasRegistered:boolean; // indicate if this link has been used to register an account
+      /// hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
   }]
 }
 ```
@@ -90,127 +91,3 @@ The message would be something like: "We have re-sent the registration link to $
 - If the email exists in the history and  the user has registered an account, the sever will reponse with error code ().
 
 </details>
-
-## OnBoarding Application Review 
-
-### GET /api/boardings
-<details>
-<summary> List all onboarding employees </summary>
-
-Response body:
-
-```typescript
-{
-  success: true;
-  data: {
-    PENDING: IProfileCore[];
-    REJECTED: IProfileCore[];
-    APPROVED: IProfileCore[];
-  }
-}
-```
-
-</details>
-
-### GET /api/boardings?state=state
-<details>
-<summary> List all onboarding employees in certain state </summary>
-
-Response body:
-
-```typescript
-{
-  success: true;
-  data: IProfileCore[];
-}
-```
-
-</details>
-
-### GET /api/boardings/:id
-
-<details>
-<summary> Get the boarding application of an employee. </summary>
-
-Request: `id`: the `_id` of an employee 
-
-Response body:
-
-```typescript
-{
-  success: true;
-  data: IBoardingApplication;
-}
-```
-
-</details>
-
-### PATCH /api/boardings/:id
-
-<details>
-<summary> Requested to approve or reject the boarding application of an employee. </summary>
-Request: `id` is the `_id` of an employee.
-
-Request body: `IBoardingReviewAction`
-
-Response body: the updated list.
-```typescript
-{
-  success: true;
-  data: {
-    PENDING: IProfileCore[];
-    REJECTED: IProfileCore[];
-    APPROVED: IProfileCore[];
-  }
-}
-```
-
-</details>
-
-## VISA Status Management
-
-### GET /api/visas/progress
-
-<details>
-<summary> Get the progess of OPT employees who are submitting their visa documents </summary>
-Response body
-
-```typescript
-{
-  success: true;
-  data: IManagedVisaStatus[];
-}
-```
-
-</details>
-
-### GET /api/visas/all
-
-<details>
-<summary> Get the visa status of all OPT employees </summary>
-
-Response body
-```typescript
-{
- success: true;
- data: IManagedVisaStatus[];
-}
-```
-</details>
-
-### PATCH	/api/visas/:id
-
-Request: `id`: the `_id` of an employee.
-
-Request body: `IVisaReviewAction`;
-
-Response body
-```typescript
-{
-  success: true;
-  data: {
-    progress: IManagedVisaStatus[];
-    all: IManagedVisaStatus[];
-  }
-}
-```

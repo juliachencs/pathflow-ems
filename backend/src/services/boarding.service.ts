@@ -1,9 +1,11 @@
 import { Employee, type IEmployee } from "@/models/employee.model";
-import { onBoarding } from "@/services/boarding.utils";
+import {
+  extractBoardingApplication,
+  onBoarding,
+} from "@/services/boarding.utils";
 import type {
   IBoardingApplication,
   IBoardingData,
-  IBoardingStatus,
 } from "@/types/boarding.interface";
 import type { ServiceReturnType } from "@/types/common";
 import { HttpNotFoundError } from "@/types/http.errors";
@@ -45,29 +47,14 @@ export async function submitBoardingService(
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
   }
 
+  const result: IBoardingApplication = extractBoardingApplication(employee);
+
   return {
     message: `You've submit the boarding application.`,
-    data: employee.data,
+    data: result,
   };
 }
 
-function extractBoardingApplication(employee: IEmployee): IBoardingApplication {
-  const data: IBoardingData = employee.data;
-  if (!data) {
-    throw new HttpNotFoundError("GET_BOARDING_NOT_FOUND");
-  }
-
-  const status: IBoardingStatus = employee.boarding;
-  if (!status) {
-    throw new HttpNotFoundError("GET_BOARDING_NOT_FOUND");
-  }
-
-  const result: IBoardingApplication = {
-    data,
-    ...status,
-  };
-  return result;
-}
 // export async function updateBoardingDataService(employeeId: string, data: IBoardingData) {
 //   const employee = await Employee.findById(employeeId).exec();
 //   if (!employee) {

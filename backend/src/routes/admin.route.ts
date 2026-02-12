@@ -20,18 +20,18 @@ adminRouter.get(
   adminController.getRegistrations,
 );
 
-// // profile
+// profile
 adminRouter.get("/profiles/:id", middlewares, adminController.getProfile);
 adminRouter.get("/profiles", middlewares, adminController.getProfiles);
 
-// //boarding
-// adminRouter.get("/boardings/:id", middlewares, adminController.getBoarding);
-// adminRouter.get("/boardings", middlewares, adminController.getBoardings);
-// adminRouter.patch(
-//   "/boardings/:id",
-//   middlewares,
-//   adminController.reviewBoarding,
-// );
+//boarding
+adminRouter.get("/boardings/:id", middlewares, adminController.getBoarding);
+adminRouter.get("/boardings", middlewares, adminController.getBoardings);
+adminRouter.patch(
+  "/boardings/:id",
+  middlewares,
+  adminController.reviewBoarding,
+);
 
 // //visa
 // adminRouter.get(

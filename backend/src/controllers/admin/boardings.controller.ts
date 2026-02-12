@@ -1,3 +1,10 @@
+import { getBoardingApplicationService } from "@/services/boarding.service";
+import {
+  listAllBoardingService,
+  listBoardingService,
+  reviewBoardingService,
+} from "@/services/boardings.service";
+import { HttpBadRequestError } from "@/types/http.errors";
 import { isValidID } from "@/utils/utils";
 import type { Request, Response, NextFunction } from "express";
 
@@ -47,7 +54,9 @@ export async function getBoarding(
       throw new HttpBadRequestError("INVALID_EMPLOYEE_ID");
     }
 
-    const { message, data } = await getBoardingService(employeeId);
+    // const { message, data } = await reviewBoardingService(employeeId, req.body);
+    const { message, data } = await getBoardingApplicationService(employeeId);
+
     res.status(200).json({
       success: true,
       message: message,
