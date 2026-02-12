@@ -132,16 +132,16 @@ export interface IProfileCore {
   email: string;
 }
 
+export interface IVisaDoc {
+  _id: string;
+  state: FileStatus;
+  documentType: DocType;
+}
+
 export interface IVisaStatus {
-  _id: string; // employeeID
   state: VisaStatus;
-  curState: number;
-  documents: [
-    { OPT: { state: FileStatus, feedback?: string, url?: URL } },
-    { EAD: { state: FileStatus, feedback?: string, url?: URL } },
-    { I983: { state: FileStatus, feedback?: string, url?: URL } },
-    { I20: { state: FileStatus, feedback?: string, url?: URL } },
-  ]
+  curStage: number;
+  documents: IVisaDoc[]
 }
 
 export interface IVisaAction {

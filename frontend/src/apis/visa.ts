@@ -6,7 +6,7 @@ const API_URL_ADMIN = '/visas';
 
 export const getVisaStatus = async () => {
     const response = await api.get(`${API_URL}/me`);
-    return response.data;
+    return response.data.data;
 };
 
 export const submitVisaFile = async ({ payload }: { payload: { documentType: DocType; url: string } }) => {
