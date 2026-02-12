@@ -65,8 +65,8 @@ export const profileBoardingMapper = (values: IProfileFull): BoardingFormValues 
         dob: values.dob,
         gender: values.gender,
         isUSCitizen: workAuthorization.type === 'Citizen' ? 'yes' : 'no',
-        greenCardOrCitizen: workAuthorization.type === 'Citizen' ? "Citizen" : workAuthorization.type === 'GreenCard' ? 'GreenCard' : undefined,
-        workAuthorization: workAuthorization.type === 'Citizen' ? undefined : workAuthorization.type === 'GreenCard' ? undefined : workAuthorization.type,
+        greenCardOrCitizen: workAuthorization.type === 'Citizen' ? "Citizen" : workAuthorization.type === 'Green Card' ? 'Green Card' : undefined,
+        workAuthorization: workAuthorization.type === 'Citizen' ? undefined : workAuthorization.type === 'Green Card' ? undefined : workAuthorization.type,
         otherVisaTitle: workAuthorization.title,
         visaStartDate: workAuthorization.startDate,
         visaEndDate: workAuthorization.endDate,
@@ -80,6 +80,52 @@ export const profileBoardingMapper = (values: IProfileFull): BoardingFormValues 
         // })
     }
 };
+
+export const BoardingFormValueToDataMapper = (values: BoardingFormValues): BoardingData => {
+    return {
+        name: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            middleName: values.middleName,
+            preferredName: values.preferedName
+        },
+        profileImage: values.profileImgUrl ?? '',
+        address: {
+            ...values.address,
+            secondary: values.address.unit ?? ''
+        },
+        cellPhone: values.cellPhoneNumber,
+        workPhone: values.workPhoneNumber,
+        email: values.email,
+        SSN: values.ssn,
+        dob: values.dob.toISOString(),
+        gender: values.gender,
+        workAuthorization: {
+            type: (values.isUSCitizen === 'yes' ? values.greenCardOrCitizen! : values.workAuthorization!),
+            title: values.otherVisaTitle,
+            startDate: values.visaStartDate?.toISOString(),
+            endDate: values.visaEndDate?.toISOString(),
+            url: values.optReceiptUrl,
+        },
+        reference: {
+            person: values.reference && { ...values.reference, firstName: values.reference.firstName!, lastName: values.reference.lastName! },
+            relationship: values.reference.relationship
+        },
+        emergencyContacts:
+            values.emergencyContacts ? values.emergencyContacts.map((ec) => {
+                return {
+                    person: {
+                        firstName: ec.firstName,
+                        lastName: ec.lastName,
+                        middleName: ec.middleName ?? undefined,
+                        phone: ec.phone ?? undefined,
+                        email: ec.email ?? undefined
+                    },
+                    relationship: ec.relationship
+                }
+            }) : undefined
+    }
+}
 
 export const BoardingDataToFormValueMapper = (values: BoardingData | null): BoardingFormValues | undefined => {
     if (!values) return undefined;
@@ -113,7 +159,7 @@ export const BoardingDataToFormValueMapper = (values: BoardingData | null): Boar
         },
         emergencyContacts: emergencyContacts ? [...emergencyContacts.map((ele): emContact => {
             const { firstName, lastName, middleName, phone, email } = ele.person
-            return { firstName, lastName, middleName, phone, email,  relationship: ele.relationship };
+            return { firstName, lastName, middleName, phone, email, relationship: ele.relationship };
         })] : undefined
     }
 }

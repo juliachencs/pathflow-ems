@@ -1,4 +1,4 @@
-import type { IProfileFull } from '../app/types';
+import type { IProfile } from '../app/types';
 import api from './base';
 
 const API_URL = '/profile';
@@ -14,10 +14,10 @@ export const getOwnProfile = async () => {
     }
 }
 
-export const updateOwnProfile = async (profile: IProfileFull) => {
+export const updateOwnProfile = async (payload: IProfile) => {
     try {
-        const response = await api.put(`${API_URL}/me`, profile);
-        return response.data;
+        const response = await api.put(`${API_URL}/me`, payload);
+        return response.data.data;
     } catch (error) {
         console.error('Error updating profile of currentUser:', error);
         throw error;
