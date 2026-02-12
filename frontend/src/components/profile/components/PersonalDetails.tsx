@@ -1,9 +1,9 @@
 import { Card, Descriptions } from "antd";
 import type { ProfileLayoutProps } from "../ProfileLayout";
 import WorkAuth from "./WorkAuth";
+import { dateFormatter } from "../dateBuildHelper";
 import RHFRadioGroup from "../../forms/RHF-RadioGroup";
 import { useFormContext } from "react-hook-form";
-import dayjs from "dayjs";
 
 const PersonalDetails: React.FC<ProfileLayoutProps> = ({
   values,
@@ -20,7 +20,7 @@ const PersonalDetails: React.FC<ProfileLayoutProps> = ({
             {values.SSN}
           </Descriptions.Item>
           <Descriptions.Item label="Date of Birth">
-            {dayjs(values.dob.toISOString()).format('MM/DD/YYYY')}
+            {dateFormatter(values.dob)}
           </Descriptions.Item>
           <Descriptions.Item label="Gender">
             {editMode ? (

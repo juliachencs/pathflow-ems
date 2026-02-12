@@ -1,13 +1,39 @@
 import { Button, Card, Descriptions, Space } from "antd";
-// import DocItem from "./DocItem";
+import type { VisaDocuments } from "../../../app/types";
 
-export type UploadedDoc = {
+const uploadedDocsConfig: UploadedDocConfig<UploadedDocsProps["docPack"]>[] = [
+  {
+    label: "Profile Picture",
+    getUrl: (v) => v.profileImage,
+  },
+  {
+    label: "OPT Receipt",
+    getUrl: (v) => v.visaDocuments?.OPT,
+  },
+  {
+    label: "EAD Card",
+    getUrl: (v) => v.visaDocuments?.EAD,
+  },
+  {
+    label: "I-983 Form",
+    getUrl: (v) => v.visaDocuments?.I983,
+  },
+  {
+    label: "I-20 Form",
+    getUrl: (v) => v.visaDocuments?.I20,
+  },
+];
+
+type UploadedDocConfig<T> = {
   label: string;
-  url?: string;
+  getUrl: (values: T) => string | undefined;
 };
 
 interface UploadedDocsProps {
-  docPack: UploadedDoc[];
+  docPack: {
+    profileImage?: string;
+    visaDocuments?: VisaDocuments;
+  };
   bordered?: boolean;
   title?: string;
 }
@@ -19,11 +45,10 @@ const UploadedDocs: React.FC<UploadedDocsProps> = ({
   return (
     <Card title={title}>
       <Descriptions column={1} size="small" bordered>
-        {docPack.map((doc, index) => {
-          const url = doc.url;
+        {uploadedDocsConfig.map((doc, index) => {
+          const url = doc.getUrl(docPack);
           if (url) {
-            // for some reason this reusable component just not rendering, fix it later
-            // TODO fix
+            // for some reason this reusable component just continiously not rendering
             // return (<DocItem itemKey={index} label={doc.label} url={url} />);
             return (
               <Descriptions.Item key={index} label={doc.label}>

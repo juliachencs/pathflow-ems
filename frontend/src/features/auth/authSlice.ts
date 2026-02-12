@@ -58,7 +58,6 @@ const loadState = (): AuthState => {
 
 const saveState = (state: AuthState) => {
     localStorage.setItem('auth', JSON.stringify(state));
-    localStorage.setItem('token', state.token!);
 };
 
 const mapResponseToUser = (response: AuthResponse): UserInfo => {
@@ -121,7 +120,6 @@ const authSlice = createSlice({
         },
         clearAuth: (state) => {
             localStorage.removeItem('auth');
-            localStorage.removeItem('token');
             state.isAuthenticated = false;
             state.token = null;
             state.currentUser = null;

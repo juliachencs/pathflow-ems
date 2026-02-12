@@ -48,6 +48,7 @@ export const workAuthSchema = z
   })
   .superRefine((data, ctx) => {
     if (data.isUSCitizen === 'yes' && !data.greenCardOrCitizen) {
+      console.log(data.greenCardOrCitizen)
       ctx.addIssue({
         code: "custom",
         message: "Please select Green Card or Citizen",

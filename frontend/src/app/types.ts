@@ -20,39 +20,6 @@ export interface IBoardingApplication {
   feedback?: string;
 }
 
-export interface IBoardingApplicationNew {
-  _id: string; // employee id
-  state: BoardingStatus;
-  data: IBoardingData;
-  feedback?: string;
-}
-
-
-// NEW
-export interface IBoardingData {
-  name: NamePacked;
-
-  profileImage: string | undefined; // link to a picture
-
-  address: {
-    street: string;
-    state: string;
-    city: string;
-    zip: string;
-    secondary: string | undefined;
-  };
-
-  cellPhone: string;
-  workPhone: string | undefined;
-  email: string;
-  SSN: string;
-  dob: Date;
-  gender: Gender;
-  workAuthorization: WorkAuth;
-  reference?: ContactInfo;
-  emergencyContacts?: ContactInfo[];
-}
-
 export interface ContactInfo {
   person: {
     firstName?: string | undefined;
@@ -126,12 +93,6 @@ export interface IProfileSummary {
   email: string;
 }
 
-export interface IProfileCore {
-  _id: string;
-  fullName: string;
-  email: string;
-}
-
 export interface IVisaStatus {
   _id: string; // employeeID
   state: VisaStatus;
@@ -142,51 +103,4 @@ export interface IVisaStatus {
     { I983: { state: FileStatus, feedback?: string, url?: URL } },
     { I20: { state: FileStatus, feedback?: string, url?: URL } },
   ]
-}
-
-export interface IVisaAction {
-  actionType: "REVIEW" | "SEND_NOTIFICATION";
-  payload: {
-    documentType: DocType;
-    url?: string;
-  };
-}
-
-export interface IVisaWorkAuth {
-  title: string;
-  startDate: string;
-  endDate: string;
-}
-
-export interface IManagedVisaStatus {
-  employeeId: string;
-  name: NamePacked;
-  workAuthorization: IVisaWorkAuth;
-  nextStep: string;
-  action: IVisaAction | undefined;
-
-  files: IVisaFiles;
-}
-
-// TODO Merge two visa files
-export interface IVisaFiles {
-  OPT?: string;
-  EAD?: string;
-  I983?: string;
-  I20?: string;
-}
-
-export interface IBoardingReviewAction {
-  actionType: "APPROVE" | "REJECT";
-  payload: {
-    feedback?: string;
-  }
-}
-
-export interface registerLogInfo {
-  name: string;
-  email: string;
-  registrationLink: string;
-  hasRegistered: boolean; // indicate if this link has been used to register an account
-  hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
 }

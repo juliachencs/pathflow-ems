@@ -18,7 +18,7 @@ export const submitBoardingApplication = createAsyncThunk<IBoardingApplication, 
     'boarding/submitBoardingApplication',
     async (boardingData, { rejectWithValue }) => {
         try {
-            return (await submitApplication(boardingData)) as IBoardingApplication;
+            return await submitApplication(boardingData);
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
@@ -34,7 +34,7 @@ export const reSubmitBoardingApplication = createAsyncThunk<IBoardingApplication
     'boarding/reSubmitBoardingApplication',
     async (boardingData, { rejectWithValue }) => {
         try {
-            return (await reSubmitApplication(boardingData)) as IBoardingApplication;
+            return await reSubmitApplication(boardingData);
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
@@ -50,7 +50,7 @@ export const fetchBoardingStatus = createAsyncThunk<IBoardingApplication, void, 
     'boarding/fetchBoardingStatus',
     async (_, { rejectWithValue }) => {
         try {
-            return (await getApplicationStatus()) as IBoardingApplication;
+            return await getApplicationStatus();
         } catch (e) {
             const error: AxiosError<KnownError> = e as AxiosError<KnownError>;
             if (!error.response) {
