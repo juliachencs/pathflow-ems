@@ -19,7 +19,7 @@ Response:
 ### PUT /api/profile/me	
 功能：更新员工的信息
 
-Request body: `IProfile` 
+Request body: "subset of boarding data"
 
 Response: updated profile
 
@@ -36,9 +36,10 @@ The server will use the employee ID decoded from the request header by default.
 
 ## Boarding <a name="user-boarding-endpoints">
 
-### Boarding application data <a name="baording">
+### 相关的的interfaces 和 types <a name="user-boarding-endpoints-data-interface">
 
 ```typescript
+//数据
 export interface IBoardingData {
   name: IName;
   profileImage: string; // link to a picture
@@ -65,11 +66,13 @@ export interface IBoardingData {
   ];
 }
 
+//状态
 export interface IBoardingStatus {
   state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
   feedback?: string;
 }
 
+//Application: data + status
 export interface IBoardingApplication {
   state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
   feedback?: string;
