@@ -1,19 +1,25 @@
-import { Employee } from "@/models/employee.model";
+import { Employee, type IEmployee } from "@/models/employee.model";
 import { onBoarding } from "@/services/boarding.utils";
-import type { IBoardingData } from "@/types/boarding.interface";
+import type {
+  IBoardingApplication,
+  IBoardingData,
+  IBoardingStatus,
+} from "@/types/boarding.interface";
+import type { ServiceReturnType } from "@/types/common";
 import { HttpNotFoundError } from "@/types/http.errors";
 
-export async function getBoardingService(employeeId: string) {
-  const employee = await Employee.findById(employeeId).exec();
+export async function getBoardingApplicationService(
+  employeeId: string,
+): ServiceReturnType<IBoardingApplication> {
+  const employee: IEmployee | null = await Employee.findById(employeeId)
+    .lean()
+    .exec();
+
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
   }
 
-  const result = employee.data;
-
-  if (!result) {
-    throw new HttpNotFoundError("GET_BOARDING_NOT_FOUND");
-  }
+  const result: IBoardingApplication = extractBoardingApplication(employee);
 
   return {
     message: `You've got the boarding application of the ${employeeId}.`,
@@ -21,112 +27,66 @@ export async function getBoardingService(employeeId: string) {
   };
 }
 
-export async function submitBoardingService(employeeId: string, data: IBoardingData) {
-  const employee = await Employee.findById(employeeId).exec();
+export async function submitBoardingService(
+  employeeId: string,
+  data: IBoardingData,
+): ServiceReturnType<IBoardingApplication> {
+  // make a new employee based on onBoarding data
+  const fulldata = onBoarding(data);
+  // const flatData = flattenObject(fulldata);
+  // console.log(flatData);
+
+  const employee = await Employee.findByIdAndUpdate(
+    employeeId,
+    { ...fulldata },
+    { new: true },
+  ).exec();
   if (!employee) {
     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
   }
-  // make a new employee based on onBoarding data
-  const info = onBoarding(data);
 
-  employee.data = {...employee.data, ...info.data};
-  employee.boarding = info.boarding;
-  employee.visa = info.visa;
-
-  // save the update
-  await employee.save();
-
-  // update the registers dataset to mark this record is submitted 
-  
-  // make sure the 
   return {
     message: `You've submit the boarding application.`,
-    data: employee.profileFull,
-  };
-} 
-export async function updateBoardingService(employeeId: string, data: unknown) {
-  const employee = await Employee.findById(employeeId).exec();
-  if (!employee) {
-    throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
-  }
-
-  // make a new employee based on onBoarding data
-  const info = onBoarding(data);
-
-  employee.data = {...employee.data, ....info.data};
-  employee.boarding = info.boarding;
-  employee.visa = info.visa;
-
-  // save the update
-  await employee.save();
-
-  // make sure the 
-  return {
-    message: `You've updated the boarding application of the ${employeeId}.`,
-    data: employee.profileFull,
+    data: employee.data,
   };
 }
 
-export async function listBoardingService(state: "PENDING" | "REJECTED" | "APPROVED") {
-  const filter = {"boarding.state": state};
-  const fields = ["_id", "data.name.firstName", "data.name.lastName", "data.email"];
-  const data = await Employee.find(filter, fields).lean().exec();
-  const result = data.map((x)=>{
-    return {
-      fullName: x.data.name.firstName + " " + x.data.name.lastName,
-      email: x.data.email,
-      employeeId: x._id,
-    }
-  });
+function extractBoardingApplication(employee: IEmployee): IBoardingApplication {
+  const data: IBoardingData = employee.data;
+  if (!data) {
+    throw new HttpNotFoundError("GET_BOARDING_NOT_FOUND");
+  }
 
-  return {
-    message: `You've got all employees whoes boarding application is ${state}`,
-    data: result,
+  const status: IBoardingStatus = employee.boarding;
+  if (!status) {
+    throw new HttpNotFoundError("GET_BOARDING_NOT_FOUND");
+  }
+
+  const result: IBoardingApplication = {
+    data,
+    ...status,
   };
+  return result;
 }
+// export async function updateBoardingDataService(employeeId: string, data: IBoardingData) {
+//   const employee = await Employee.findById(employeeId).exec();
+//   if (!employee) {
+//     throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
+//   }
 
+//   // make a new employee based on onBoarding data
+//   const info = onBoarding(data);
 
-export async function listAllBoardingService() {
-  const { data: pending } = await listBoardingService("PENDING");
-  const { data: rejected } = await listBoardingService("REJECTED");
-  const { data: approved } = await listBoardingService("APPROVED");
+//   employee.data = {...employee.data, ....info.data};
+//   employee.boarding = info.boarding;
+//   employee.visa = info.visa;
 
-  return {
-    message: "You've got all boarding applications",
-    data: {pending, rejected, approved}
-  }
-}
-export interface IReviewBoardingAction {
-  employeeId: string;
-  actionType: "APPROVE"| "REJECT";
-  payload:{
-    feedback?: string;
-  } 
-}
-export async function reviewBoardingService(employeeId:string, action: IReviewBoardingAction) {
-  const employee = await Employee.findById(employeeId).exec();
-  if (!employee) {
-    throw new HttpNotFoundError("NOT_FOUND_EMPLOYEE");
-  }
+//   // save the update
+//   await employee.save();
 
-
-  // update boarding state
-  if (action.actionType === "APPROVE") {
-    employee.boarding ={
-      state: "APPROVED", 
-    } 
-  } else {
-    employee.boarding ={
-      state: "REJECTED",
-      feedback: action.payload.feedback, 
-    };
-  }
-
-  // save the update
-  await employee.save();
-
-  return {
-    message: `You've updated the boarding application of the ${employeeId}.`,
-    data: employee.profileFull,
-  };
-}
+//   // make sure the
+//   return {
+//     message: `You've updated the boarding application of the ${employeeId}.`,
+//     data: employee.data,
+//   };
+// }

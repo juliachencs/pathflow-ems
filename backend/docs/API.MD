@@ -55,6 +55,18 @@ export interface IBoardingData {
     },
   ];
 }
+
+export interface IBoardingStatus {
+  state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
+}
+
+export interface IBoardingApplication {
+  state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
+  data: IBoardingData;
+}
+
 ```
 
 ### Profile相关的interfaces和types <a name="Profile">
@@ -66,9 +78,15 @@ export interface IProfile extends IBoardingData {
   files: IVisaFiles;
 }
 
-// 这个目前用于HR看某个员工的profile，但在考虑删除。
-export interface IProfileFull extends IProfile {
-  _id: string;
+// interface for HR-Employee Profiles Page
+export interface IProfileSummary {
+  employeeId: string;
+  fullName: string;
+  name: IName;
+  SSN: string;
+  workAuthorization: IWorkAuthorization;
+  cellPhone: string;
+  email: string;
 }
 ```
 

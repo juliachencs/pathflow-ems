@@ -1,20 +1,25 @@
+// import {
+//   getBoardingService,
+//   updateBoardingService,
+// } from "@/services/boarding.service";
 import {
-  getBoardingService,
-  updateBoardingService,
+  getBoardingApplicationService,
+  submitBoardingService,
 } from "@/services/boarding.service";
 import {
   getProfileService,
   updateProfileService,
 } from "@/services/profile.service";
-import {
-  getVisaService,
-  submitVisaDocumentService,
-} from "@/services/visa.service";
+// import {
+//   getVisaService,
+//   submitVisaDocumentService,
+// } from "@/services/visa.service";
+// import type {
+//   ISubmitDocumentAction,
+//   IVisaStatus,
+// } from "@/types/visa.interface";
 import { HttpUnauthorizedError } from "@/types/http.errors";
-import type {
-  ISubmitDocumentAction,
-  IVisaStatus,
-} from "@/types/visa.interface";
+
 import { isValidID } from "@/utils/utils";
 import type { Request, Response, NextFunction } from "express";
 
@@ -23,11 +28,12 @@ type QueryFunc<T> = (id: string) => Promise<{ message: string; data: T }>;
 function queryController<T = unknown>(query_fn: QueryFunc<T>) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.auth || !isValidID(req.auth.empolyeeId)) {
+      console.log(req.auth);
+      if (!req.auth || !isValidID(req.auth.employeeId)) {
         throw new HttpUnauthorizedError("AUTHORIZE_MISS_ID");
       }
 
-      const employeeId = req.auth.empolyeeId;
+      const employeeId = req.auth.employeeId;
       const { message, data } = await query_fn(employeeId);
 
       res.status(200).json({
@@ -50,11 +56,11 @@ function mutationController<T = unknown, U = unknown>(
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.auth || !isValidID(req.auth.empolyeeId)) {
+      if (!req.auth || !isValidID(req.auth.employeeId)) {
         throw new HttpUnauthorizedError("AUTHORIZE_MISS_ID");
       }
 
-      const employeeId = req.auth.empolyeeId;
+      const employeeId = req.auth.employeeId;
       const payload = req.body as T;
       const { message, data } = await mutation_fn(employeeId, payload);
 
@@ -71,14 +77,14 @@ function mutationController<T = unknown, U = unknown>(
 
 const userController = {
   getProfile: queryController(getProfileService),
-  getBoarding: queryController(getBoardingService),
-  getVisaStaus: queryController(getVisaService),
+  getBoarding: queryController(getBoardingApplicationService),
+  // getVisaStaus: queryController(getVisaService),
 
   updateProfile: mutationController(updateProfileService),
-  updateBoarding: mutationController(updateBoardingService),
-  submitVisaDocument: mutationController<ISubmitDocumentAction, IVisaStatus>(
-    submitVisaDocumentService,
-  ),
+  submitBoarding: mutationController(submitBoardingService),
+  // submitVisaDocument: mutationController<ISubmitDocumentAction, IVisaStatus>(
+  //   submitVisaDocumentService,
+  // ),
 };
 
 export default userController;

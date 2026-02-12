@@ -16,7 +16,7 @@ import type { ServiceReturnType } from "@/types/common";
 export async function loginService(
   username: string,
   password: string,
-): Promise<ServiceReturnType<IAuthData>> {
+): ServiceReturnType<IAuthData> {
   // find the account
   const account = await Account.findOne({ username: username }).exec();
   if (!account) {
@@ -50,7 +50,7 @@ export async function registerService(
   email: string,
   registerToken: string,
   role: Role = "USER",
-): Promise<ServiceReturnType<IAuthData>> {
+): ServiceReturnType<IAuthData> {
   // validate register Token
   const registration = await Registration.findOne({
     registerToken: registerToken,

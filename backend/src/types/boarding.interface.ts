@@ -82,3 +82,9 @@ export interface IBoardingStatus {
   state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
   feedback?: string;
 }
+
+export interface IBoardingApplication {
+  state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
+  data: IBoardingData;
+}

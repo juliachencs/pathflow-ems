@@ -10,6 +10,7 @@ export async function sendInvitationService(name: string, email: string) {
   // check if the email has in the registration
   let registration = await Registration.findOne({ email: email }).exec();
   let isResent = false;
+
   // the email is in registration history
   if (registration) {
     // the user has registered
@@ -42,25 +43,29 @@ export async function sendInvitationService(name: string, email: string) {
   await registration.save();
 
   const history = await getHistory();
-  return { history, isResent };
+  const messages = {
+    sent: "We have sent an invitation to :" + email + ".",
+    resent: "We have re-sent an invitation to :" + email + ".",
+  };
+
+  return { data: history, message: isResent ? messages.resent : messages.sent };
 }
 
 export async function getRegistrationsService() {
-  return await getHistory();
+  const data = await getHistory();
+  const message = "You have got all invitations";
+  return { message, data };
 }
 
 export async function getHistory() {
-  const query = Registration.find().lean();
-  query.transform((docs) => {
-    return docs.map((doc) => ({
-      name: doc.name,
-      email: doc.email,
-      registrationLink: registerLink(doc.registerToken),
-      hasRegistered: doc.employeeId || false,
-      hasApplied: doc.hasApplied || false,
-    }));
-  });
+  const data = await Registration.find().lean().exec();
 
-  const history = await query.exec();
-  return history;
+  const result = data.map((x) => {
+    return {
+      name: x.name,
+      email: x.email,
+      registrationLink: registerLink(x.registerToken),
+    };
+  });
+  return result;
 }

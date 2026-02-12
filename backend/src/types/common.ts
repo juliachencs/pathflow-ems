@@ -23,7 +23,7 @@ export interface IVisaFiles {
   I20?: string;
 }
 
-export interface ServiceReturnType<T = unknown> {
+export type ServiceReturnType<T = unknown> = Promise<{
   message: string;
   data: T;
-}
+}>;

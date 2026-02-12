@@ -8,6 +8,14 @@ export const jwtAuthenticate = async (
   _: Response,
   next: NextFunction,
 ): Promise<void> => {
+  // req.auth = {
+  //   role: "USER",
+  //   accountId: "698d0c96a319a7700e4ff0ce",
+  //   employeeId: "698d0c96a319a7700e4ff0cc",
+  // };
+
+  // next();
+  // return;
   // unpack the token from header
   const authBearer = req.headers?.authorization?.match(/^Bearer (.+)/);
   if (!authBearer) {
@@ -25,17 +33,11 @@ export const jwtAuthenticate = async (
 
     const decoded = jwt.verify(token, accessSecret) as IAuthPayload;
 
-    // DEBUG
-    console.group("jwt");
-    console.log("token:", token);
-    console.log("accessSecret: ", accessSecret);
-    console.log("decoded: ", decoded);
-    console.groupEnd();
-
     req.auth = decoded;
 
     next();
   } catch (err) {
+    console.log(err);
     throw new HttpUnauthorizedError("JWT_TOKEN_INVALID");
   }
 };

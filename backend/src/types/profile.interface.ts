@@ -1,18 +1,23 @@
-import type { IBoardingData } from "@/types/boarding.interface";
+import type {
+  IBoardingData,
+  IName,
+  IWorkAuthorization,
+} from "@/types/boarding.interface";
 import type { IVisaFiles } from "@/types/common";
 
 export interface IProfile extends IBoardingData {
   files: IVisaFiles;
 }
-
-export interface IProfileFull extends IProfile {
-  _id: string;
+// interface for HR-Employee Profiles Page
+export interface IProfileSummary {
+  employeeId: string;
+  fullName: string;
+  name: IName;
+  SSN: string;
+  workAuthorization: IWorkAuthorization;
+  cellPhone: string;
+  email: string;
 }
-
-export type IProfileSummary = Pick<
-  IProfileFull,
-  "_id" | "name" | "cellPhone" | "email" | "SSN" | "workAuthorization"
->;
 
 export interface IProfileCore {
   _id: string;

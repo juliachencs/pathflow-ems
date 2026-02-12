@@ -5,3 +5,9 @@
 "username": "pathflowhr",
 "password": "ABC@abc@123",
 "email": "cxd1988@example.com"
+
+
+{
+    "username": "cxd1988",
+    "password": "ABC@abc@123-cxd1988"
+}

@@ -1,12 +1,12 @@
 import { Router } from "express";
 import authRouter from "@/routes/auth.route";
-// import userRouter from "@/routes/user.route";
-
-//import hrRouter from "@/routes/hr";
+import adminRouter from "@/routes/admin.route";
+import userRouter from "@/routes/user.route";
 
 const apiRouter = Router();
 
 apiRouter.use("/auth", authRouter);
-// apiRouter.use(userRouter);
+apiRouter.use(adminRouter);
+apiRouter.use(userRouter);
 
 export default apiRouter;

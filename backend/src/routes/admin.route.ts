@@ -7,33 +7,11 @@ import adminController from "@/controllers/admin.controller";
 const adminRouter = Router();
 const middlewares = [jwtAuthenticate, authorize(["ADMIN"])];
 
-// profile
-adminRouter.get("/profiles/:id", middlewares, adminController.getProfile);
-adminRouter.get("/profiles", middlewares, adminController.getProfiles);
-
-//boarding
-adminRouter.get("/boardings/:id", middlewares, adminController.getBoarding);
-adminRouter.get("/boardings", middlewares, adminController.getBoardings);
-adminRouter.patch(
-  "/boardings/:id",
-  middlewares,
-  adminController.reviewBoarding,
-);
-
-//visa
-adminRouter.get(
-  "/visas/progress",
-  middlewares,
-  adminController.getProgressVisas,
-);
-adminRouter.get("/visas/all", middlewares, adminController.getAllVisas);
-adminRouter.patch("/visas/:id", middlewares, adminController.reviewVisa);
-
-// api open to hr, i.e. admin users
+// Registrations
 adminRouter.post(
   "/registrations/invite",
   middlewares,
-  adminController.invitate,
+  adminController.sendInvitation,
 );
 
 adminRouter.get(
@@ -41,5 +19,27 @@ adminRouter.get(
   middlewares,
   adminController.getRegistrations,
 );
+
+// // profile
+adminRouter.get("/profiles/:id", middlewares, adminController.getProfile);
+adminRouter.get("/profiles", middlewares, adminController.getProfiles);
+
+// //boarding
+// adminRouter.get("/boardings/:id", middlewares, adminController.getBoarding);
+// adminRouter.get("/boardings", middlewares, adminController.getBoardings);
+// adminRouter.patch(
+//   "/boardings/:id",
+//   middlewares,
+//   adminController.reviewBoarding,
+// );
+
+// //visa
+// adminRouter.get(
+//   "/visas/progress",
+//   middlewares,
+//   adminController.getProgressVisas,
+// );
+// adminRouter.get("/visas/all", middlewares, adminController.getAllVisas);
+// adminRouter.patch("/visas/:id", middlewares, adminController.reviewVisa);
 
 export default adminRouter;

@@ -180,7 +180,7 @@ export function isLegalAction(cur, action) {
   return false;
 }
 
-export function collectFiles(visa: IVisaStatus) {
+export function collectFiles(visa: IVisaStatus): IVisaFiles {
   if (visa.state === "NA" || visa.state === "NR" || !visa.documents) {
     return {};
   }
