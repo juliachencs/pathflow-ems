@@ -49,7 +49,7 @@ export const getStateBoardingStatus = async (state: BoardingUnion) => {
     return response.data;
 }
 
-export const getOneBoardingStatus = async (id: string) => {
+export const getBoardingStatusById = async (id: string) => {
     const response = await api.get(`${API_URL_ADMIN}/${id}`);
     return response.data;
 }

@@ -20,6 +20,39 @@ export interface IBoardingApplication {
   feedback?: string;
 }
 
+export interface IBoardingApplicationNew {
+  _id: string; // employee id
+  state: BoardingStatus;
+  data: IBoardingData;
+  feedback?: string;
+}
+
+
+// NEW
+export interface IBoardingData {
+  name: NamePacked;
+
+  profileImage: string | undefined; // link to a picture
+
+  address: {
+    street: string;
+    state: string;
+    city: string;
+    zip: string;
+    secondary: string | undefined;
+  };
+
+  cellPhone: string;
+  workPhone: string | undefined;
+  email: string;
+  SSN: string;
+  dob: Date;
+  gender: Gender;
+  workAuthorization: WorkAuth;
+  reference?: ContactInfo;
+  emergencyContacts?: ContactInfo[];
+}
+
 export interface ContactInfo {
   person: {
     firstName?: string | undefined;

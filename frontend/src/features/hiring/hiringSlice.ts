@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { BoardingFormValues } from "../../app/schema/boardingSchema";
-import type { IBoardingReviewAction, IProfileCore, KnownError, registerLogInfo } from "../../app/types";
+import type { IBoardingApplicationNew, IBoardingData, IBoardingReviewAction, IProfileCore, KnownError, registerLogInfo } from "../../app/types";
 import type { AxiosError } from "axios";
-import { getAllBoardingStatus, updateOneBoardingStatus } from "../../apis/boarding";
+import { getAllBoardingStatus, getBoardingStatusById, updateOneBoardingStatus } from "../../apis/boarding";
 import { getRegistraionHistory, sendRegistrationInvite } from "../../apis/regiseration";
 
 interface HiringState {
@@ -10,7 +9,7 @@ interface HiringState {
     onboardListPending: IProfileCore[] | null;
     onboardListRejected: IProfileCore[] | null;
     onboardListApproved: IProfileCore[] | null;
-    loadedOnboarding?: BoardingFormValues;
+    loadedOnboarding?: IBoardingData;
     loading: boolean;
 }
 
@@ -80,13 +79,30 @@ export const fetchOnboardList = createAsyncThunk<OnboardListResponse, void, { re
 //     },
 // );
 
+
+// TODO!! type fix
+export const fetchOnboardStatusById = createAsyncThunk<IBoardingApplicationNew, string, { rejectValue: KnownError }>(
+    'hiring/fetchOnboardStatusById',
+    async (id, { rejectWithValue }) => {
+        try {
+            return (await getBoardingStatusById(id)) as IBoardingApplicationNew;
+        } catch (err) {
+            const error: AxiosError<KnownError> = err as AxiosError<KnownError>;
+            if (!error.response) {
+                throw error;
+            }
+            return rejectWithValue(error.response.data);
+        }
+    },
+);
+
 export interface updateBoardingStatusPayload {
     id: string,
     payload: IBoardingReviewAction
 }
 
-export const updateBoardingStatus = createAsyncThunk<OnboardListResponse, updateBoardingStatusPayload, { rejectValue: KnownError }>(
-    'hiring/updateBoardingStatus',
+export const updateBoardingStatusById = createAsyncThunk<OnboardListResponse, updateBoardingStatusPayload, { rejectValue: KnownError }>(
+    'hiring/updateBoardingStatusById',
     async ({ id, payload }, { rejectWithValue }) => {
         try {
             return (await updateOneBoardingStatus(id, payload)) as OnboardListResponse;
@@ -162,16 +178,16 @@ const hiringSlice = createSlice({
         builder.addCase(fetchOnboardList.rejected, (state) => {
             state.loading = false;
         });
-        builder.addCase(updateBoardingStatus.pending, (state) => {
+        builder.addCase(updateBoardingStatusById.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(updateBoardingStatus.fulfilled, (state, action) => {
+        builder.addCase(updateBoardingStatusById.fulfilled, (state, action) => {
             state.onboardListPending = action.payload.PENDING;
             state.onboardListRejected = action.payload.REJECTED;
             state.onboardListApproved = action.payload.APPROVED;
             state.loading = false;
         });
-        builder.addCase(updateBoardingStatus.rejected, (state) => {
+        builder.addCase(updateBoardingStatusById.rejected, (state) => {
             state.loading = false;
         });
         builder.addCase(fetchRegistrationHistory.pending, (state) => {
@@ -192,6 +208,16 @@ const hiringSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(sendInvitationToUser.rejected, (state) => {
+            state.loading = false;
+        });
+                builder.addCase(fetchOnboardStatusById.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchOnboardStatusById.fulfilled, (state, action) => {
+            state.loadedOnboarding = action.payload.data;
+            state.loading = false;
+        });
+        builder.addCase(fetchOnboardStatusById.rejected, (state) => {
             state.loading = false;
         });
     }
