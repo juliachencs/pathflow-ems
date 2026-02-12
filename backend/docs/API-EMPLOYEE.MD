@@ -11,14 +11,15 @@ Response:
 ```Javascript
 {
   success: true;
-  data: IProfileFull;
+  message: string;
+  data: IProfile;
 }
 ```
 
 ### PUT /api/profile/me	
 功能：更新员工的信息
 
-Request body: `IProfile` | `Omit<IProfileFull, "_id">`
+Request body: `IProfile` 
 
 Response: updated profile
 
@@ -26,40 +27,55 @@ Response: updated profile
 {
   success: true;
   message: string;
-  data: IProfileFull; // the update profile 
+  data: IProfile; // the update profile 
 }
 ```
 
 The server will use the employee ID decoded from the request header by default.
 
 
-## Boarding
-### POST /api/boarding/me	
-功能： submit the boarding application
+## Boarding <a name="user-boarding-endpoints">
 
-Request body: `IProfile`
-
-Response body:
+### Boarding application data <a name="baording">
 
 ```typescript
-{
-  success: true;
-  data: IBoardingApplication;
+export interface IBoardingData {
+  name: IName;
+  profileImage: string; // link to a picture
+  address: IAddress;
+  cellPhone: string;
+  workPhone?: string;
+  email: string;
+  SSN: string;
+  dob: string; // date of birth
+  gender: string; // "male" | "female" | "NA"("I do not wish to answer")
+
+  workAuthorization: IWorkAuthorization;
+
+  reference: {
+    person: IPerson;
+    relationship: string;
+  };
+
+  emergencyContacts: [
+    {
+      person: IPerson;
+      relationship: string;
+    },
+  ];
 }
-```
 
-### PUT	/api/boarding/me	
-功能：re-submit updated boarding application
-
-Request body: `IProfile`
-
-Response body:
-
-```typescript
-{
-  success: true;
-  data: IBoardingApplication;
+export interface IBoardingStatus {
+  state: ApplyState; //"UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
 }
+
+export interface IBoardingApplication {
+  state: "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
+  feedback?: string;
+  data: IBoardingData;
+}
+
 ```
 
 ### GET /api/boarding/me	
@@ -70,9 +86,43 @@ Response body:
 ```typescript
 {
   success: true;
+  message: string;
   data: IBoardingApplication;
 }
 ```
+
+### POST /api/boarding/me	
+功能： submit the boarding application
+
+Request body: `IBoardingData`
+
+Response body:
+
+```typescript
+{
+  success: true;
+  message: string;
+  data: IBoardingApplication;
+}
+```
+
+### PUT	/api/boarding/me	
+功能：re-submit updated boarding application
+
+Request body: `IBoardingData`
+
+Response body:
+
+```typescript
+{
+  success: true;
+  message: string;
+  data: IBoardingApplication;
+}
+```
+
+
+# TO BE UPDATE
 
 ## VISA
 ### GET	/api/visa/me
