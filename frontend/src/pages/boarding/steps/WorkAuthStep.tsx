@@ -53,7 +53,7 @@ const AuthorizationStep: React.FC<boardingStepsProps> = ({ disabled }) => {
           options={[
             {
               label: "Green Card",
-              value: "GreenCard",
+              value: "Green Card",
             },
             {
               label: "Citizen",
@@ -82,7 +82,7 @@ const AuthorizationStep: React.FC<boardingStepsProps> = ({ disabled }) => {
             },
             {
               label: "F1",
-              value: "F1",
+              value: "F1(CPT/OPT)",
             },
             {
               label: "H4",
@@ -115,7 +115,7 @@ const AuthorizationStep: React.FC<boardingStepsProps> = ({ disabled }) => {
         </>
       )}
 
-      {visaType === "F1" && (
+      {visaType === "F1(CPT/OPT)" && (
         <RHFInput
           name="optReceiptUrl"
           control={control}

@@ -1,5 +1,6 @@
+import dayjs from "dayjs";
 import type { BoardingFormValues } from "../schema/boardingSchema";
-import type { ContactInfo, IProfileFull } from "../types";
+import type { BoardingData, ContactInfo, IProfileFull } from "../types";
 
 export const boardingProfileMapper = (values: BoardingFormValues): IProfileFull => {
     return {
@@ -79,3 +80,49 @@ export const profileBoardingMapper = (values: IProfileFull): BoardingFormValues 
         // })
     }
 };
+
+export const BoardingDataToFormValueMapper = (values: BoardingData | null): BoardingFormValues | undefined => {
+    if (!values) return undefined;
+    const { name, address, workAuthorization, reference, emergencyContacts } = values;
+    return {
+        firstName: name.firstName,
+        lastName: name.lastName,
+        middleName: name.middleName,
+        preferedName: name.preferredName,
+        profileImgUrl: values.profileImage,
+        address: {
+            ...address,
+            unit: address.secondary
+        },
+        cellPhoneNumber: values.cellPhone,
+        workPhoneNumber: values.workPhone,
+        email: values.email,
+        ssn: values.SSN,
+        dob: dayjs(values.dob).toDate(),
+        gender: values.gender,
+        isUSCitizen: workAuthorization.type === 'Citizen' ? 'yes' : 'no',
+        greenCardOrCitizen: workAuthorization.type === 'Citizen' ? "Citizen" : workAuthorization.type === 'Green Card' ? 'Green Card' : undefined,
+        workAuthorization: workAuthorization.type === 'Citizen' ? undefined : workAuthorization.type === 'Green Card' ? undefined : workAuthorization.type,
+        otherVisaTitle: workAuthorization.title,
+        visaStartDate: dayjs(workAuthorization.startDate).toDate(),
+        visaEndDate: dayjs(workAuthorization.endDate).toDate(),
+        optReceiptUrl: workAuthorization.url,
+        reference: {
+            ...reference,
+            relationship: reference?.relationship
+        },
+        emergencyContacts: emergencyContacts ? [...emergencyContacts.map((ele): emContact => {
+            const { firstName, lastName, middleName, phone, email } = ele.person
+            return { firstName, lastName, middleName, phone, email,  relationship: ele.relationship };
+        })] : undefined
+    }
+}
+
+interface emContact {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    phone?: string;
+    email?: string;
+    relationship: string;
+}

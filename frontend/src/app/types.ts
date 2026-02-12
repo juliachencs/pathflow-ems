@@ -2,8 +2,8 @@ export type UserRole = "USER" | "ADMIN";
 export type BoardingStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
 export type FileStatus = "UNSUBMIT" | "PENDING" | "REJECTED" | "APPROVED";
 export type VisaStatus = "PROGRESS" | "FINISHED" | "NR" | "NA";
-export type VisaType = "Citizen" | "GreenCard" | "H1-B" | "L2" | "H4" | "Other" | "F1"
-export type Gender = "male" | "female" | "other"
+export type VisaType = "Citizen" | "Green Card" | "H1-B" | "L2" | "H4" | "Other" | "F1(CPT/OPT)"
+export type Gender = "male" | "female" | "NA"
 export type DocType = "OPT" | "EAD" | "I983" | "I20"
 export type ActionType = "APPROVE" | "REJECT" | "SEND_NOTIFICATION" | "SUBMIT"
 
@@ -189,4 +189,62 @@ export interface registerLogInfo {
   registrationLink: string;
   hasRegistered: boolean; // indicate if this link has been used to register an account
   hasApplied: boolean; // indicate this email has been submitted in an onboarding application.
+}
+
+export interface BoardingData {
+  name: {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    preferredName?: string;
+  };
+
+  profileImage: string; // link to a picture
+
+  address: {
+    street: string;
+    state: string;
+    city: string;
+    zip: string;
+    secondary: string;
+  };
+
+  cellPhone: string;
+  workPhone?: string;
+  email: string;
+  SSN: string;
+  dob: string; // date of birth
+  gender: Gender; // "male" | "female" | "NA"("I do not wish to answer")
+
+  workAuthorization: {
+    type: VisaType; // "Green Card" |  "Citizen" | "H1-B" | "L2" | "H4" | "other" | "F1(CPT/OPT)"
+    title?: string;
+    startDate?: string;
+    endDate?: string;
+    url?: string;
+  };
+
+  reference: {
+    person?: {
+      firstName: string;
+      lastName: string;
+      middleName?: string;
+      phone?: string;
+      email?: string;
+    };
+    relationship?: string;
+  };
+
+  emergencyContacts?: [
+    {
+      person: {
+        firstName: string;
+        lastName: string;
+        middleName?: string;
+        phone?: string;
+        email?: string;
+      };
+      relationship: string;
+    },
+  ];
 }
