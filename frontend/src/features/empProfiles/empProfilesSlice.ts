@@ -71,6 +71,7 @@ const EmpProfileSlice = createSlice({
         },
         // mock test only
         setProfiles: (state, action: PayloadAction<IProfileSummary[]>) => {
+            console.log('setProfile')
             state.profiles = action.payload;
             state.profilesFiltered = sortProfiles(state);
         },

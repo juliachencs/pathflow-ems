@@ -4,8 +4,6 @@ import boardingReducer from "../features/boarding/boardingSlice"
 import profileReducer from '../features/profile/profileSlice';
 import visaReducer from '../features/visa/visaSlice'
 import employeeProfilesReducer from '../features/empProfiles/empProfilesSlice'
-import employeeVisaReducer from '../features/empVisa/empVisaSlice'
-import hiringReducer from '../features/hiring/hiringSlice'
 
 const store = configureStore({
     reducer: {
@@ -14,8 +12,6 @@ const store = configureStore({
         profile: profileReducer,
         visa: visaReducer,
         employeeProfiles: employeeProfilesReducer,
-        employeeVisa: employeeVisaReducer,
-        hiring: hiringReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     devTools: true,

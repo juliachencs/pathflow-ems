@@ -8,29 +8,18 @@ const PersonalInfo: React.FC<ProfileLayoutProps> = ({
   values,
   bordered = false,
   editMode,
-  compactMode,
 }) => {
   const { control } = useFormContext();
   return (
     <>
       <Card title="Personal Information">
-        {!compactMode && (
-          <Avatar
-            size={128}
-            src={values.profileImage}
-            style={{ marginBottom: "20px" }}
-            icon={<UserOutlined />}
-          />
-        )}
-
-        {editMode && (
-          <RHFInput
-            name="profileImgUrl"
-            label="Profile Image link"
-            placeholder="ImgURL"
-            control={control}
-          />
-        )}
+        <Avatar
+          size={128}
+          src={values.profileImage}
+          style={{ marginBottom: "20px" }}
+          icon={<UserOutlined />}
+        />
+        {editMode && (<RHFInput name="profileImgUrl" label="Profile Image link" placeholder="ImgURL" control={control}/>)}
         <Descriptions column={2} bordered={bordered} size="small">
           <Descriptions.Item label="First Name">
             {values.name.firstName}

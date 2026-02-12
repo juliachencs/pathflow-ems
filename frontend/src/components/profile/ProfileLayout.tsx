@@ -3,62 +3,28 @@ import ContactInfo from "./components/ContactInfo";
 import PersonalDetails from "./components/PersonalDetails";
 import ReferencePerson from "./components/ReferencePerson";
 import EmergencyContact from "./components/EmergencyContact";
-import UploadedDocs, { type UploadedDoc } from "./components/UploadedDocs";
+import UploadedDocs from "./components/UploadedDocs";
 import type { IProfileFull } from "../../app/types";
 
 export interface ProfileLayoutProps {
   values: IProfileFull;
   bordered?: boolean;
   editMode?: boolean;
-  compactMode?: boolean;
 }
 
 const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   values,
   bordered = false,
   editMode = false,
-  compactMode = false,
 }) => {
-  const docPack: UploadedDoc[] = [];
-
-  if (values.profileImage) {
-    docPack.push({
-      label: "Profile Picture",
-      url: values.profileImage,
-    });
+  const docPack = {
+    profileImage: values.profileImage,
+    visaDocuments: values.visaDocuments
   }
-
-  if (values.visaDocuments) {
-    const visaDocPack = [
-      {
-        label: "OPT Receipt",
-        url: values.visaDocuments?.OPT,
-      },
-      {
-        label: "EAD Card",
-        url: values.visaDocuments?.EAD,
-      },
-      {
-        label: "I-983 Form",
-        url: values.visaDocuments?.I983,
-      },
-      {
-        label: "I-20 Form",
-        url: values.visaDocuments?.I20,
-      },
-    ];
-    docPack.push(...visaDocPack);
-  }
-
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <PersonalInfo
-          values={values}
-          bordered={bordered}
-          editMode={editMode}
-          compactMode={compactMode}
-        />
+        <PersonalInfo values={values} bordered={bordered} editMode={editMode} />
         <ContactInfo values={values} bordered={bordered} editMode={editMode} />
         <PersonalDetails
           values={values}
@@ -75,9 +41,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
           editMode={editMode}
         />
 
-        {docPack.length !== 0 && (
-          <UploadedDocs docPack={docPack} bordered={bordered} />
-        )}
+        <UploadedDocs docPack={docPack} bordered={bordered} />
       </div>
     </>
   );

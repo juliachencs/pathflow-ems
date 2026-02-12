@@ -1,0 +1,9 @@
+[  
+  {
+    "username": "pathflowhr",
+    "password":  "$2b$10$UB6z.bt204oEaFAIx82mpOWkAR5.ygHT2dZm/v8DsfeliFIX9at0O", 
+    "email": "cxd1988@example.com",
+    "role": "ADMIN",
+    "employeeId":"698cca76aef32a46b1a92615" //uodate this to the real id
+  }
+]

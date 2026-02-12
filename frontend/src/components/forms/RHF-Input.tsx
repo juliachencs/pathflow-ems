@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 import { Controller } from "react-hook-form";
-import type { Control, FieldValues, Path, RegisterOptions } from "react-hook-form";
+import type { Control, FieldValues, Path } from "react-hook-form";
 
 type RHFInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -9,8 +9,7 @@ type RHFInputProps<T extends FieldValues> = {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
-  style?: React.CSSProperties;
-  rules?: Omit<RegisterOptions<T, Path<T>>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"> | undefined;
+  style?: React.CSSProperties
 };
 
 export default function RHFInput<T extends FieldValues>({
@@ -21,13 +20,11 @@ export default function RHFInput<T extends FieldValues>({
   disabled = false,
   required = false,
   style,
-  rules
 }: RHFInputProps<T>) {
   return (
     <Controller
       name={name}
       control={control}
-      rules={rules}
       render={({ field, fieldState }) => (
         <Form.Item
           label={label}
