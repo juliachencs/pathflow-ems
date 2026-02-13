@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { DocType, FileStatus, IVisaStatus, KnownError, VisaDocuments, VisaStatus } from "../../app/types";
+import type { DocType, FileStatus, IVisaDoc, IVisaStatus, KnownError, VisaStatus } from "../../app/types";
 import { getVisaStatus, submitVisaFile } from "../../apis/visa";
 import type { AxiosError } from "axios";
 
@@ -9,7 +9,7 @@ interface VisaState {
   key: DocType | null;
   curStage: number | null;
   feedback?: string;
-  userDocuments?: VisaDocuments;
+  userDocuments?: IVisaDoc[];
   loading: boolean;
 }
 
@@ -60,14 +60,19 @@ const initialState: VisaState = {
 
 const loadVisaStatus = (state: VisaState, payload: IVisaStatus) => {
   const { state: visaStatus, curStage, documents } = payload;
-  const stageIndex = curStage - 1;
-  const curDoc = documents[stageIndex];
-  const key: DocType = curDoc.documentType;
-  const status: FileStatus = curDoc.state;
-  state.key = key;
+  
   state.visaStatus = visaStatus;
-  state.status = status;
-  state.curStage = curDoc.state === 'UNSUBMIT' ? stageIndex - 1 : stageIndex;
+  state.userDocuments = documents;
+
+  const stageIndex = curStage - 1;
+  if (stageIndex <= 3) {
+    const curDoc = documents[stageIndex];
+    const key: DocType = curDoc.documentType;
+    const status: FileStatus = curDoc.state;
+    state.key = key;
+    state.status = status;
+    state.curStage = curDoc.state === 'UNSUBMIT' ? stageIndex - 1 : stageIndex;
+  }
 }
 
 const visaSlice = createSlice({

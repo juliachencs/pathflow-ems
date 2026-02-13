@@ -3,33 +3,21 @@ import { Divider, Result } from "antd";
 import UploadedDocs, {
   type UploadedDoc,
 } from "../profile/components/UploadedDocs";
-import type { VisaDocuments } from "../../app/types";
+import type { IVisaDoc } from "../../app/types";
 
 interface VisaCompletedProps {
-  documents?: VisaDocuments;
+  documents?: IVisaDoc[];
 }
 
 const VisaCompleted: React.FC<VisaCompletedProps> = ({ documents }) => {
-  let docPack: UploadedDoc[] = [];
+  const docPack: UploadedDoc[] = [];
   if (documents) {
-    docPack = [
-      {
-        label: "OPT Receipt",
-        url: documents.OPT,
-      },
-      {
-        label: "EAD Card",
-        url: documents.EAD,
-      },
-      {
-        label: "I-983 Form",
-        url: documents.I983,
-      },
-      {
-        label: "I-20 Form",
-        url: documents.I20,
-      },
-    ];
+    documents.map((doc) => {
+      docPack.push({
+        label: doc.documentType,
+        url: doc.url
+      })
+    })
   }
 
   return (
