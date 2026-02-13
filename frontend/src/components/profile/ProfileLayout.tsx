@@ -27,6 +27,12 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
       url: values.profileImage,
     });
   }
+  if (values.workAuthorization.url) {
+    docPack.push({
+      label: "OPT Receipt",
+      url: values.workAuthorization.url,
+    });
+  }
   if ("files" in values && values.files) {
     const visaDocPack = [
       {
