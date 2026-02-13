@@ -16,7 +16,8 @@ const Login: React.FC = () => {
       message.success("You have successfully logged in!", 3);
     } catch (error) {
         console.log(error);
-        // TODO: handle error
+        // TODO Handle Error
+        message.error("There was something wrong when tried to log you in", 3);
     }
   };
 

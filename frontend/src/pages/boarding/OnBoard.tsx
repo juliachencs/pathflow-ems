@@ -74,24 +74,6 @@ const steps = [
   },
 ];
 
-// const defaults: BoardingFormValues = {
-//   firstName: "",
-//   lastName: "",
-//   address: {
-//     street: "",
-//     city: "",
-//     state: "",
-//     zip: "",
-//   },
-//   cellPhoneNumber: "",
-//   // TODO Handle the email address import here
-//   email: "something@gmail.com",
-//   ssn: "",
-//   dob: null,
-//   gender: "",
-//   // driverLicenceUrl: "",
-// };
-
 const stepProvider = [
   {
     component: IdentityStep,
@@ -223,6 +205,7 @@ const OnBoard: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error('Submission falire, please check console', 3);
     }
   };
 

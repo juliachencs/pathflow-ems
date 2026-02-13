@@ -126,9 +126,14 @@ const VisaManage: React.FC = () => {
           },
         }),
       ).unwrap();
+      message.success("Email sent to employee", 3);
     } catch (err) {
       // TODO handle
       console.log(err);
+      message.error(
+        "Failure to send notification, check console for more info",
+        3,
+      );
     }
   };
 
@@ -143,6 +148,7 @@ const VisaManage: React.FC = () => {
           },
         }),
       ).unwrap();
+      message.success("Review action completed", 3);
       handleCancel();
     } catch (err) {
       // TODO handle
@@ -163,6 +169,7 @@ const VisaManage: React.FC = () => {
           },
         }),
       ).unwrap();
+      message.success("Review action completed", 3);
       handleCancel();
     } catch (err) {
       // TODO handle

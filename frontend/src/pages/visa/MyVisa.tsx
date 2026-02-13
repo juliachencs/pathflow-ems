@@ -66,10 +66,11 @@ const MyVisa: React.FC = () => {
         },
       };
       await dispatch(submitUserVisaDoc(payload)).unwrap();
-      message.success("Success!", 3);
+      message.success("Document upload complete!", 3);
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error("Error when try to upload your document", 3);
     }
   };
 

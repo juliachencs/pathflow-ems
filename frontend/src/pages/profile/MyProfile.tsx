@@ -96,6 +96,7 @@ const MyProfile: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error("Error when try to update profile, check console", 3);
     }
   };
 

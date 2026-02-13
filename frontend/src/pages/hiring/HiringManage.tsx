@@ -57,6 +57,7 @@ const HiringManage: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO handle!
+      message.error('Submission falire, please check console', 3);
     }
   }, [dispatch]);
 
@@ -67,9 +68,11 @@ const HiringManage: React.FC = () => {
     console.log(payload);
     try {
       await dispatch(sendInvitationToUser(payload)).unwrap();
+      message.success('Email sent!', 3);
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error('Submission falire, please check console', 3);
     }
     methods.reset();
     setIsTokenModalOpen(false);
@@ -85,6 +88,7 @@ const HiringManage: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error('There was an error when try to get profile, please check console', 3);
     }
     setCurrentEmpId(id);
     setIsReviewModalOpen(true);
@@ -106,10 +110,11 @@ const HiringManage: React.FC = () => {
     };
     try {
       await dispatch(updateBoardingStatusById(payload)).unwrap();
-      message.success("Success!", 3);
+      message.success("Action success", 3);
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error("Error when try to submit review result, check console", 3);
     }
     handleReviewCancel();
   };
@@ -130,6 +135,7 @@ const HiringManage: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error("Error when try to submit review result, check console", 3);
     }
     handleReviewCancel();
   };

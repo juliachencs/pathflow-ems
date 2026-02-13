@@ -21,6 +21,7 @@ const Register: React.FC = () => {
     } catch (error) {
       console.log(error);
       // TODO: handle error
+      message.error("There was something wrong when tried to log you in", 3);
     }
   };
   const fields: FieldConfig<RegisterFormValues>[] = [
