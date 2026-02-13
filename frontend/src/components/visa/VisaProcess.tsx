@@ -53,9 +53,8 @@ const docConfigRecord: Record<DocType, { title: string; next: string }> = {
   I20: { title: "I-20", next: "" },
 };
 
-// TODO truly download file (from frontend?)
-const emptyTemplateURL = "";
-const sampleTemplateURL = "";
+const emptyTemplateURL = "/files/blank_form.pdf";
+const sampleTemplateURL = "/files/sample_form.pdf";
 
 const VisaProcess: React.FC<VisaProcessProps> = ({
   docKey,

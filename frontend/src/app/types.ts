@@ -45,13 +45,6 @@ export interface WorkAuth {
   url: string | undefined;
 }
 
-export interface VisaDocuments {
-  OPT: string | undefined;
-  EAD: string | undefined;
-  I983: string | undefined;
-  I20: string | undefined;
-}
-
 export interface IProfileSummary {
   employeeId: string;
 
@@ -72,6 +65,7 @@ export interface IVisaDoc {
   _id: string;
   state: FileStatus;
   documentType: DocType;
+  url?: string;
 }
 
 export interface IVisaStatus {
@@ -104,7 +98,6 @@ export interface IManagedVisaStatus {
   files: IVisaFiles;
 }
 
-// TODO Merge two visa files
 export interface IVisaFiles {
   OPT?: string;
   EAD?: string;

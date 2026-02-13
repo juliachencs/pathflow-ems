@@ -27,7 +27,7 @@ const routes = createRoutesFromElements(
       <Route path="*" element={<Welcome />}></Route>
       <Route element={<GuestGuard />}>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Register />}></Route>
+        <Route path="/register" element={<Register />}></Route>
       </Route>
     </Route>
     <Route element={<AuthGuard />}>

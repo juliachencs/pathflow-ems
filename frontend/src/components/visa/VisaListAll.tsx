@@ -1,8 +1,8 @@
 import { Table } from "antd";
-import SearchInput from "../../../components/forms/SearchInput";
-import type { VisaListProps } from "../VisaManage";
-import type { UploadedDoc } from "../../../components/profile/components/UploadedDocs";
-import UploadedDocs from "../../../components/profile/components/UploadedDocs";
+import SearchInput from "../forms/SearchInput";
+import type { VisaListProps } from "../../pages/visa/VisaManage";
+import type { UploadedDoc } from "../profile/components/UploadedDocs";
+import UploadedDocs from "../profile/components/UploadedDocs";
 
 type VisaListAllProps = VisaListProps & {
   onSearchChange: (

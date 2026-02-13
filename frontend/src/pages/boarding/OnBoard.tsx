@@ -26,7 +26,10 @@ import ReferenceStep from "./steps/ReferenceStep";
 import SummaryStep from "./steps/SummaryStep";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
-import { BoardingDataToFormValueMapper, BoardingFormValueToDataMapper } from "../../app/util/profileMapper";
+import {
+  BoardingDataToFormValueMapper,
+  BoardingFormValueToDataMapper,
+} from "../../app/util/profileMapper";
 import type { BoardingData, BoardingStatus } from "../../app/types";
 import {
   fetchBoardingStatus,
@@ -71,23 +74,23 @@ const steps = [
   },
 ];
 
-const defaults: BoardingFormValues = {
-  firstName: "",
-  lastName: "",
-  address: {
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-  },
-  cellPhoneNumber: "",
-  // TODO Handle the email address import here
-  email: "something@gmail.com",
-  ssn: "",
-  dob: null,
-  gender: "",
-  // driverLicenceUrl: "",
-};
+// const defaults: BoardingFormValues = {
+//   firstName: "",
+//   lastName: "",
+//   address: {
+//     street: "",
+//     city: "",
+//     state: "",
+//     zip: "",
+//   },
+//   cellPhoneNumber: "",
+//   // TODO Handle the email address import here
+//   email: "something@gmail.com",
+//   ssn: "",
+//   dob: null,
+//   gender: "",
+//   // driverLicenceUrl: "",
+// };
 
 const stepProvider = [
   {
@@ -153,11 +156,20 @@ const OnBoard: React.FC = () => {
     dispatch(fetchBoardingStatus())
       .unwrap()
       .catch((err) => console.log(err));
+  }, [dispatch]);
+
+  useEffect(() => {
     if (currentUser?.boarding === "UNSUBMIT") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowForm(true);
+    } else {
+      setShowForm(false);
     }
-  }, [currentUser, dispatch, status]);
+  }, [currentUser?.boarding]);
+
+  useEffect(() => {
+    dispatch(setBoarding(status));
+  }, [dispatch, status]);
 
   const CurrComponent = stepProvider[step].component;
   const getSchemaForStep = (step: number) => stepProvider[step]?.schema;
@@ -181,17 +193,17 @@ const OnBoard: React.FC = () => {
       return zodResolver(schema)(values, context, options);
     };
 
-  // TODO!! inject email
   // Yeah type is whaterver (for now)
   const methods = useForm<BoardingFormValues>({
-    defaultValues: defaults,
+    defaultValues: {},
     resolver: stepResolver(() => step),
   });
 
   useEffect(() => {
     const formValue = BoardingDataToFormValueMapper(boardingValues);
+    console.log(formValue);
     methods.reset(formValue);
-  }, [boardingValues]);
+  }, [boardingValues, methods]);
 
   const onChange = (value: number) => {
     if (editMode) {
@@ -208,7 +220,6 @@ const OnBoard: React.FC = () => {
         await dispatch(reSubmitBoardingApplication(data)).unwrap();
       }
       message.success("You have successfully submit the form!", 3);
-      dispatch(setBoarding(status));
     } catch (error) {
       console.log(error);
       // TODO: handle error

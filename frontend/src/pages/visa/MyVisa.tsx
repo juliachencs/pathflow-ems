@@ -46,7 +46,6 @@ const MyVisa: React.FC = () => {
   useEffect(() => {
     dispatch(fetchUserVisa())
       .unwrap()
-      .then()
       .catch((err) => console.log(err));
   }, [dispatch]);
 
@@ -111,7 +110,7 @@ const MyVisa: React.FC = () => {
             </FormProvider>
           )}
         {visaStatus === "FINISHED" && (
-          <VisaCompleted docPack={userDocuments} />
+          <VisaCompleted documents={userDocuments} />
         )}
         {(visaStatus === "NA" || visaStatus === "NR") && (
           <VisaNotRequired />

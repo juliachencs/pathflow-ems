@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import type { VisaListProps } from "../VisaManage";
+import type { VisaListProps } from "../../pages/visa/VisaManage";
 
 const VisaListIP: React.FC<VisaListProps> = ({ datasource, columns }) => {
   return (

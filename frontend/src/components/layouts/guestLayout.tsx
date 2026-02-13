@@ -36,7 +36,7 @@ const GuestLayout = () => {
           <Button type="text" style={{ color: "#333" }} onClick={() => navigate('/login')}>
             Login
           </Button>
-          <Button ghost style={{ color: "#333", borderColor: "#333" }} onClick={() => navigate('/signup')}>
+          <Button ghost style={{ color: "#333", borderColor: "#333" }} onClick={() => navigate('/register')}>
             Register
           </Button>
         </Space>

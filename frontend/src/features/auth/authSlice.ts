@@ -112,6 +112,7 @@ const authSlice = createSlice({
         setBoarding: (state, action: PayloadAction<BoardingStatus>) => {
             if (state.currentUser) {
                 state.currentUser.boarding = action.payload;
+                saveState(state);
             }
         },
         setVisa: (state, action: PayloadAction<VisaStatus>) => {
