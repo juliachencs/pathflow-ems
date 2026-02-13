@@ -26,7 +26,10 @@ import ReferenceStep from "./steps/ReferenceStep";
 import SummaryStep from "./steps/SummaryStep";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
-import { BoardingDataToFormValueMapper, BoardingFormValueToDataMapper } from "../../app/util/profileMapper";
+import {
+  BoardingDataToFormValueMapper,
+  BoardingFormValueToDataMapper,
+} from "../../app/util/profileMapper";
 import type { BoardingData, BoardingStatus } from "../../app/types";
 import {
   fetchBoardingStatus,
@@ -156,8 +159,14 @@ const OnBoard: React.FC = () => {
     if (currentUser?.boarding === "UNSUBMIT") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowForm(true);
+    } else {
+      setShowForm(false);
     }
-  }, [currentUser, dispatch, status]);
+  }, [currentUser, dispatch]);
+
+  useEffect(() => {
+    dispatch(setBoarding(status));
+  }, [dispatch, status]);
 
   const CurrComponent = stepProvider[step].component;
   const getSchemaForStep = (step: number) => stepProvider[step]?.schema;
@@ -190,6 +199,7 @@ const OnBoard: React.FC = () => {
 
   useEffect(() => {
     const formValue = BoardingDataToFormValueMapper(boardingValues);
+    console.log(formValue);
     methods.reset(formValue);
   }, [boardingValues]);
 
@@ -208,7 +218,6 @@ const OnBoard: React.FC = () => {
         await dispatch(reSubmitBoardingApplication(data)).unwrap();
       }
       message.success("You have successfully submit the form!", 3);
-      dispatch(setBoarding(status));
     } catch (error) {
       console.log(error);
       // TODO: handle error
