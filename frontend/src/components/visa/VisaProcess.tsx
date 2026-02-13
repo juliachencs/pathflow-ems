@@ -64,7 +64,7 @@ const VisaProcess: React.FC<VisaProcessProps> = ({
   onSubmit,
 }) => {
   const steps = Object.values(docConfigRecord);
-  // TODO maybe extract this too
+  // TODO? maybe decouple this too
   const currResultStatus: ResultStatus =
     docStatus === "APPROVED"
       ? "success"

@@ -75,7 +75,7 @@ const MyVisa: React.FC = () => {
 
   return (
     <>
-      {/* TODO fix styling */}
+      {/* TODO& fix styling */}
       <Card
         style={{
           padding: "0 80px 30px",

@@ -60,7 +60,7 @@ const AuthForm = <T extends FieldValues>({
         ),
       )}
 
-      {/* TODO: style fix */}
+      {/* TODO& style fix */}
       <Button htmlType="submit" type="primary" block>
         {buttonText}
       </Button>

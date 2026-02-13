@@ -23,7 +23,7 @@ const UploadedDocs: React.FC<UploadedDocsProps> = ({
           const url = doc.url;
           if (url) {
             // for some reason this reusable component just not rendering, fix it later
-            // TODO fix
+            // TODO! fix
             // return (<DocItem itemKey={index} label={doc.label} url={url} />);
             return (
               <Descriptions.Item key={index} label={doc.label}>
@@ -34,8 +34,8 @@ const UploadedDocs: React.FC<UploadedDocsProps> = ({
                   >
                     Preview
                   </Button>
-                  {/* TODO Make this downloadable */}
-                  <Button type="link" href={url}>
+                  {/* TODO& Make this downloadable */}
+                  <Button type="link" href={url}  target="_blank">
                     Download
                   </Button>
                 </Space>

@@ -14,8 +14,8 @@ const DocItem: React.FC<DocItemProps> = ({ itemKey, label, url }) => {
         <Button type="link" onClick={() => window.open(url, "_blank")}>
           Preview
         </Button>
-        {/* TODO Make this downloadable */}
-        <Button type="link" href={url}>
+        {/* TODO& Make this downloadable */}
+        <Button type="link" href={url} target="_blank">
           Download
         </Button>
       </Space>

@@ -36,7 +36,7 @@ const ReviewModal: React.FC<SendEmailModalProps> = ({
     setIsRejectProcess(false);
     return onReject(feedback);
   };
-  // TODO styling later
+  // TODO& styling later
   return (
     <Modal
       title={title}

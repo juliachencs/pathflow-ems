@@ -22,7 +22,7 @@ const VisaListAll: React.FC<VisaListAllProps> = ({
         onChange={onSearchChange}
       />
       {/* rowKey is required!!! */}
-      {/* TODO maybe styling the file button */}
+      {/* TODO? maybe styling the file extend action */}
       <Table
         rowKey="employeeId"
         columns={columns}
