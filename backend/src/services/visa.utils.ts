@@ -149,7 +149,7 @@ export function isLegalStatus(cur: IVisaStatus) {
   }
 
   //TODO: all documents before state should be approved
-  // TODO: the document of curStage, it's stage should not be approved.
+  //TODO: the document of curStage, it's stage should not be approved.
   //TODO: all documents after state should be unsubmitted
   return true;
 }

@@ -53,14 +53,14 @@ const employeeSchema = new Schema<IEmployee>(
         type: String,
         description: "Date of Birth",
         required: true,
-        default: "",
+        default: "2000-01-01T00:00:00.000Z",
       },
 
       gender: {
         type: String,
         description: "male|female|na",
         required: true,
-        default: "",
+        default: "na",
       },
 
       workAuthorization: {
