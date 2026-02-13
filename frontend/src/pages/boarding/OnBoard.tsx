@@ -74,23 +74,23 @@ const steps = [
   },
 ];
 
-const defaults: BoardingFormValues = {
-  firstName: "",
-  lastName: "",
-  address: {
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-  },
-  cellPhoneNumber: "",
-  // TODO Handle the email address import here
-  email: "something@gmail.com",
-  ssn: "",
-  dob: null,
-  gender: "",
-  // driverLicenceUrl: "",
-};
+// const defaults: BoardingFormValues = {
+//   firstName: "",
+//   lastName: "",
+//   address: {
+//     street: "",
+//     city: "",
+//     state: "",
+//     zip: "",
+//   },
+//   cellPhoneNumber: "",
+//   // TODO Handle the email address import here
+//   email: "something@gmail.com",
+//   ssn: "",
+//   dob: null,
+//   gender: "",
+//   // driverLicenceUrl: "",
+// };
 
 const stepProvider = [
   {
@@ -156,13 +156,16 @@ const OnBoard: React.FC = () => {
     dispatch(fetchBoardingStatus())
       .unwrap()
       .catch((err) => console.log(err));
+  }, [dispatch]);
+
+  useEffect(() => {
     if (currentUser?.boarding === "UNSUBMIT") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowForm(true);
     } else {
       setShowForm(false);
     }
-  }, [currentUser, dispatch]);
+  }, [currentUser?.boarding]);
 
   useEffect(() => {
     dispatch(setBoarding(status));
@@ -190,10 +193,9 @@ const OnBoard: React.FC = () => {
       return zodResolver(schema)(values, context, options);
     };
 
-  // TODO!! inject email
   // Yeah type is whaterver (for now)
   const methods = useForm<BoardingFormValues>({
-    defaultValues: defaults,
+    defaultValues: {},
     resolver: stepResolver(() => step),
   });
 
@@ -201,7 +203,7 @@ const OnBoard: React.FC = () => {
     const formValue = BoardingDataToFormValueMapper(boardingValues);
     console.log(formValue);
     methods.reset(formValue);
-  }, [boardingValues]);
+  }, [boardingValues, methods]);
 
   const onChange = (value: number) => {
     if (editMode) {
