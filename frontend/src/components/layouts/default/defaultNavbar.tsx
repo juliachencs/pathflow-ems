@@ -1,4 +1,4 @@
-import { Menu, Typography, type MenuProps } from "antd";
+import { Dropdown, Menu, Typography, type MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Header } from "antd/es/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,22 +57,14 @@ const DefaultNav: React.FC = () => {
 
   const profileItem: Required<MenuProps>["items"][number][] = [
     {
-      key: "user",
-      label: currentUser?.name ?? "User",
-      icon: <UserOutlined />,
-      // TODO?: Shall I use dropdown insted?
-      children: [
-        {
-          key: "profile",
-          label: "Profile",
-          onClick: () => navigate("/profile/me"),
-        },
-        {
-          key: "logout",
-          label: "Logout",
-          onClick: () => dispatch(clearAuth()),
-        },
-      ],
+      key: "profile",
+      label: "Profile",
+      onClick: () => navigate("/profile/me"),
+    },
+    {
+      key: "logout",
+      label: "Logout",
+      onClick: () => dispatch(clearAuth()),
     },
   ];
 
@@ -97,7 +89,15 @@ const DefaultNav: React.FC = () => {
         justifyContent: "space-between",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 24,
+          flex: 1,
+          minWidth: 0,
+        }}
+      >
         {/* <img src={viteLogo} className="logo vite" alt="Vite logo" /> */}
         <Typography.Text
           style={{ color: "#fff", cursor: "pointer", fontWeight: 600 }}
@@ -113,8 +113,20 @@ const DefaultNav: React.FC = () => {
           style={{ flex: 1, minWidth: 0 }}
         />
       </div>
-      // TODO fix collapsed
-      <Menu theme="dark" mode="horizontal" items={profileItem} />
+      <Dropdown menu={{ items: profileItem }}>
+        <div
+          style={{
+            cursor: "pointer",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <UserOutlined />
+          {currentUser?.name ?? "User"}
+        </div>
+      </Dropdown>
     </Header>
   );
 };
